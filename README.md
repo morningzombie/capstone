@@ -1,4 +1,4 @@
 - npm i
-- create database university_grace_shopper
+- create database hobnobbers
 - npm run start:dev
 - login with seeded users

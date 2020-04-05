@@ -12,8 +12,10 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_hobbies CASCADE;  
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
+  DROP TABLE IF EXISTS hobbies CASCADE;
   DROP TABLE IF EXISTS user_rating CASCADE;
   DROP TABLE IF EXISTS users CASCADE; 
+  
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -21,8 +23,8 @@ const sync = async () => {
     last_name VARCHAR(100),
     password VARCHAR(100),
     zipCode INT,
-    user_profile UUID,
-    user_group ,
+    user_profile_id UUID,
+    user_group_id UUID,
     userRating INT DEFAULT 0,
     role VARCHAR(20) DEFAULT 'USER',
     CHECK (char_length(username) > 0)
@@ -73,6 +75,14 @@ const sync = async () => {
     ageRange VARCHAR(100),
     financialStatus VARCHAR(100)
   );
+
+  ALTER TABLE users
+  ADD FOREIGN KEY (user_profile_id)
+  REFERENCES user_profile(id);
+
+  ALTER TABLE users
+  ADD FOREIGN KEY (user_group_id)
+  REFERENCES user_group(id);
 `;
 
   await client.query(SQL);

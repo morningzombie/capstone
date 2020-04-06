@@ -3,6 +3,7 @@ import qs from "qs";
 import axios from "axios";
 import Login from "./Login";
 import FileUpload from "./components/FileUpload";
+import Nav from "./Nav";
 
 // import Orders from './Orders';
 // import Cart from './Cart';
@@ -20,43 +21,6 @@ const headers = () => {
 const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
-  // const [ orders, setOrders ] = useState([]);
-  // const [ cart, setCart ] = useState({});
-  // const [ products, setProducts ] = useState([]);
-  // const [ lineItems, setLineItems ] = useState([]);
-
-  // useEffect(()=> {
-  //   axios.get('/api/products')
-  //     .then( response => setProducts(response.data));
-  // }, []);
-
-  // useEffect(()=> {
-  //   if(auth.id){
-  //     const token = window.localStorage.getItem('token');
-  //     axios.get('/api/getLineItems', headers())
-  //     .then( response => {
-  //       setLineItems(response.data);
-  //     });
-  //   }
-  // }, [ auth ]);
-
-  // useEffect(()=> {
-  //   if(auth.id){
-  //     axios.get('/api/getCart', headers())
-  //     .then( response => {
-  //       setCart(response.data);
-  //     });
-  //   }
-  // }, [ auth ]);
-
-  // useEffect(()=> {
-  //   if(auth.id){
-  //     axios.get('/api/getOrders', headers())
-  //     .then( response => {
-  //       setOrders(response.data);
-  //     });
-  //   }
-  // }, [ auth ]);
 
   const login = async (credentials) => {
     const token = (await axios.post("/api/auth", credentials)).data.token;
@@ -84,41 +48,6 @@ const App = () => {
     });
   }, []);
 
-  // const createOrder = ()=> {
-  //   const token = window.localStorage.getItem('token');
-  //   axios.post('/api/createOrder', null , headers())
-  //   .then( response => {
-  //     setOrders([response.data, ...orders]);
-  //     const token = window.localStorage.getItem('token');
-  //     return axios.get('/api/getCart', headers())
-  //   })
-  //   .then( response => {
-  //     setCart(response.data);
-  //   });
-  // };
-
-  // const addToCart = (productId)=> {
-  //   axios.post('/api/addToCart', { productId }, headers())
-  //   .then( response => {
-  //     const lineItem = response.data;
-  //     const found = lineItems.find( _lineItem => _lineItem.id === lineItem.id);
-  //     if(!found){
-  //       setLineItems([...lineItems, lineItem ]);
-  //     }
-  //     else {
-  //       const updated = lineItems.map(_lineItem => _lineItem.id === lineItem.id ? lineItem : _lineItem);
-  //       setLineItems(updated);
-  //     }
-  //   });
-  // };
-
-  // const removeFromCart = (lineItemId)=> {
-  //   axios.delete(`/api/removeFromCart/${lineItemId}`, headers())
-  //   .then( () => {
-  //     setLineItems(lineItems.filter(_lineItem => _lineItem.id !== lineItemId ));
-  //   });
-  // };
-
   const { view } = params;
 
   if (!auth.id) {
@@ -129,26 +58,18 @@ const App = () => {
     );
   } else {
     return (
-      <div className="container mt-4">
-        <h1>WannaHang</h1>
-        <button type="button" onClick={logout}>
-          Logout {auth.username}{" "}
-        </button>
-        <div className="">
-          {
+      <div>
+        {
+          <div className="">
+            <Nav />
+            <button type="button" onClick={logout}>
+              Logout {auth.username}{" "}
+            </button>
             <div className="container mt-4">
-              <h4 className="display-4 text-center mb-4">Welcome!</h4>
-              <h3 className="display-6 text-center mb-4">
-                Add a photo so people know who you are
-              </h3>
-
               <FileUpload />
             </div>
-            /* <Products addToCart={ addToCart } products={ products } />
-          <Cart lineItems={ lineItems } removeFromCart={ removeFromCart } cart={ cart } createOrder={ createOrder } products={ products }/>
-          <Orders lineItems={ lineItems } products={ products } orders={ orders }/> */
-          }
-        </div>
+          </div>
+        }
       </div>
     );
   }

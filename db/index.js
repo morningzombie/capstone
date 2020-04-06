@@ -7,21 +7,23 @@ const models = ({ users } = require('./models'));
 const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+  CREATE EXTENSION IF NOT EXISTS citext;
   DROP TABLE IF EXISTS user_group CASCADE;
   DROP TABLE IF EXISTS user_profile CASCADE;
-  DROP TABLE IF EXISTS user_hobbies CASCADE;  
+  DROP TABLE IF EXISTS user_hobbies CASCADE;
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
   DROP TABLE IF EXISTS hobbies CASCADE;
   DROP TABLE IF EXISTS user_rating CASCADE;
-  DROP TABLE IF EXISTS users CASCADE; 
-  
+  DROP TABLE IF EXISTS users CASCADE;
+
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     password VARCHAR(100),
+    email citext UNIQUE,
     zipCode INT,
     user_profile_id UUID,
     user_group_id UUID,
@@ -45,13 +47,13 @@ const sync = async () => {
     state VARCHAR(20),
     zip_code INT
   );
-  
+
   CREATE TABLE user_hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     hobby_id UUID REFERENCES hobbies(id),
     user_id UUID REFERENCES users(id)
   );
-  
+
   CREATE TABLE user_rating(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
@@ -92,16 +94,19 @@ const sync = async () => {
       username: 'lucy',
       password: 'LUCY',
       role: 'ADMIN',
+      email: 'lucy@gmail.com',
     },
     moe: {
       username: 'moe',
       password: 'MOE',
       role: null,
+      email: 'moe@gmail.com',
     },
     curly: {
       username: 'larry',
       password: 'LARRY',
       role: null,
+      email: 'larry@gmail.com',
     },
   };
 

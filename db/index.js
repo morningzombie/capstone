@@ -25,8 +25,7 @@ const sync = async () => {
     password VARCHAR(100),
     email citext UNIQUE,
     zipCode INT,
-    user_profile_id UUID,
-    user_group_id UUID,
+    phoneNumber INT UNIQUE,
     userRating INT DEFAULT 0,
     role VARCHAR(20) DEFAULT 'USER',
     CHECK (char_length(username) > 0)
@@ -75,16 +74,8 @@ const sync = async () => {
     education VARCHAR(100),
     pets VARCHAR(100),
     ageRange VARCHAR(100),
-    financialStatus VARCHAR(100)
+    employmentStatus VARCHAR(100)
   );
-
-  ALTER TABLE users
-  ADD FOREIGN KEY (user_profile_id)
-  REFERENCES user_profile(id);
-
-  ALTER TABLE users
-  ADD FOREIGN KEY (user_group_id)
-  REFERENCES user_group(id);
 `;
 
   await client.query(SQL);
@@ -110,9 +101,13 @@ const sync = async () => {
     },
   };
 
-  const [lucy, moe] = await Promise.all(
+  const [lucy, moe, curly] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
+
+  const lucyId = _users.lucy.id;
+  const moeId = _users.moe.id;
+  const curlyId = _users.curly.id;
 
   const userMap = (await users.read()).reduce((acc, user) => {
     acc[user.username] = user;
@@ -122,6 +117,61 @@ const sync = async () => {
   return {
     users: userMap,
   };
+};
+
+const _profiles = {
+  lucy: {
+    user_id: { lucyId },
+    communicationPreference: 'Email',
+    gender: 'Female',
+    orientation: 'Heterosexual',
+    politicalAffiliation: 'Democrat',
+    religiousAffiliation: 'Catholic',
+    careerId: 'Teacher',
+    education: 'College educated',
+    pets: 'Dogs',
+    age: 34,
+    employmentStatus: 'Full time',
+  },
+  moe: {
+    user_id: { moeId },
+    communicationPreference: 'Email',
+    gender: 'Male',
+    orientation: '',
+    politicalAffiliation: 'Independent',
+    religiousAffiliation: 'Athiest',
+    careerId: 'Brick Layer',
+    education: 'Trade school',
+    pets: 'Reptiles',
+    age: 69,
+    employmentStatus: 'Retired',
+  },
+  curly: {
+    user_id: { curlyId },
+    communicationPreference: 'Email',
+    gender: '',
+    orientation: 'Homosexual',
+    politicalAffiliation: 'Green Party',
+    religiousAffiliation: 'Protestant',
+    careerId: 'Bank teller',
+    education: 'High school',
+    pets: 'Cats',
+    age: 25,
+    employmentStatus: 'Part time',
+  },
+};
+
+const [lucy, moe, curly] = await Promise.all(
+  Object.values(_profiles).map((profile) => profiles.create(profile))
+);
+
+const profileMap = (await profiles.read()).reduce((acc, profile) => {
+  acc[profile.username] = user;
+  return acc;
+}, {});
+
+return {
+  profiles: profileMap,
 };
 
 module.exports = {

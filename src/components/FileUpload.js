@@ -55,6 +55,10 @@ const FileUpload = () => {
 
   return (
     <Fragment>
+      <h4 className="display-4 text-center mb-4">Welcome!</h4>
+      <h5 className="display-6 text-center mb-4">
+        Add a photo so people know who you are
+      </h5>
       {message ? <Message msg={message} /> : null}
       <form onSubmit={onSubmit}>
         <div className="custom-file mb-4">
@@ -85,6 +89,9 @@ const FileUpload = () => {
           </div>
         </div>
       ) : null}
+      <h5>
+        <a href="#">Skip this step</a>
+      </h5>
     </Fragment>
   );
 };

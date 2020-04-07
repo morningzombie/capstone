@@ -2,7 +2,7 @@ const client = require('./client');
 
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-const models = ({ users } = require('./models'));
+const models = ({ users, profiles } = require('./models'));
 
 const sync = async () => {
   let SQL = `
@@ -101,7 +101,7 @@ const sync = async () => {
     },
   };
 
-  const [lucy, moe, curly] = await Promise.all(
+  const [lucy, moe, curly] = Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
 
@@ -161,18 +161,18 @@ const _profiles = {
   },
 };
 
-const [lucy, moe, curly] = await Promise.all(
-  Object.values(_profiles).map((profile) => profiles.create(profile))
+const [lucy, moe, curly] = Promise.all(
+  Object.values(_profiles).map((profile) => profiles.create(profiles))
 );
 
-const profileMap = (await profiles.read()).reduce((acc, profile) => {
-  acc[profile.username] = user;
-  return acc;
-}, {});
+// const profileMap = (await profiles.read()).reduce((acc, profile) => {
+//   acc[profile.user_id] = profile;
+//   return acc;
+// }, {});
 
-return {
-  profiles: profileMap,
-};
+// return {
+//   profiles: profileMap,
+// };
 
 module.exports = {
   sync,

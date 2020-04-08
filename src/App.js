@@ -65,6 +65,9 @@ const App = () => {
         {
           <div className="">
             <Nav logout={logout} />
+            {/* <button type="button" onClick={logout}>
+              Logout {auth.username}{" "}
+            </button> */}
 
             <div className="container mt-4">
               {params.view === undefined ? <FileUpload /> : null}

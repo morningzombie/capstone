@@ -92,11 +92,12 @@ const FileUpload = ({ auth, params }) => {
       ) : null}
       <h5>
         <a
+          className="dropdown-item"
           href={`#${qs.stringify({ view: "UserInfo" })}`}
           className={params === "UserInfo" ? "selected" : "/"}
         >
           Skip This Step
-        </a>
+        </a>{" "}
       </h5>
     </Fragment>
   );

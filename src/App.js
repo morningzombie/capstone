@@ -36,6 +36,7 @@ const App = () => {
 
   const logout = () => {
     window.location.hash = "#";
+    window.localStorage.removeItem("token");
     setAuth({});
   };
 
@@ -62,7 +63,7 @@ const App = () => {
       <div>
         {
           <div className="">
-            <Nav />
+            <Nav logout={logout} />
             <button type="button" onClick={logout}>
               Logout {auth.username}{" "}
             </button>

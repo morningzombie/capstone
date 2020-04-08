@@ -7,6 +7,7 @@ const models = ({ users, hobbies } = require("./models"));
 const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+  CREATE EXTENSION IF NOT EXISTS citext;
   DROP TABLE IF EXISTS user_group CASCADE;
   DROP TABLE IF EXISTS user_profile CASCADE;
   DROP TABLE IF EXISTS user_hobbies CASCADE;
@@ -22,6 +23,7 @@ const sync = async () => {
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     password VARCHAR(100),
+    email citext UNIQUE,
     zipCode INT,
     user_profile_id UUID,
     user_group_id UUID,
@@ -93,16 +95,19 @@ const sync = async () => {
       username: "lucy",
       password: "LUCY",
       role: "ADMIN",
+      email: "lucy@gmail.com",
     },
     moe: {
       username: "moe",
       password: "MOE",
       role: null,
+      email: "moe@gmail.com",
     },
     curly: {
       username: "larry",
       password: "LARRY",
       role: null,
+      email: "larry@gmail.com",
     },
   };
   const _hobbies = {

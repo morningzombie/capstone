@@ -46,8 +46,20 @@ const Nav = ({ params, logout, auth }) => {
               User Info
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" href="#">
+              <a
+                className="dropdown-item"
+                href={`#${qs.stringify({ view: "UserInfo" })}`}
+                className={params === "UserInfo" ? "selected" : "/"}
+              >
                 User Profile
+              </a>
+              <br />
+              <a
+                className="dropdown-item"
+                href={`#${qs.stringify({ view: "UserHobbies" })}`}
+                className={params === "UserHobbies" ? "selected" : "/"}
+              >
+                User Hobbies
               </a>
               <a className="dropdown-item" href="#">
                 User Events

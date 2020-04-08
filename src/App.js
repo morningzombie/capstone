@@ -4,6 +4,7 @@ import axios from "axios";
 import Login from "./Login";
 import FileUpload from "./components/FileUpload";
 import Nav from "./Nav";
+import UserInfo from "./UserInfo";
 
 // import Orders from './Orders';
 // import Cart from './Cart';
@@ -65,9 +66,10 @@ const App = () => {
             <button type="button" onClick={logout}>
               Logout {auth.username}{" "}
             </button>
-            {auth.username}
+
             <div className="container mt-4">
-              <FileUpload />
+              {params.view === undefined ? <FileUpload /> : null}
+              {params.view === "UserInfo" && <UserInfo />}
             </div>
           </div>
         }

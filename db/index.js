@@ -1,21 +1,21 @@
-const client = require('./client');
+const client = require("./client");
 
-const { authenticate, compare, findUserFromToken, hash } = require('./auth');
+const { authenticate, compare, findUserFromToken, hash } = require("./auth");
 
-const models = ({ users } = require('./models'));
+const models = ({ users, hobbies } = require("./models"));
 
 const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   DROP TABLE IF EXISTS user_group CASCADE;
   DROP TABLE IF EXISTS user_profile CASCADE;
-  DROP TABLE IF EXISTS user_hobbies CASCADE;  
+  DROP TABLE IF EXISTS user_hobbies CASCADE;
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
   DROP TABLE IF EXISTS hobbies CASCADE;
   DROP TABLE IF EXISTS user_rating CASCADE;
-  DROP TABLE IF EXISTS users CASCADE; 
-  
+  DROP TABLE IF EXISTS users CASCADE;
+
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -35,7 +35,8 @@ const sync = async () => {
   );
   CREATE TABLE hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    hobby_name VARCHAR(20) NOT NULL
+    hobby_name VARCHAR(20) NOT NULL,
+    hobby_image VARCHAR
   );
   CREATE TABLE meetup_locations(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -45,13 +46,13 @@ const sync = async () => {
     state VARCHAR(20),
     zip_code INT
   );
-  
+
   CREATE TABLE user_hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     hobby_id UUID REFERENCES hobbies(id),
     user_id UUID REFERENCES users(id)
   );
-  
+
   CREATE TABLE user_rating(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
@@ -89,33 +90,50 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      username: 'lucy',
-      password: 'LUCY',
-      role: 'ADMIN',
+      username: "lucy",
+      password: "LUCY",
+      role: "ADMIN",
     },
     moe: {
-      username: 'moe',
-      password: 'MOE',
+      username: "moe",
+      password: "MOE",
       role: null,
     },
     curly: {
-      username: 'larry',
-      password: 'LARRY',
+      username: "larry",
+      password: "LARRY",
       role: null,
+    },
+  };
+  const _hobbies = {
+    art: {
+      hobby_name: "Art",
+    },
+    fishing: {
+      hobby_name: "Fishing",
     },
   };
 
   const [lucy, moe] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
+  // const [art, fishing] = await Promise.all(
+  //   Object.values(_hobbies).map((hobby) => hobbies.create(hobby))
+  // );
 
   const userMap = (await users.read()).reduce((acc, user) => {
     acc[user.username] = user;
     return acc;
   }, {});
 
+  // const hobbyMap = (await hobbies.read()).reduce((acc, hobby) => {
+  //   acc[hobby.hobby_name] = hobby;
+  //   return acc;
+  // }, {});
+
   return {
     users: userMap,
+    // hobbies: hobbyMap,
   };
 };
 

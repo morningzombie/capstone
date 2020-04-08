@@ -9,14 +9,14 @@ const UserHobbies = (hobbies) => {
 
   return (
     <div>
-      <h3>Tell Us About YOU</h3>
+      <h3>What are your hobbies?</h3>
       <form>
         <div className="form-group">
           {" "}
           <label htmlFor="career">What do you like to do?</label>
-          <select className="form-control" id="pets" defaultValue>
-            <option value={userPets} onChange={handleHobbies}>
-              {userPets}
+          <select className="form-control" id="hobbies" defaultValue>
+            <option value={userHobbies} onChange={handleHobbies}>
+              {userHobbies}
             </option>
           </select>
         </div>

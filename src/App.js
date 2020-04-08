@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import qs from 'qs';
-import axios from 'axios';
-import Login from './Login';
-import FileUpload from './components/FileUpload';
-import Nav from './Nav';
+import React, { useState, useEffect } from "react";
+import qs from "qs";
+import axios from "axios";
+import Login from "./Login";
+import FileUpload from "./components/FileUpload";
+import Nav from "./Nav";
+import UserInfo from "./UserInfo";
 
 // import Orders from './Orders';
 // import Cart from './Cart';
 // import Products from './Products';
 
 const headers = () => {
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem("token");
   return {
     headers: {
       authorization: token,
@@ -23,19 +24,19 @@ const App = () => {
   const [auth, setAuth] = useState({});
 
   const login = async (credentials) => {
-    const token = (await axios.post('/api/auth', credentials)).data.token;
-    window.localStorage.setItem('token', token);
+    const token = (await axios.post("/api/auth", credentials)).data.token;
+    window.localStorage.setItem("token", token);
     exchangeTokenForAuth();
   };
 
   const exchangeTokenForAuth = async () => {
-    const response = await axios.get('/api/auth', headers());
+    const response = await axios.get("/api/auth", headers());
     setAuth(response.data);
   };
 
   const logout = () => {
-    window.location.hash = '#';
-    window.localStorage.removeItem('token');
+    window.location.hash = "#";
+    window.localStorage.removeItem("token");
     setAuth({});
   };
 
@@ -44,7 +45,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('hashchange', () => {
+    window.addEventListener("hashchange", () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);
@@ -64,10 +65,12 @@ const App = () => {
           <div className="">
             <Nav logout={logout} />
             <button type="button" onClick={logout}>
-              Logout {auth.username}{' '}
+              Logout {auth.username}{" "}
             </button>
+
             <div className="container mt-4">
-              <FileUpload />
+              {params.view === undefined ? <FileUpload /> : null}
+              {params.view === "UserInfo" && <UserInfo />}
             </div>
           </div>
         }

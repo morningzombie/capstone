@@ -118,10 +118,10 @@ app.delete("/api/removeFromCart/:id", (req, res, next) => {
     .catch(next);
 });
 
-app.get("/api/products", (req, res, next) => {
-  db.models.products
+app.get("/api/hobbies", (req, res, next) => {
+  db.hobbies
     .read()
-    .then((products) => res.send(products))
+    .then((hobbies) => res.send(hobbies))
     .catch(next);
 });
 

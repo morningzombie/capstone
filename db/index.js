@@ -1,8 +1,8 @@
-const client = require('./client');
+const client = require("./client");
 
-const { authenticate, compare, findUserFromToken, hash } = require('./auth');
+const { authenticate, compare, findUserFromToken, hash } = require("./auth");
 
-const models = ({ users } = require('./models'));
+const models = ({ users, hobbies } = require("./models"));
 
 const sync = async () => {
   let SQL = `
@@ -37,7 +37,8 @@ const sync = async () => {
   );
   CREATE TABLE hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    hobby_name VARCHAR(20) NOT NULL
+    hobby_name VARCHAR(20) NOT NULL,
+    hobby_image VARCHAR
   );
   CREATE TABLE meetup_locations(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -91,36 +92,53 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      username: 'lucy',
-      password: 'LUCY',
-      role: 'ADMIN',
-      email: 'lucy@gmail.com',
+      username: "lucy",
+      password: "LUCY",
+      role: "ADMIN",
+      email: "lucy@gmail.com",
     },
     moe: {
-      username: 'moe',
-      password: 'MOE',
+      username: "moe",
+      password: "MOE",
       role: null,
-      email: 'moe@gmail.com',
+      email: "moe@gmail.com",
     },
     curly: {
-      username: 'larry',
-      password: 'LARRY',
+      username: "larry",
+      password: "LARRY",
       role: null,
-      email: 'larry@gmail.com',
+      email: "larry@gmail.com",
+    },
+  };
+  const _hobbies = {
+    art: {
+      hobby_name: "Art",
+    },
+    fishing: {
+      hobby_name: "Fishing",
     },
   };
 
   const [lucy, moe] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
+  // const [art, fishing] = await Promise.all(
+  //   Object.values(_hobbies).map((hobby) => hobbies.create(hobby))
+  // );
 
   const userMap = (await users.read()).reduce((acc, user) => {
     acc[user.username] = user;
     return acc;
   }, {});
 
+  // const hobbyMap = (await hobbies.read()).reduce((acc, hobby) => {
+  //   acc[hobby.hobby_name] = hobby;
+  //   return acc;
+  // }, {});
+
   return {
     users: userMap,
+    // hobbies: hobbyMap,
   };
 };
 

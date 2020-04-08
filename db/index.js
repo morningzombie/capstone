@@ -1,12 +1,8 @@
-const client = require("./client");
+const client = require('./client');
 
-const { authenticate, compare, findUserFromToken, hash } = require("./auth");
+const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-<<<<<<< HEAD
-const models = ({ users, profiles, careers } = require('./models'));
-=======
-const models = ({ users, hobbies } = require("./models"));
->>>>>>> master
+const models = ({ users, profiles, careers, hobbies } = require('./models'));
 
 const sync = async () => {
   let SQL = `
@@ -88,34 +84,34 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      username: "lucy",
-      password: "LUCY",
-      role: "ADMIN",
-      email: "lucy@gmail.com",
+      username: 'lucy',
+      password: 'LUCY',
+      role: 'ADMIN',
+      email: 'lucy@gmail.com',
     },
     moe: {
-      username: "moe",
-      password: "MOE",
+      username: 'moe',
+      password: 'MOE',
       role: null,
-      email: "moe@gmail.com",
+      email: 'moe@gmail.com',
     },
     curly: {
-      username: "larry",
-      password: "LARRY",
+      username: 'larry',
+      password: 'LARRY',
       role: null,
-      email: "larry@gmail.com",
+      email: 'larry@gmail.com',
     },
   };
   const _hobbies = {
     art: {
-      hobby_name: "Art",
+      hobby_name: 'Art',
     },
     fishing: {
-      hobby_name: "Fishing",
+      hobby_name: 'Fishing',
     },
   };
 
-  const [lucy, moe, curly] = Promise.all(
+  const [lucy, moe, curly] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
   // const [art, fishing] = await Promise.all(
@@ -132,154 +128,109 @@ const sync = async () => {
   //   return acc;
   // }, {});
 
+  Promise.all([
+    careers.createCareer({
+      career_name: 'Computers and Technology',
+    }),
+    careers.createCareer({
+      career_name: 'Health Care and Allied Health',
+    }),
+    careers.createCareer({
+      career_name: 'Education and Social Services',
+    }),
+    careers.createCareer({
+      career_name: 'Arts and Communications',
+    }),
+    careers.createCareer({
+      career_name: 'Trades and Transportation',
+    }),
+    careers.createCareer({
+      career_name: 'Management, Business, and Finance',
+    }),
+    careers.createCareer({
+      career_name: 'Architecture and Civil Engineering',
+    }),
+    careers.createCareer({
+      career_name: 'Science',
+    }),
+    careers.createCareer({
+      career_name: 'Hospitality, Tourism, and the Service Industry',
+    }),
+    careers.createCareer({
+      career_name: 'Law and Law Enforcement',
+    }),
+    careers.createCareer({
+      career_name: 'Other',
+    }),
+  ]);
+
+  const compid = careers.findCareerId('Computers and Technology');
+  const eduid = careers.findCareerId('Education and Social Services');
+  const othid = careers.findCareerId('Other');
+
+  // const [lucyID, moeID, curlyID] = Promise.all(
+  //   Object.values(_users).map((user) => {
+  //     // console.log('users', users);
+  //     // console.log('user', user.username);
+  //     users
+  //       .findUserId(user.username)
+  //       .then((response) => console.log('response', response));
+  //   })
+  // );
+
+  const lucyid = users
+    .findUserId('lucy')
+    .then((response) => console.log('response', response));
+  // const moeid = users.findUserId('moe');
+  // const curlyid = users.findUserId('curly');
+
+  Promise.all([
+    profiles.createProfile({
+      user_id: { lucyid },
+      communicationPreference: 'Email',
+      gender: 'Female',
+      orientation: 'Heterosexual',
+      politicalAffiliation: 'Democrat',
+      religiousAffiliation: 'Catholic',
+      careerId: { eduid },
+      education: 'College educated',
+      pets: 'Dogs',
+      age: 34,
+      employmentStatus: 'Full time',
+    }),
+    profiles.createProfile({
+      user_id: { moeid },
+      communicationPreference: 'Email',
+      gender: 'Male',
+      orientation: '',
+      politicalAffiliation: 'Independent',
+      religiousAffiliation: 'Athiest',
+      careerId: { othid },
+      education: 'Trade school',
+      pets: 'Reptiles',
+      age: 69,
+      employmentStatus: 'Retired',
+    }),
+    profiles.createProfile({
+      user_id: { curlyid },
+      communicationPreference: 'Email',
+      gender: '',
+      orientation: 'Homosexual',
+      politicalAffiliation: 'Green Party',
+      religiousAffiliation: 'Protestant',
+      careerId: { compid },
+      education: 'High school',
+      pets: 'Cats',
+      age: 25,
+      employmentStatus: 'Part time',
+    }),
+  ]);
+
   return {
     users: userMap,
     // hobbies: hobbyMap,
   };
 };
-
-Promise.all([
-  careers.createCareer({
-    career_name: 'Computers and Technology',
-  }),
-  careers.createCareer({
-    career_name: 'Health Care and Allied Health',
-  }),
-  careers.createCareer({
-    career_name: 'Education and Social Services',
-  }),
-  careers.createCareer({
-    career_name: 'Arts and Communications',
-  }),
-  careers.createCareer({
-    career_name: 'Trades and Transportation',
-  }),
-  careers.createCareer({
-    career_name: 'Management, Business, and Finance',
-  }),
-  careers.createCareer({
-    career_name: 'Architecture and Civil Engineering',
-  }),
-  careers.createCareer({
-    career_name: 'Science',
-  }),
-  careers.createCareer({
-    career_name: 'Hospitality, Tourism, and the Service Industry',
-  }),
-  careers.createCareer({
-    career_name: 'Law and Law Enforcement',
-  }),
-  careers.createCareer({
-    career_name: 'Other',
-  }),
-]);
-
-// const [
-//   comp,
-//   heal,
-//   educ,
-//   artc,
-//   trad,
-//   mgmt,
-//   arch,
-//   scie,
-//   hosp,
-//   lawe,
-//   oth,
-// ] = Promise.all(
-//   Object.values(_careers).map((career) => careers.createCareer(career))
-// );
-const compid = careers.findCareerId('Computers and Technology');
-const eduid = careers.findCareerId('Education and Social Services');
-const othid = careers.findCareerId('Other');
-
-const lucyid = users.findUserId('lucy');
-const moeid = users.findUserId('moe');
-const curlyid = users.findUserId('curly');
-
-Promise.all([
-  profiles.createProfile({
-    user_id: { lucyid },
-    communicationPreference: 'Email',
-    gender: 'Female',
-    orientation: 'Heterosexual',
-    politicalAffiliation: 'Democrat',
-    religiousAffiliation: 'Catholic',
-    careerId: { eduid },
-    education: 'College educated',
-    pets: 'Dogs',
-    age: 34,
-    employmentStatus: 'Full time',
-  }),
-  profiles.createProfile({
-    user_id: { moeid },
-    communicationPreference: 'Email',
-    gender: 'Male',
-    orientation: '',
-    politicalAffiliation: 'Independent',
-    religiousAffiliation: 'Athiest',
-    careerId: { othid },
-    education: 'Trade school',
-    pets: 'Reptiles',
-    age: 69,
-    employmentStatus: 'Retired',
-  }),
-  profiles.createProfile({
-    user_id: { curlyid },
-    communicationPreference: 'Email',
-    gender: '',
-    orientation: 'Homosexual',
-    politicalAffiliation: 'Green Party',
-    religiousAffiliation: 'Protestant',
-    careerId: { compid },
-    education: 'High school',
-    pets: 'Cats',
-    age: 25,
-    employmentStatus: 'Part time',
-  }),
-]);
-
-// Promise.all([
-//   profiles.createProfile({
-//     user_id: { lucyid },
-//     communicationPreference: 'Email',
-//     gender: 'Female',
-//     orientation: 'Heterosexual',
-//     politicalAffiliation: 'Democrat',
-//     religiousAffiliation: 'Catholic',
-//     careerId: 'Teacher',
-//     education: 'College educated',
-//     pets: 'Dogs',
-//     age: 34,
-//     employmentStatus: 'Full time',
-//   }),
-//   profiles.createProfile({
-//     user_id: { moeid },
-//     communicationPreference: 'Email',
-//     gender: 'Male',
-//     orientation: '',
-//     politicalAffiliation: 'Independent',
-//     religiousAffiliation: 'Athiest',
-//     careerId: 'Brick Layer',
-//     education: 'Trade school',
-//     pets: 'Reptiles',
-//     age: 69,
-//     employmentStatus: 'Retired',
-//   }),
-//   profiles.createProfile({
-//     user_id: { curlyid },
-//     communicationPreference: 'Email',
-//     gender: '',
-//     orientation: 'Homosexual',
-//     politicalAffiliation: 'Green Party',
-//     religiousAffiliation: 'Protestant',
-//     careerId: 'Bank teller',
-//     education: 'High school',
-//     pets: 'Cats',
-//     age: 25,
-//     employmentStatus: 'Part time',
-//   }),
-// ]);
 
 module.exports = {
   sync,

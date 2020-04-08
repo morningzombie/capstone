@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import qs from 'qs';
 import axios from 'axios';
 import Login from './Login';
 import FileUpload from './components/FileUpload';
 import Nav from './Nav';
+import CreateNewUser from './components/User/CreateNewUser';
+import Header from './components/header/Header';
 
 // import Orders from './Orders';
 // import Cart from './Cart';
@@ -21,6 +24,7 @@ const headers = () => {
 const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
+  console.log(auth);
 
   const login = async (credentials) => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -34,7 +38,6 @@ const App = () => {
   };
 
   const logout = () => {
-    window.location.hash = '#';
     window.localStorage.removeItem('token');
     setAuth({});
   };
@@ -53,25 +56,30 @@ const App = () => {
 
   if (!auth.id) {
     return (
-      <div>
-        <Login login={login} />
-      </div>
+      <Router>
+        <Header logout={logout} />
+        <Switch>
+          <Route path="/register" exact>
+            <CreateNewUser login={login} />
+          </Route>
+          <Route path="/login" exact>
+            <Login login={login} />
+          </Route>
+        </Switch>
+      </Router>
     );
   } else {
     return (
-      <div>
-        {
-          <div className="">
-            <Nav logout={logout} />
-            <button type="button" onClick={logout}>
-              Logout {auth.username}{' '}
-            </button>
+      <Router>
+        <Nav logout={logout} auth={auth} />
+        <Switch>
+          <Route path="/account" exact>
             <div className="container mt-4">
               <FileUpload />
             </div>
-          </div>
-        }
-      </div>
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 };

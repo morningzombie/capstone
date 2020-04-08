@@ -36,7 +36,7 @@ const compare = ({ plain, hashed }) => {
 };
 
 const authenticate = async ({ email, password }) => {
-  console.log(email, password);
+  //console.log(email, password);
   const user = (
     await client.query('SELECT * FROM users WHERE email=$1', [email])
   ).rows[0];

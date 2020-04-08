@@ -1,18 +1,19 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const path = require("path");
-const db = require("./db");
+const path = require('path');
+const db = require('./db');
 const models = db.models;
-const fileUpload = require("express-fileupload");
+const fileUpload = require('express-fileupload');
 
-app.use("/dist", express.static(path.join(__dirname, "dist")));
-app.use("/assets", express.static(path.join(__dirname, "assets")));
+app.use('/dist', express.static(path.join(__dirname, 'dist')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(express.json());
 
 const isLoggedIn = (req, res, next) => {
+  console.log(req.user, 'req.user in isLoggedin');
   if (!req.user) {
-    const error = Error("not authorized");
+    const error = Error('not authorized');
     error.status = 401;
     return next(error);
   }
@@ -20,14 +21,16 @@ const isLoggedIn = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-  if (req.user.role !== "ADMIN") {
-    return next(Error("not authorized"));
+  //console.log(req.user.role, 'req.user.role');
+  if (req.user.role !== 'ADMIN') {
+    return next(Error('not authorized'));
   }
   next();
 };
 
 app.use((req, res, next) => {
   const token = req.headers.authorization;
+  //console.log(token, 'token');
   if (!token) {
     return next();
   }
@@ -37,27 +40,27 @@ app.use((req, res, next) => {
       next();
     })
     .catch((ex) => {
-      const error = Error("not authorized");
+      const error = Error('not authorized');
       error.status = 401;
       next(error);
     });
 });
 
-app.get("/", (req, res, next) =>
-  res.sendFile(path.join(__dirname, "index.html"))
+app.get('/', (req, res, next) =>
+  res.sendFile(path.join(__dirname, 'index.html'))
 );
 
-app.post("/api/auth", (req, res, next) => {
+app.post('/api/auth', (req, res, next) => {
   db.authenticate(req.body)
     .then((token) => res.send({ token }))
     .catch(() => {
-      const error = Error("not authorized");
+      const error = Error('NOT authorized');
       error.status = 401;
       next(error);
     });
 });
 
-app.get("/api/auth", isLoggedIn, (req, res, next) => {
+app.get('/api/auth', isLoggedIn, (req, res, next) => {
   res.send(req.user);
 });
 
@@ -65,9 +68,9 @@ app.get("/api/auth", isLoggedIn, (req, res, next) => {
 app.use(fileUpload());
 
 //Upload endpoint
-app.post("/upload", (req, res) => {
+app.post('/upload', (req, res) => {
   if (req.files === null) {
-    return res.status(400).json({ msg: "No file uploaded" });
+    return res.status(400).json({ msg: 'No file uploaded' });
   }
 
   const file = req.files.file;
@@ -82,43 +85,43 @@ app.post("/upload", (req, res) => {
 });
 //============PHOTO UPLOAD END=================//
 
-app.get("/api/getCart", (req, res, next) => {
+app.get('/api/getCart', (req, res, next) => {
   db.getCart(req.user.id)
     .then((cart) => res.send(cart))
     .catch(next);
 });
 
-app.get("/api/getOrders", (req, res, next) => {
+app.get('/api/getOrders', (req, res, next) => {
   db.getOrders(req.user.id)
     .then((orders) => res.send(orders))
     .catch(next);
 });
 
-app.post("/api/createOrder", (req, res, next) => {
+app.post('/api/createOrder', (req, res, next) => {
   db.createOrder(req.user.id)
     .then((order) => res.send(order))
     .catch(next);
 });
 
-app.get("/api/getLineItems", (req, res, next) => {
+app.get('/api/getLineItems', (req, res, next) => {
   db.getLineItems(req.user.id)
     .then((lineItems) => res.send(lineItems))
     .catch(next);
 });
 
-app.post("/api/addToCart", (req, res, next) => {
+app.post('/api/addToCart', (req, res, next) => {
   db.addToCart({ userId: req.user.id, productId: req.body.productId })
     .then((lineItem) => res.send(lineItem))
     .catch(next);
 });
 
-app.delete("/api/removeFromCart/:id", (req, res, next) => {
+app.delete('/api/removeFromCart/:id', (req, res, next) => {
   db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
     .then(() => res.sendStatus(204))
     .catch(next);
 });
 
-app.get("/api/products", (req, res, next) => {
+app.get('/api/products', (req, res, next) => {
   db.models.products
     .read()
     .then((products) => res.send(products))
@@ -132,12 +135,18 @@ Object.keys(models).forEach((key) => {
       .then((items) => res.send(items))
       .catch(next);
   });
-  app.post(`/api/${key}`, isLoggedIn, isAdmin, (req, res, next) => {
+  app.post(`/api/${key}`, (req, res, next) => {
+    //console.log(req.body, 'user post');
     models[key]
-      .create({ user: req.user })
+      .create(req.body)
       .then((items) => res.send(items))
       .catch(next);
   });
+});
+
+//will make sure the get requests work with the router
+app.get('/*', (req, res, next) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.use((req, res, next) => {

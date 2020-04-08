@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import qs from "qs";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import qs from 'qs';
+import axios from 'axios';
 
 const Nav = ({ params, logout, auth }) => {
   return (
@@ -54,8 +55,8 @@ const Nav = ({ params, logout, auth }) => {
               <div className="dropdown-divider"></div>
               <a
                 className="dropdown-item"
-                href={`#${qs.stringify({ view: "FileUpload" })}`}
-                className={params === "FileUpload" ? "selected" : "/"}
+                href={`#${qs.stringify({ view: 'FileUpload' })}`}
+                className={params === 'FileUpload' ? 'selected' : '/'}
               >
                 Upload a Photo
               </a>
@@ -64,13 +65,14 @@ const Nav = ({ params, logout, auth }) => {
         </ul>
 
         <form className="form-inline my-2 my-lg-0">
-          <button
+          <Link
+            to="/login"
             className="btn btn-outline-success my-2 my-sm-0"
             type="button"
             onClick={logout}
           >
-            Logout
-          </button>
+            Logout {auth.firstname} {auth.lastname}
+          </Link>
         </form>
       </div>
     </nav>

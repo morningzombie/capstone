@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import qs from "qs";
 import axios from "axios";
+import Login from "./Login";
 
 const Nav = ({ params, logout, auth }) => {
   return (
@@ -45,8 +46,20 @@ const Nav = ({ params, logout, auth }) => {
               User Info
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" href="#">
+              <a
+                className="dropdown-item"
+                href={`#${qs.stringify({ view: "UserInfo" })}`}
+                className={params === "UserInfo" ? "selected" : "/"}
+              >
                 User Profile
+              </a>
+              <br />
+              <a
+                className="dropdown-item"
+                href={`#${qs.stringify({ view: "UserHobbies" })}`}
+                className={params === "UserHobbies" ? "selected" : "/"}
+              >
+                User Hobbies
               </a>
               <a className="dropdown-item" href="#">
                 User Events
@@ -62,6 +75,20 @@ const Nav = ({ params, logout, auth }) => {
             </div>
           </li>
         </ul>
+        <form className="form-inline my-2 my-lg-0">
+          <input
+            className="form-control mr-sm-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button
+            className="btn btn-outline-success my-2 my-sm-0 mr-2"
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
 
         <form className="form-inline my-2 my-lg-0">
           <button
@@ -69,7 +96,7 @@ const Nav = ({ params, logout, auth }) => {
             type="button"
             onClick={logout}
           >
-            Logout
+            Logout {auth}{" "}
           </button>
         </form>
       </div>

@@ -2,8 +2,9 @@ import React, { Fragment, useState } from "react";
 import Message from "./Message";
 import Progress from "./Progress";
 import axios from "axios";
+import qs from "qs";
 
-const FileUpload = () => {
+const FileUpload = ({ auth, params }) => {
   const [file, setFile] = useState("");
   const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
@@ -90,7 +91,13 @@ const FileUpload = () => {
         </div>
       ) : null}
       <h5>
-        <a href="#">Skip this step</a>
+        <a
+          className="dropdown-item"
+          href={`#${qs.stringify({ view: "UserInfo" })}`}
+          className={params === "UserInfo" ? "selected" : "/"}
+        >
+          Skip This Step
+        </a>{" "}
       </h5>
     </Fragment>
   );

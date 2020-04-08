@@ -3,7 +3,7 @@ import Message from "./Message";
 import Progress from "./Progress";
 import axios from "axios";
 
-const FileUpload = () => {
+const FileUpload = ({ auth }) => {
   const [file, setFile] = useState("");
   const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});

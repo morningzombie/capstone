@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import qs from "qs";
 import axios from "axios";
+import Login from "./Login";
 
 const Nav = ({ params, logout, auth }) => {
   return (
@@ -69,7 +70,7 @@ const Nav = ({ params, logout, auth }) => {
             type="button"
             onClick={logout}
           >
-            Logout
+            Logout {auth}{" "}
           </button>
         </form>
       </div>

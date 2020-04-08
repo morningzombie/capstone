@@ -65,6 +65,7 @@ const App = () => {
             <button type="button" onClick={logout}>
               Logout {auth.username}{" "}
             </button>
+            {auth.username}
             <div className="container mt-4">
               <FileUpload />
             </div>

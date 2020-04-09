@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 const Login = ({ login }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const onSubmit = (ev) => {
-    ev.preventDefault();
     login({ email, password }).catch((ex) =>
       setError(ex.response.data.message)
     );
@@ -13,7 +13,7 @@ const Login = ({ login }) => {
 
   return (
     <div className="container">
-      <form onSubmit={onSubmit}>
+      <form>
         <h1>Login</h1>
         <div className="error">{error}</div>
         <div className="form-group">
@@ -40,10 +40,12 @@ const Login = ({ login }) => {
             onChange={(ev) => setPassword(ev.target.value)}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <Link className="btn btn-primary" to="/file/upload" onClick={onSubmit}>
           Log In
-        </button>
+        </Link>
       </form>
+      <hr />
+      <Link to="/register">Create Account</Link>
     </div>
   );
 };

@@ -5,10 +5,40 @@ const users = {
   read: async () => {
     return (await client.query('SELECT * from users')).rows;
   },
-  create: async ({ username, password, role, email }) => {
-    const SQL = `INSERT INTO users(username, password, role, email) values($1, $2, $3, $4) returning *`;
+  create: async ({
+    firstname,
+    lastname,
+    username,
+    zipcode,
+    email,
+    password,
+    birthday,
+    gender,
+    role,
+  }) => {
+    const SQL = `INSERT INTO users(
+      firstname,
+      lastname,
+      username,
+      zipcode,
+      email,
+      password,
+      birthday,
+      gender,
+      role) values($1, $2, $3, $4, $5, $6, $7, $8, $9) returning *`;
+
     return (
-      await client.query(SQL, [username, await hash(password), role, email])
+      await client.query(SQL, [
+        firstname,
+        lastname,
+        username,
+        zipcode,
+        email,
+        await hash(password),
+        birthday,
+        gender,
+        role || null,
+      ])
     ).rows[0];
   },
   findUserId: async (username) => {

@@ -20,12 +20,17 @@ const sync = async () => {
 
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
-    first_name VARCHAR(100),
-    last_name VARCHAR(100),
-    password VARCHAR(100),
+    zipcode VARCHAR(5),
     email citext UNIQUE,
-    zipCode INT,
+    password VARCHAR(100),
+    birthday DATE NOT NULL ,
+    gender VARCHAR(20),
+    user_profile_id UUID,
+    user_group_id UUID,
+   -- zipCode INT,
     phoneNumber INT UNIQUE,
     userRating INT DEFAULT 0,
     role VARCHAR(20) DEFAULT 'USER',
@@ -89,22 +94,36 @@ const sync = async () => {
 
   const _users = {
     lucy: {
+      firstname: 'Lucy',
+      lastname: 'Anabell',
       username: 'lucy',
-      password: 'LUCY',
-      role: 'ADMIN',
+      zipcode: '12345',
       email: 'lucy@gmail.com',
+      password: 'LUCY',
+      birthday: '12/31/1999',
+      gender: 'female',
+      role: 'ADMIN',
     },
     moe: {
+      firstname: 'Moe',
+      lastname: 'Anabell',
       username: 'moe',
-      password: 'MOE',
-      role: null,
+      zipcode: '12345',
       email: 'moe@gmail.com',
+      password: 'MOE',
+      birthday: '12/31/1999',
+      gender: 'male',
+      role: 'USER',
     },
     curly: {
+      firstname: 'Larry',
+      lastname: 'Smith',
       username: 'larry',
-      password: 'LARRY',
-      role: null,
+      zipcode: '12345',
       email: 'larry@gmail.com',
+      password: 'LARRY',
+      birthday: '12/31/1999',
+      gender: 'female',
     },
   };
 
@@ -142,6 +161,7 @@ const sync = async () => {
     acc[user.username] = user;
     return acc;
   }, {});
+  //console.log(userMap);
 
   // const hobbyMap = (await hobbies.read()).reduce((acc, hobby) => {
   //   acc[hobby.hobby_name] = hobby;
@@ -178,7 +198,7 @@ const sync = async () => {
     .findUserId('larry')
     .then((response) => response.id);
 
-  console.log('curly', curlyid);
+  //console.log('curly', curlyid);
 
   Promise.all([
     profiles.createProfile({

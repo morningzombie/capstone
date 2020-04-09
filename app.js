@@ -11,6 +11,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.json());
 
 const isLoggedIn = (req, res, next) => {
+  //console.log(req.user, 'req.user in isLoggedin');
   if (!req.user) {
     const error = Error('not authorized');
     error.status = 401;
@@ -20,6 +21,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
+  //console.log(req.user.role, 'req.user.role');
   if (req.user.role !== 'ADMIN') {
     return next(Error('not authorized'));
   }
@@ -28,6 +30,7 @@ const isAdmin = (req, res, next) => {
 
 app.use((req, res, next) => {
   const token = req.headers.authorization;
+  //console.log(token, 'token');
   if (!token) {
     return next();
   }
@@ -123,7 +126,7 @@ app.delete('/api/removeFromCart/:id', (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 });
-app.post("/api/hobbies", (req, res, next) => {
+app.post('/api/hobbies', (req, res, next) => {
   db.createHobbies(req.body)
     .then((hobby) => {
       res.send(hobby);
@@ -143,11 +146,12 @@ app.get('/api/findCareerId', (req, res, next) => {
     .catch(next);
 });
 
+// app.get('/api/hobbies', (req, res, next) => {
+//   db.hobbies
+//     .read()
+//     .then((hobbies) => res.send(hobbies))
+
 app.get('/api/hobbies', (req, res, next) => {
-  db.hobbies
-    .read()
-    .then((hobbies) => res.send(hobbies))
-app.get("/api/hobbies", (req, res, next) => {
   db.readHobbies()
     .then((hobbies) => {
       res.send(hobbies);
@@ -162,12 +166,18 @@ Object.keys(models).forEach((key) => {
       .then((items) => res.send(items))
       .catch(next);
   });
-  app.post(`/api/${key}`, isLoggedIn, isAdmin, (req, res, next) => {
+  app.post(`/api/${key}`, (req, res, next) => {
+    //console.log(req.body, 'user post');
     models[key]
-      .create({ user: req.user })
+      .create(req.body)
       .then((items) => res.send(items))
       .catch(next);
   });
+});
+
+//will make sure the get requests work with the router
+app.get('/*', (req, res, next) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.use((req, res, next) => {

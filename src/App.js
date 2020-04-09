@@ -82,6 +82,7 @@ const App = () => {
           <Route path="/file/upload" exact>
             <FileUpload />
           </Route>
+          {/* Terry try to use react routing with your commented out code and let me know if you get it */}
           {/* <div>
         {
           <div className="">

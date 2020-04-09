@@ -7,6 +7,8 @@ import FileUpload from './components/FileUpload';
 import Nav from './Nav';
 import CreateNewUser from './components/User/CreateNewUser';
 import Header from './components/header/Header';
+import UserInfo from './UserInfo';
+import UserHobbies from './UserHobbies';
 
 // import Orders from './Orders';
 // import Cart from './Cart';
@@ -24,7 +26,7 @@ const headers = () => {
 const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
-  console.log(auth);
+  const [hobbies, setHobbies] = useState([]);
 
   const login = async (credentials) => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -44,6 +46,10 @@ const App = () => {
 
   useEffect(() => {
     exchangeTokenForAuth();
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/hobbies').then((response) => setHobbies(response.data));
   }, []);
 
   useEffect(() => {
@@ -74,9 +80,20 @@ const App = () => {
         <Nav logout={logout} auth={auth} />
         <Switch>
           <Route path="/account" exact>
-            <div className="container mt-4">
-              <FileUpload />
-            </div>
+            {/* <div>
+        {
+          <div className="">
+            <Nav logout={logout} />
+            {/* <button type="button" onClick={logout}>
+              Logout {auth.username}{" "}
+            </button> */}
+            {/*<div className="container mt-4">
+              {params.view === undefined ? <FileUpload /> : null}
+              {params.view === 'UserInfo' && <UserInfo />}
+              {params.view === 'FileUpload' && <FileUpload />}
+              {params.view === 'UserHobbies' && <UserHobbies />}
+            </div>{' '}
+            */}
           </Route>
         </Switch>
       </Router>

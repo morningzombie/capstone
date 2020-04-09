@@ -54,7 +54,7 @@ app.post('/api/auth', (req, res, next) => {
   db.authenticate(req.body)
     .then((token) => res.send({ token }))
     .catch(() => {
-      const error = Error('NOT authorized');
+      const error = Error('not authorized');
       error.status = 401;
       next(error);
     });
@@ -103,6 +103,12 @@ app.post('/api/createOrder', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/api/createProfile', (req, res, next) => {
+  db.createProfile(req.body)
+    .then((profile) => res.send(profile))
+    .catch(next);
+});
+
 app.get('/api/getLineItems', (req, res, next) => {
   db.getLineItems(req.user.id)
     .then((lineItems) => res.send(lineItems))
@@ -120,11 +126,36 @@ app.delete('/api/removeFromCart/:id', (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 });
+app.post('/api/hobbies', (req, res, next) => {
+  db.createHobbies(req.body)
+    .then((hobby) => {
+      res.send(hobby);
+    })
+    .catch(next);
+});
 
-app.get('/api/products', (req, res, next) => {
-  db.models.products
-    .read()
-    .then((products) => res.send(products))
+app.get('/api/findUserId', (req, res, next) => {
+  db.findUserId(req.user.id)
+    .then((userid) => res.send(userid))
+    .catch(next);
+});
+
+app.get('/api/findCareerId', (req, res, next) => {
+  db.findCareerId(req.user.id)
+    .then((careerid) => res.send(careerid))
+    .catch(next);
+});
+
+// app.get('/api/hobbies', (req, res, next) => {
+//   db.hobbies
+//     .read()
+//     .then((hobbies) => res.send(hobbies))
+
+app.get('/api/hobbies', (req, res, next) => {
+  db.readHobbies()
+    .then((hobbies) => {
+      res.send(hobbies);
+    })
     .catch(next);
 });
 

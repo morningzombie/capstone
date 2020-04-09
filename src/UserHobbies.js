@@ -1,24 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const UserHobbies = (hobbies) => {
-  const [userHobbies, setUserHobbies] = useState([]);
+const UserHobbies = () => {
+  const [hobbies, setHobbies] = useState([]);
 
   const handleHobbies = (e) => {
     setUserHobbies(event.target.value);
   };
+
+  useEffect(() => {
+    axios.get("/api/hobbies").then((response) => setHobbies(response.data));
+  }, []);
 
   return (
     <div>
       <h3>What are your hobbies?</h3>
       <form>
         <div className="form-group">
-          {" "}
-          <label htmlFor="career">What do you like to do?</label>
-          <select className="form-control" id="hobbies" defaultValue>
-            <option value={userHobbies} onChange={handleHobbies}>
-              {userHobbies}
-            </option>
-          </select>
+          {/* {console.log(hobbies)}{" "}
+          {hobbies.map((hobby) => {
+            return <div key={hobby.id}>{hobby.hobby_name}</div>;
+          })} */}
         </div>
       </form>
     </div>

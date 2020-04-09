@@ -117,11 +117,19 @@ app.delete("/api/removeFromCart/:id", (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 });
+app.post("/api/hobbies", (req, res, next) => {
+  db.createHobbies(req.body)
+    .then((hobby) => {
+      res.send(hobby);
+    })
+    .catch(next);
+});
 
 app.get("/api/hobbies", (req, res, next) => {
-  db.hobbies
-    .read()
-    .then((hobbies) => res.send(hobbies))
+  db.readHobbies()
+    .then((hobbies) => {
+      res.send(hobbies);
+    })
     .catch(next);
 });
 

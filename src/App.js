@@ -23,6 +23,7 @@ const headers = () => {
 const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
+  const [hobbies, setHobbies] = useState([]);
 
   const login = async (credentials) => {
     const token = (await axios.post("/api/auth", credentials)).data.token;
@@ -43,6 +44,10 @@ const App = () => {
 
   useEffect(() => {
     exchangeTokenForAuth();
+  }, []);
+
+  useEffect(() => {
+    axios.get("/api/hobbies").then((response) => setHobbies(response.data));
   }, []);
 
   useEffect(() => {

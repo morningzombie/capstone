@@ -134,7 +134,7 @@ const sync = async () => {
     acc[user.username] = user;
     return acc;
   }, {});
-
+  //console.log(userMap);
   return {
     users: userMap,
   };

@@ -1,4 +1,5 @@
 const client = require('./client');
+const fs = require('fs');
 
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
@@ -78,6 +79,10 @@ const sync = async () => {
     age INT,
     employmentStatus VARCHAR(100)
   );
+
+  INSERT INTO hobbies (hobby_name) VALUES ('Art');
+  INSERT INTO hobbies (hobby_name) VALUES ('Fishing');
+
 `;
 
   await client.query(SQL);
@@ -102,20 +107,35 @@ const sync = async () => {
       email: 'larry@gmail.com',
     },
   };
-  const _hobbies = {
-    art: {
-      hobby_name: 'Art',
-    },
-    fishing: {
-      hobby_name: 'Fishing',
-    },
-  };
+
+  // const readHobbies = async () => {
+  //   return (await client.query("SELECT * FROM hobbies")).rows;
+  // };
+  // const createHobbies = async ({ hobby_name }) => {
+  //   return (
+  //     await client.query(
+  //       "INSERT INTO hobbies(hobby_name) VALUES ($1) returning *",
+  //       [hobby_name]
+  //     )
+  //   ).rows[0];
+  // };
+  // const _hobbies = {
+  //   art: {
+  //     hobby_name: "Art",
+  //   },
+  //   fishing: {
+  //     hobby_name: "Fishing",
+  //   },
+  // };
 
   const [lucy, moe, curly] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
   // const [art, fishing] = await Promise.all(
-  //   Object.values(_hobbies).map((hobby) => hobbies.create(hobby))
+  //   Object.values(_hobbies).map((hobby) => {
+  //     console.log(hobbies.create);
+  //     hobbies.create(hobby);
+  //   })
   // );
 
   const userMap = (await users.read()).reduce((acc, user) => {
@@ -213,4 +233,6 @@ module.exports = {
   models,
   authenticate,
   findUserFromToken,
+  // readHobbies,
+  // createHobbies,
 };

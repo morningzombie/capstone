@@ -123,6 +123,13 @@ app.delete('/api/removeFromCart/:id', (req, res, next) => {
     .then(() => res.sendStatus(204))
     .catch(next);
 });
+app.post("/api/hobbies", (req, res, next) => {
+  db.createHobbies(req.body)
+    .then((hobby) => {
+      res.send(hobby);
+    })
+    .catch(next);
+});
 
 app.get('/api/findUserId', (req, res, next) => {
   db.findUserId(req.user.id)
@@ -140,6 +147,11 @@ app.get('/api/hobbies', (req, res, next) => {
   db.hobbies
     .read()
     .then((hobbies) => res.send(hobbies))
+app.get("/api/hobbies", (req, res, next) => {
+  db.readHobbies()
+    .then((hobbies) => {
+      res.send(hobbies);
+    })
     .catch(next);
 });
 

@@ -8,13 +8,13 @@ const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   CREATE EXTENSION IF NOT EXISTS citext;
-  DROP TABLE IF EXISTS user_group CASCADE;
-  DROP TABLE IF EXISTS user_profile CASCADE;
+  DROP TABLE IF EXISTS user_groups CASCADE;
+  DROP TABLE IF EXISTS user_profiles CASCADE;
   DROP TABLE IF EXISTS user_hobbies CASCADE;
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
   DROP TABLE IF EXISTS hobbies CASCADE;
-  DROP TABLE IF EXISTS user_rating CASCADE;
+  DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
 
   CREATE TABLE users(
@@ -54,19 +54,19 @@ const sync = async () => {
     user_id UUID REFERENCES users(id)
   );
 
-  CREATE TABLE user_rating(
+  CREATE TABLE user_ratings(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
     rating INT
   );
-  CREATE TABLE user_group(
+  CREATE TABLE user_groups(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
     name VARCHAR(100)
   );
-  CREATE TABLE user_profile(
+  CREATE TABLE user_profiles(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES users(id),
+    "userId" UUID REFERENCES users(id),
     communicationPreference VARCHAR(5),
     gender VARCHAR(100),
     orientation VARCHAR(100),
@@ -75,7 +75,7 @@ const sync = async () => {
     careerId UUID REFERENCES careers(id),
     education VARCHAR(100),
     pets VARCHAR(100),
-    ageRange VARCHAR(100),
+    age INT,
     employmentStatus VARCHAR(100)
   );
 `;
@@ -129,96 +129,72 @@ const sync = async () => {
   // }, {});
 
   Promise.all([
-    careers.createCareer({
-      career_name: 'Computers and Technology',
-    }),
-    careers.createCareer({
-      career_name: 'Health Care and Allied Health',
-    }),
-    careers.createCareer({
-      career_name: 'Education and Social Services',
-    }),
-    careers.createCareer({
-      career_name: 'Arts and Communications',
-    }),
-    careers.createCareer({
-      career_name: 'Trades and Transportation',
-    }),
-    careers.createCareer({
-      career_name: 'Management, Business, and Finance',
-    }),
-    careers.createCareer({
-      career_name: 'Architecture and Civil Engineering',
-    }),
-    careers.createCareer({
-      career_name: 'Science',
-    }),
-    careers.createCareer({
-      career_name: 'Hospitality, Tourism, and the Service Industry',
-    }),
-    careers.createCareer({
-      career_name: 'Law and Law Enforcement',
-    }),
-    careers.createCareer({
-      career_name: 'Other',
-    }),
+    careers.createCareer('Computers and Technology'),
+    careers.createCareer('Health Care and Allied Health'),
+    careers.createCareer('Education and Social Services'),
+    careers.createCareer('Arts and Communications'),
+    careers.createCareer('Trades and Transportation'),
+    careers.createCareer('Management, Business, and Finance'),
+    careers.createCareer('Architecture and Civil Engineering'),
+    careers.createCareer('Science'),
+    careers.createCareer('Hospitality, Tourism, and the Service Industry'),
+    careers.createCareer('Law and Law Enforcement'),
+    careers.createCareer('Other'),
   ]);
 
-  const compid = careers.findCareerId('Computers and Technology');
-  const eduid = careers.findCareerId('Education and Social Services');
-  const othid = careers.findCareerId('Other');
+  const compid = await careers
+    .findCareerId('Computers and Technology')
+    .then((response) => response.id);
+  const eduid = await careers
+    .findCareerId('Education and Social Services')
+    .then((response) => response.id);
+  const othid = await careers
+    .findCareerId('Other')
+    .then((response) => response.id);
 
-  // const [lucyID, moeID, curlyID] = Promise.all(
-  //   Object.values(_users).map((user) => {
-  //     // console.log('users', users);
-  //     // console.log('user', user.username);
-  //     users
-  //       .findUserId(user.username)
-  //       .then((response) => console.log('response', response));
-  //   })
-  // );
+  const lucyid = await users.findUserId('lucy').then((response) => response.id);
+  const moeid = await users.findUserId('moe').then((response) => response.id);
+  const curlyid = await users
+    .findUserId('larry')
+    .then((response) => response.id);
 
-  const lucyid = users
-    .findUserId('lucy')
-    .then((response) => console.log('response', response));
-  // const moeid = users.findUserId('moe');
-  // const curlyid = users.findUserId('curly');
+  console.log('curly', curlyid);
 
   Promise.all([
     profiles.createProfile({
-      user_id: { lucyid },
+      userId: lucyid,
       communicationPreference: 'Email',
       gender: 'Female',
       orientation: 'Heterosexual',
       politicalAffiliation: 'Democrat',
       religiousAffiliation: 'Catholic',
-      careerId: { eduid },
+      careerId: eduid,
       education: 'College educated',
       pets: 'Dogs',
       age: 34,
       employmentStatus: 'Full time',
     }),
     profiles.createProfile({
-      user_id: { moeid },
+      userId: moeid,
       communicationPreference: 'Email',
       gender: 'Male',
       orientation: '',
       politicalAffiliation: 'Independent',
       religiousAffiliation: 'Athiest',
-      careerId: { othid },
+      careerId: othid,
       education: 'Trade school',
       pets: 'Reptiles',
       age: 69,
       employmentStatus: 'Retired',
     }),
     profiles.createProfile({
-      user_id: { curlyid },
+      userId: curlyid,
       communicationPreference: 'Email',
       gender: '',
       orientation: 'Homosexual',
       politicalAffiliation: 'Green Party',
       religiousAffiliation: 'Protestant',
-      careerId: { compid },
+      careerId: compid,
       education: 'High school',
       pets: 'Cats',
       age: 25,

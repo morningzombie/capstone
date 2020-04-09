@@ -8,9 +8,9 @@ const createCareer = async (career) => {
   return (await client.query(SQL, [career])).rows[0];
 };
 
-const findCareerId = async (career) => {
-  const SQL = `SELECT * from careers WHERE id=$1 returning *`;
-  return (await client.query(SQL, [career])).rows[0];
+const findCareerId = async (career_name) => {
+  const SQL = `SELECT id from careers WHERE career_name = $1`;
+  return (await client.query(SQL, [career_name])).rows[0];
 };
 
 module.exports = { readCareers, createCareer, findCareerId };

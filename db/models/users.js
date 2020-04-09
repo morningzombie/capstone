@@ -11,8 +11,8 @@ const users = {
       await client.query(SQL, [username, await hash(password), role, email])
     ).rows[0];
   },
-  findUserId: async ({ username }) => {
-    const SQL = `SELECT id FROM users WHERE username = $1 returning *`;
+  findUserId: async (username) => {
+    const SQL = `SELECT id FROM users WHERE username = $1`;
     return (await client.query(SQL, [username])).rows[0];
   },
 };

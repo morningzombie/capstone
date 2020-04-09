@@ -3,12 +3,12 @@ const client = require('../client');
 const readProfile = async () => {
   return (await client.query('SELECT * from user_profiles')).rows;
 };
-const createProfile = async ({ user_profile }) => {
-  const SQL = `INSERT INTO user_profiles(user_id, communicationPreference, gender, orientation, politicalAffiliation, religiousAffiliation, careerId, education, pets, age, financialStatus) 
+const createProfile = async (user_profile) => {
+  const SQL = `INSERT INTO user_profiles("userId", communicationPreference, gender, orientation, politicalAffiliation, religiousAffiliation, careerId, education, pets, age, employmentStatus) 
         values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning *`;
   return (
     await client.query(SQL, [
-      user_profile.user_id,
+      user_profile.userId,
       user_profile.communicationPreference,
       user_profile.gender,
       user_profile.orientation,
@@ -18,7 +18,7 @@ const createProfile = async ({ user_profile }) => {
       user_profile.education,
       user_profile.pets,
       user_profile.age,
-      user_profile.financialStatus,
+      user_profile.employmentStatus,
     ])
   ).rows[0];
 };

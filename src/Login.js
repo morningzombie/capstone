@@ -40,7 +40,7 @@ const Login = ({ login }) => {
             onChange={(ev) => setPassword(ev.target.value)}
           />
         </div>
-        <Link className="btn btn-primary" to="/account" onClick={onSubmit}>
+        <Link className="btn btn-primary" to="/file/upload" onClick={onSubmit}>
           Log In
         </Link>
       </form>

@@ -79,22 +79,23 @@ const App = () => {
       <Router>
         <Nav logout={logout} auth={auth} />
         <Switch>
-          <Route path="/account" exact>
-            {/* <div>
+          <Route path="/file/upload" exact>
+            <FileUpload />
+          </Route>
+          {/* <div>
         {
           <div className="">
             <Nav logout={logout} />
             {/* <button type="button" onClick={logout}>
               Logout {auth.username}{" "}
             </button> */}
-            {/*<div className="container mt-4">
+          {/*<div className="container mt-4">
               {params.view === undefined ? <FileUpload /> : null}
               {params.view === 'UserInfo' && <UserInfo />}
               {params.view === 'FileUpload' && <FileUpload />}
               {params.view === 'UserHobbies' && <UserHobbies />}
             </div>{' '}
             */}
-          </Route>
         </Switch>
       </Router>
     );

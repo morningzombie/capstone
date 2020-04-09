@@ -30,7 +30,7 @@ const sync = async () => {
     gender VARCHAR(20),
     user_profile_id UUID,
     user_group_id UUID,
-    zipCode INT,
+   -- zipCode INT,
     phoneNumber INT UNIQUE,
     userRating INT DEFAULT 0,
     role VARCHAR(20) DEFAULT 'USER',
@@ -198,7 +198,7 @@ const sync = async () => {
     .findUserId('larry')
     .then((response) => response.id);
 
-  console.log('curly', curlyid);
+  //console.log('curly', curlyid);
 
   Promise.all([
     profiles.createProfile({

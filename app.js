@@ -1,19 +1,19 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const path = require('path');
-const db = require('./db');
+const path = require("path");
+const db = require("./db");
 const models = db.models;
-const fileUpload = require('express-fileupload');
+const fileUpload = require("express-fileupload");
 
-app.use('/dist', express.static(path.join(__dirname, 'dist')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use("/dist", express.static(path.join(__dirname, "dist")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 app.use(express.json());
 
 const isLoggedIn = (req, res, next) => {
   //console.log(req.user, 'req.user in isLoggedin');
   if (!req.user) {
-    const error = Error('not authorized');
+    const error = Error("not authorized");
     error.status = 401;
     return next(error);
   }
@@ -22,8 +22,8 @@ const isLoggedIn = (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
   //console.log(req.user.role, 'req.user.role');
-  if (req.user.role !== 'ADMIN') {
-    return next(Error('not authorized'));
+  if (req.user.role !== "ADMIN") {
+    return next(Error("not authorized"));
   }
   next();
 };
@@ -40,27 +40,27 @@ app.use((req, res, next) => {
       next();
     })
     .catch((ex) => {
-      const error = Error('not authorized');
+      const error = Error("not authorized");
       error.status = 401;
       next(error);
     });
 });
 
-app.get('/', (req, res, next) =>
-  res.sendFile(path.join(__dirname, 'index.html'))
+app.get("/", (req, res, next) =>
+  res.sendFile(path.join(__dirname, "index.html"))
 );
 
-app.post('/api/auth', (req, res, next) => {
+app.post("/api/auth", (req, res, next) => {
   db.authenticate(req.body)
     .then((token) => res.send({ token }))
     .catch(() => {
-      const error = Error('not authorized');
+      const error = Error("not authorized");
       error.status = 401;
       next(error);
     });
 });
 
-app.get('/api/auth', isLoggedIn, (req, res, next) => {
+app.get("/api/auth", isLoggedIn, (req, res, next) => {
   res.send(req.user);
 });
 
@@ -68,9 +68,9 @@ app.get('/api/auth', isLoggedIn, (req, res, next) => {
 app.use(fileUpload());
 
 //Upload endpoint
-app.post('/upload', (req, res) => {
+app.post("/upload", (req, res) => {
   if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
+    return res.status(400).json({ msg: "No file uploaded" });
   }
 
   const file = req.files.file;
@@ -85,76 +85,89 @@ app.post('/upload', (req, res) => {
 });
 //============PHOTO UPLOAD END=================//
 
-app.get('/api/getCart', (req, res, next) => {
-  db.getCart(req.user.id)
-    .then((cart) => res.send(cart))
-    .catch(next);
-});
+// app.get('/api/getCart', (req, res, next) => {
+//   db.getCart(req.user.id)
+//     .then((cart) => res.send(cart))
+//     .catch(next);
+// });
 
-app.get('/api/getOrders', (req, res, next) => {
-  db.getOrders(req.user.id)
-    .then((orders) => res.send(orders))
-    .catch(next);
-});
+// app.get('/api/getOrders', (req, res, next) => {
+//   db.getOrders(req.user.id)
+//     .then((orders) => res.send(orders))
+//     .catch(next);
+// });
 
-app.post('/api/createOrder', (req, res, next) => {
-  db.createOrder(req.user.id)
-    .then((order) => res.send(order))
-    .catch(next);
-});
+// app.post('/api/createOrder', (req, res, next) => {
+//   db.createOrder(req.user.id)
+//     .then((order) => res.send(order))
+//     .catch(next);
+// });
 
-app.post('/api/createProfile', (req, res, next) => {
+app.post("/api/createProfile", (req, res, next) => {
   db.createProfile(req.body)
     .then((profile) => res.send(profile))
     .catch(next);
 });
 
-app.get('/api/getLineItems', (req, res, next) => {
-  db.getLineItems(req.user.id)
-    .then((lineItems) => res.send(lineItems))
+// app.get('/api/getLineItems', (req, res, next) => {
+//   db.getLineItems(req.user.id)
+//     .then((lineItems) => res.send(lineItems))
+//     .catch(next);
+// });
+
+// app.post('/api/addToCart', (req, res, next) => {
+//   db.addToCart({ userId: req.user.id, productId: req.body.productId })
+//     .then((lineItem) => res.send(lineItem))
+//     .catch(next);
+// });
+
+// app.delete('/api/removeFromCart/:id', (req, res, next) => {
+//   db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
+//     .then(() => res.sendStatus(204))
+//     .catch(next);
+// });
+
+app.post("/api/createProfile", (req, res, next) => {
+  db.createProfile(req.body)
+    .then((profile) => res.send(profile))
     .catch(next);
 });
 
-app.post('/api/addToCart', (req, res, next) => {
-  db.addToCart({ userId: req.user.id, productId: req.body.productId })
-    .then((lineItem) => res.send(lineItem))
-    .catch(next);
-});
-
-app.delete('/api/removeFromCart/:id', (req, res, next) => {
-  db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
-    .then(() => res.sendStatus(204))
-    .catch(next);
-});
-app.post('/api/hobbies', (req, res, next) => {
-  db.createHobbies(req.body)
-    .then((hobby) => {
-      res.send(hobby);
-    })
-    .catch(next);
-});
-
-app.get('/api/findUserId', (req, res, next) => {
+app.get("/api/findUserId", (req, res, next) => {
   db.findUserId(req.user.id)
     .then((userid) => res.send(userid))
     .catch(next);
 });
 
-app.get('/api/findCareerId', (req, res, next) => {
+app.get("/api/findCareerId", (req, res, next) => {
   db.findCareerId(req.user.id)
     .then((careerid) => res.send(careerid))
     .catch(next);
 });
+app.get("/api/careers", (req, res, next) => {
+  console.log("HERE", careers);
+  db.readCareers()
+    .then((careers) => res.send(careers))
+    .catch(next);
+});
+app.post("/api/careers", (req, res, next) => {
+  db.models
+    .createCareer(req.user.id)
+    .then((career) => res.send(career))
+    .catch(next);
+});
 
-// app.get('/api/hobbies', (req, res, next) => {
-//   db.hobbies
-//     .read()
-//     .then((hobbies) => res.send(hobbies))
-
-app.get('/api/hobbies', (req, res, next) => {
+app.get("/api/hobbies", (req, res, next) => {
   db.readHobbies()
     .then((hobbies) => {
       res.send(hobbies);
+    })
+    .catch(next);
+});
+app.post("/api/hobbies", (req, res, next) => {
+  db.createHobbies(req.body)
+    .then((hobby) => {
+      res.send(hobby);
     })
     .catch(next);
 });
@@ -176,8 +189,8 @@ Object.keys(models).forEach((key) => {
 });
 
 //will make sure the get requests work with the router
-app.get('/*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.get("/*", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.use((req, res, next) => {

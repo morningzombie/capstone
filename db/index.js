@@ -1,9 +1,9 @@
-const client = require('./client');
-const fs = require('fs');
+const client = require("./client");
+const fs = require("fs");
 
-const { authenticate, compare, findUserFromToken, hash } = require('./auth');
+const { authenticate, compare, findUserFromToken, hash } = require("./auth");
 
-const models = ({ users, profiles, careers, hobbies } = require('./models'));
+const models = ({ users, profiles, careers, hobbies } = require("./models"));
 
 const sync = async () => {
   let SQL = `
@@ -85,8 +85,24 @@ const sync = async () => {
     employmentStatus VARCHAR(100)
   );
 
-  INSERT INTO hobbies (hobby_name) VALUES ('Art');
-  INSERT INTO hobbies (hobby_name) VALUES ('Fishing');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'image_Art');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Collecting', 'image_Collecting');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Model & Electronic', 'image_Model');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Sports & Outdoors', 'image_Sports');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Performing Arts', 'image_Performing_Arts');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Music', 'image_Music');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Spiritual', 'image_Spiritual');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Food & Drinks', 'image_Food');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Pets', 'image_Pets');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Shopping', 'image_Shopping');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Computers', 'image_Computers');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Automotive', 'image_Automotive');
+
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Genealogy', 'image_Genealogy');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Travel', 'image_Travel');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Books', 'image_Books');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('DIY', 'image_DIY');
+
 
 `;
 
@@ -94,108 +110,76 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      firstname: 'Lucy',
-      lastname: 'Anabell',
-      username: 'lucy',
-      zipcode: '12345',
-      email: 'lucy@gmail.com',
-      password: 'LUCY',
-      birthday: '12/31/1999',
-      gender: 'female',
-      role: 'ADMIN',
+      firstname: "Lucy",
+      lastname: "Anabell",
+      username: "lucy",
+      zipcode: "12345",
+      email: "lucy@gmail.com",
+      password: "LUCY",
+      birthday: "12/31/1999",
+      gender: "female",
+      role: "ADMIN",
     },
     moe: {
-      firstname: 'Moe',
-      lastname: 'Anabell',
-      username: 'moe',
-      zipcode: '12345',
-      email: 'moe@gmail.com',
-      password: 'MOE',
-      birthday: '12/31/1999',
-      gender: 'male',
-      role: 'USER',
+      firstname: "Moe",
+      lastname: "Anabell",
+      username: "moe",
+      zipcode: "12345",
+      email: "moe@gmail.com",
+      password: "MOE",
+      birthday: "12/31/1999",
+      gender: "male",
+      role: "USER",
     },
     curly: {
-      firstname: 'Larry',
-      lastname: 'Smith',
-      username: 'larry',
-      zipcode: '12345',
-      email: 'larry@gmail.com',
-      password: 'LARRY',
-      birthday: '12/31/1999',
-      gender: 'female',
+      firstname: "Larry",
+      lastname: "Smith",
+      username: "larry",
+      zipcode: "12345",
+      email: "larry@gmail.com",
+      password: "LARRY",
+      birthday: "12/31/1999",
+      gender: "female",
     },
   };
-
-  // const readHobbies = async () => {
-  //   return (await client.query("SELECT * FROM hobbies")).rows;
-  // };
-  // const createHobbies = async ({ hobby_name }) => {
-  //   return (
-  //     await client.query(
-  //       "INSERT INTO hobbies(hobby_name) VALUES ($1) returning *",
-  //       [hobby_name]
-  //     )
-  //   ).rows[0];
-  // };
-  // const _hobbies = {
-  //   art: {
-  //     hobby_name: "Art",
-  //   },
-  //   fishing: {
-  //     hobby_name: "Fishing",
-  //   },
-  // };
 
   const [lucy, moe, curly] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
-  // const [art, fishing] = await Promise.all(
-  //   Object.values(_hobbies).map((hobby) => {
-  //     console.log(hobbies.create);
-  //     hobbies.create(hobby);
-  //   })
-  // );
 
   const userMap = (await users.read()).reduce((acc, user) => {
     acc[user.username] = user;
     return acc;
   }, {});
-  //console.log(userMap);
-
-  // const hobbyMap = (await hobbies.read()).reduce((acc, hobby) => {
-  //   acc[hobby.hobby_name] = hobby;
-  //   return acc;
-  // }, {});
 
   Promise.all([
-    careers.createCareer('Computers and Technology'),
-    careers.createCareer('Health Care and Allied Health'),
-    careers.createCareer('Education and Social Services'),
-    careers.createCareer('Arts and Communications'),
-    careers.createCareer('Trades and Transportation'),
-    careers.createCareer('Management, Business, and Finance'),
-    careers.createCareer('Architecture and Civil Engineering'),
-    careers.createCareer('Science'),
-    careers.createCareer('Hospitality, Tourism, and the Service Industry'),
-    careers.createCareer('Law and Law Enforcement'),
-    careers.createCareer('Other'),
+    careers.createCareer("Computers and Technology"),
+    careers.createCareer("Health Care and Allied Health"),
+    careers.createCareer("Education and Social Services"),
+    careers.createCareer("Arts and Communications"),
+    careers.createCareer("Trades and Transportation"),
+    careers.createCareer("Management, Business, and Finance"),
+    careers.createCareer("Architecture and Civil Engineering"),
+    careers.createCareer("Science"),
+    careers.createCareer("Hospitality, Tourism, and the Service Industry"),
+    careers.createCareer("Law and Law Enforcement"),
+    careers.createCareer("Other"),
   ]);
 
   const compid = await careers
-    .findCareerId('Computers and Technology')
+    .findCareerId("Computers and Technology")
     .then((response) => response.id);
   const eduid = await careers
-    .findCareerId('Education and Social Services')
+    .findCareerId("Education and Social Services")
     .then((response) => response.id);
   const othid = await careers
-    .findCareerId('Other')
+    .findCareerId("Other")
     .then((response) => response.id);
 
-  const lucyid = await users.findUserId('lucy').then((response) => response.id);
-  const moeid = await users.findUserId('moe').then((response) => response.id);
+  const lucyid = await users.findUserId("lucy").then((response) => response.id);
+  const moeid = await users.findUserId("moe").then((response) => response.id);
   const curlyid = await users
-    .findUserId('larry')
+    .findUserId("larry")
     .then((response) => response.id);
 
   //console.log('curly', curlyid);
@@ -203,42 +187,42 @@ const sync = async () => {
   Promise.all([
     profiles.createProfile({
       userId: lucyid,
-      communicationPreference: 'Email',
-      gender: 'Female',
-      orientation: 'Heterosexual',
-      politicalAffiliation: 'Democrat',
-      religiousAffiliation: 'Catholic',
+      communicationPreference: "Email",
+      gender: "Female",
+      orientation: "Heterosexual",
+      politicalAffiliation: "Democrat",
+      religiousAffiliation: "Catholic",
       careerId: eduid,
-      education: 'College educated',
-      pets: 'Dogs',
+      education: "College educated",
+      pets: "Dogs",
       age: 34,
-      employmentStatus: 'Full time',
+      employmentStatus: "Full time",
     }),
     profiles.createProfile({
       userId: moeid,
-      communicationPreference: 'Email',
-      gender: 'Male',
-      orientation: '',
-      politicalAffiliation: 'Independent',
-      religiousAffiliation: 'Athiest',
+      communicationPreference: "Email",
+      gender: "Male",
+      orientation: "",
+      politicalAffiliation: "Independent",
+      religiousAffiliation: "Athiest",
       careerId: othid,
-      education: 'Trade school',
-      pets: 'Reptiles',
+      education: "Trade school",
+      pets: "Reptiles",
       age: 69,
-      employmentStatus: 'Retired',
+      employmentStatus: "Retired",
     }),
     profiles.createProfile({
       userId: curlyid,
-      communicationPreference: 'Email',
-      gender: '',
-      orientation: 'Homosexual',
-      politicalAffiliation: 'Green Party',
-      religiousAffiliation: 'Protestant',
+      communicationPreference: "Email",
+      gender: "",
+      orientation: "Homosexual",
+      politicalAffiliation: "Green Party",
+      religiousAffiliation: "Protestant",
       careerId: compid,
-      education: 'High school',
-      pets: 'Cats',
+      education: "High school",
+      pets: "Cats",
       age: 25,
-      employmentStatus: 'Part time',
+      employmentStatus: "Part time",
     }),
   ]);
 
@@ -247,12 +231,19 @@ const sync = async () => {
     // hobbies: hobbyMap,
   };
 };
-
+const readCareers = async () => {
+  return (await client.query("SELECT * from careers")).rows;
+};
+const readHobbies = async () => {
+  return (await client.query("SELECT * from hobbies")).rows;
+};
 module.exports = {
   sync,
   models,
   authenticate,
   findUserFromToken,
-  // readHobbies,
-  // createHobbies,
+  // createCareer,
+  readCareers,
+  readHobbies,
+  // createHobby,
 };

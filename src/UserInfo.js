@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const UserInfo = () => {
+const UserInfo = ({ login }) => {
   const [userAge, setUserAge] = useState();
   const [userGender, setUserGender] = useState("-- select an option --");
   const [userSexualPreference, setUserSexualPreference] = useState(
@@ -13,6 +13,8 @@ const UserInfo = () => {
     "-- select an option --"
   );
   const [userOccupation, setUserOccupation] = useState("");
+  const [employmentStatus, setEmploymentStatus] = useState("");
+
   const [userPets, setUserPets] = useState("-- select an option --");
   const [userAbout, setUserAbout] = useState("");
 
@@ -20,27 +22,76 @@ const UserInfo = () => {
     setUserOccupation(event.target.value);
   };
 
+  const createUserInfo = (user) => {
+    axios.post("/api/users", user).then((response) => {
+      console.log(response);
+      login({ email, password }).catch((ex) =>
+        setError(ex.response.data.message)
+      );
+    });
+  };
+
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    if (confirmPassword !== password) {
+      return setPasswordError("Please confirm correct password");
+    } else {
+      createUserInfo({
+        userAge,
+        userGender,
+        userSexualPreference,
+        userPoliticalAffiliation,
+        userReligiousAffiliation,
+        userOccupation,
+        userPets,
+        userAbout,
+      });
+    }
+  };
+
   return (
-    <div>
+    <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us About YOU</h3>
       <form>
-        <div className="form-group">
-          {" "}
-          <label htmlFor="career">What is your occupation?</label>
-          <input
-            className="form-control"
-            type="text"
-            id="career"
-            onChange={handleCareer}
-          />
+        <div className="row">
+          <div className="col">
+            <label htmlFor="career">What is your occupation?</label>
+            <input
+              className="form-control"
+              type="text"
+              id="career"
+              onChange={(ev) => setUserCareer(ev.target.value)}
+            />
+          </div>
+
+          <div className="col">
+            <label htmlFor="employmentStatus">Employment Status?</label>
+            <select
+              className="form-control"
+              id="employmentStatus"
+              defaultValue
+              onChange={(ev) => setEmploymentStatus(ev.target.value)}
+            >
+              <option value={employmentStatus}>{employmentStatus}</option>
+              <option value="full-time">Full-Time</option>
+              <option value="part-time">Part-Time</option>
+              <option value="unemployed">Unemployed</option>
+              <option value="in-school">In Schoool</option>
+              <option value="freelance">Freelance</option>
+              <option value="looking">Looking...</option>
+            </select>
+          </div>
         </div>
 
         <div className="form-group">
-          {" "}
           <label htmlFor="pets">Do you have pets?</label>
-          <select className="form-control" id="pets" defaultValue>
+          <select
+            className="form-control"
+            id="pets"
+            defaultValue
+            onChange={(ev) => setUserPets(ev.target.value)}
+          >
             <option value={userPets}>{userPets}</option>
-
             <option value="bird">Bird</option>
             <option value="cat">Cat</option>
             <option value="dog">Dog</option>
@@ -52,17 +103,27 @@ const UserInfo = () => {
             <option value="na">No Pets</option>
           </select>
         </div>
+
         <div className="row">
           <div className="col">
-            {" "}
             <label htmlFor="age">What is your age?</label>
-            <input className="form-control" type="text" id="age" />
+            <input
+              className="form-control"
+              type="text"
+              id="age"
+              onChange={(ev) => setUserAge(ev.target.value)}
+            />
           </div>
 
           <div className="col">
             {" "}
             <label htmlFor="gender">Your gender?</label>
-            <select className="form-control" id="gender" defaultValue>
+            <select
+              className="form-control"
+              id="gender"
+              defaultValue
+              onChange={(ev) => setUserGender(ev.target.value)}
+            >
               <option value={userGender}>{userGender}</option>
               <option value="Agender">Agender</option>
               <option value="Androgyne">Androgyne</option>
@@ -125,7 +186,12 @@ const UserInfo = () => {
 
           <div className="col">
             <label htmlFor="orientation">Who do you prefer?</label>
-            <select className="form-control" id="orientation" defaultValue>
+            <select
+              className="form-control"
+              id="orientation"
+              defaultValue
+              onChange={(ev) => setUserSexualAffiliation(ev.target.value)}
+            >
               <option value={userSexualPreference}>
                 {userSexualPreference}
               </option>
@@ -200,11 +266,11 @@ const UserInfo = () => {
               className="form-control"
               id="politicalAffiliation"
               defaultValue
+              onChange={(ev) => setUserPoliticalAffiliation(ev.target.value)}
             >
               <option value={userPoliticalAffiliation}>
                 {userPoliticalAffiliation}
               </option>
-
               <option value="democrat">Democrat</option>
               <option value="independent">Independent</option>
               <option value="republican">Republican</option>
@@ -219,6 +285,7 @@ const UserInfo = () => {
               className="form-control"
               id="religiousAffiliation"
               defaultValue
+              onChange={(ev) => setUserReligiousAffiliation(ev.target.value)}
             >
               <option value={userReligiousAffiliation}>
                 {userReligiousAffiliation}
@@ -253,8 +320,15 @@ const UserInfo = () => {
 
         <div className="form-group  mt-3">
           <label htmlFor="about">Tell us more!</label>
-          <textarea className="form-control" type="text" id="about" rows="5" />
+          <textarea
+            className="form-control"
+            type="text"
+            id="about"
+            rows="5"
+            onChange={(ev) => setUserAbout(ev.target.value)}
+          />
         </div>
+        <button>Submit</button>
       </form>
     </div>
   );

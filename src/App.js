@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import qs from 'qs';
-import axios from 'axios';
-import Login from './Login';
-import FileUpload from './components/FileUpload';
-import Nav from './Nav';
-import CreateNewUser from './components/User/CreateNewUser';
-import Header from './components/header/Header';
-import UserInfo from './UserInfo';
-import UserHobbies from './UserHobbies';
-
-// import Orders from './Orders';
-// import Cart from './Cart';
-// import Products from './Products';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import qs from "qs";
+import axios from "axios";
+import Login from "./Login";
+import FileUpload from "./components/FileUpload";
+import Nav from "./Nav";
+import CreateNewUser from "./components/User/CreateNewUser";
+import Header from "./components/header/Header";
+import UserInfo from "./UserInfo";
+import UserHobbies from "./UserHobbies";
 
 const headers = () => {
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem("token");
   return {
     headers: {
       authorization: token,
@@ -29,18 +25,18 @@ const App = () => {
   const [hobbies, setHobbies] = useState([]);
 
   const login = async (credentials) => {
-    const token = (await axios.post('/api/auth', credentials)).data.token;
-    window.localStorage.setItem('token', token);
+    const token = (await axios.post("/api/auth", credentials)).data.token;
+    window.localStorage.setItem("token", token);
     exchangeTokenForAuth();
   };
 
   const exchangeTokenForAuth = async () => {
-    const response = await axios.get('/api/auth', headers());
+    const response = await axios.get("/api/auth", headers());
     setAuth(response.data);
   };
 
   const logout = () => {
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem("token");
     setAuth({});
   };
 
@@ -49,11 +45,11 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('/api/hobbies').then((response) => setHobbies(response.data));
+    axios.get("/api/hobbies").then((response) => setHobbies(response.data));
   }, []);
 
   useEffect(() => {
-    window.addEventListener('hashchange', () => {
+    window.addEventListener("hashchange", () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);
@@ -82,21 +78,16 @@ const App = () => {
           <Route path="/file/upload" exact>
             <FileUpload />
           </Route>
-          {/* Terry try to use react routing with your commented out code and let me know if you get it */}
-          {/* <div>
-        {
-          <div className="">
-            <Nav logout={logout} />
-            {/* <button type="button" onClick={logout}>
-              Logout {auth.username}{" "}
-            </button> */}
-          {/*<div className="container mt-4">
-              {params.view === undefined ? <FileUpload /> : null}
-              {params.view === 'UserInfo' && <UserInfo />}
-              {params.view === 'FileUpload' && <FileUpload />}
-              {params.view === 'UserHobbies' && <UserHobbies />}
-            </div>{' '}
-            */}
+          <Link path="/fileupload">
+            <FileUpload />
+          </Link>
+          <Route path="/UserInfo">
+            <UserInfo />
+          </Route>
+
+          <Route path="/UserHobbies">
+            <UserHobbies />
+          </Route>
         </Switch>
       </Router>
     );

@@ -13,7 +13,7 @@ const UserHobbies = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <h3>What are your hobbies?</h3>
       <form>
         <div className="form-group">

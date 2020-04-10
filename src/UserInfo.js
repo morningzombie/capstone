@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const UserInfo = ({ login }) => {
+  const [careers, setCareers] = useState([]);
+
   const [userAge, setUserAge] = useState();
   const [userGender, setUserGender] = useState("-- select an option --");
   const [userSexualPreference, setUserSexualPreference] = useState(
@@ -12,15 +15,15 @@ const UserInfo = ({ login }) => {
   const [userReligiousAffiliation, setUserReligiousAffiliation] = useState(
     "-- select an option --"
   );
-  const [userOccupation, setUserOccupation] = useState("");
-  const [employmentStatus, setEmploymentStatus] = useState("");
 
+  const [userCareer, setUserCareer] = useState("-- select an option --");
+  const [employmentStatus, setEmploymentStatus] = useState("");
   const [userPets, setUserPets] = useState("-- select an option --");
   const [userAbout, setUserAbout] = useState("");
 
-  const handleCareer = (e) => {
-    setUserOccupation(event.target.value);
-  };
+  useEffect(() => {
+    axios.get("/api/careers").then((response) => setCareers(response.data));
+  }, []);
 
   const createUserInfo = (user) => {
     axios.post("/api/users", user).then((response) => {
@@ -42,26 +45,35 @@ const UserInfo = ({ login }) => {
         userSexualPreference,
         userPoliticalAffiliation,
         userReligiousAffiliation,
-        userOccupation,
+        userCareer,
         userPets,
         userAbout,
       });
     }
   };
-
   return (
     <div className="container" onSubmit={onSubmit}>
-      <h3>Tell Us About YOU</h3>
+      <h3>Tell Us All About You</h3>
       <form>
         <div className="row">
           <div className="col">
             <label htmlFor="career">What is your occupation?</label>
-            <input
+            <select
               className="form-control"
-              type="text"
               id="career"
+              defaultValue
               onChange={(ev) => setUserCareer(ev.target.value)}
-            />
+            >
+              <option value={userCareer}>{userCareer}</option>
+
+              {careers.map((career) => {
+                return (
+                  <option key={career.id} value={career.career_name}>
+                    {career.career_name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
 
           <div className="col">
@@ -83,7 +95,7 @@ const UserInfo = ({ login }) => {
           </div>
         </div>
 
-        <div className="form-group">
+        <div className="form-group mt-3">
           <label htmlFor="pets">Do you have pets?</label>
           <select
             className="form-control"
@@ -318,7 +330,7 @@ const UserInfo = ({ login }) => {
           </div>
         </div>
 
-        <div className="form-group  mt-3">
+        <div className="form-group mt-3">
           <label htmlFor="about">Tell us more!</label>
           <textarea
             className="form-control"

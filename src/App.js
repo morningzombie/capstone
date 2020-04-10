@@ -23,6 +23,7 @@ const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
   const [hobbies, setHobbies] = useState([]);
+  const [userCareer, setUserCareer] = useState("");
 
   const login = async (credentials) => {
     const token = (await axios.post("/api/auth", credentials)).data.token;
@@ -45,8 +46,20 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get("/api/hobbies").then((response) => setHobbies(response.data));
-  }, []);
+    if (auth.id) {
+      axios.get("/api/getHobbies", headers()).then((response) => {
+        setHobbies(response.data);
+      });
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
+      axios.get("/api/getCareers", headers()).then((response) => {
+        setUserCareer(response.data);
+      });
+    }
+  }, [auth]);
 
   useEffect(() => {
     window.addEventListener("hashchange", () => {
@@ -78,7 +91,7 @@ const App = () => {
           <Route path="/file/upload" exact>
             <FileUpload />
           </Route>
-          <Link path="/fileupload">
+          <Link path="/FileUpload">
             <FileUpload />
           </Link>
           <Route path="/UserInfo">

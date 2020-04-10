@@ -74,7 +74,7 @@ const Nav = ({ params, logout, auth, login }) => {
               </div>
 
               <div className="nav-item">
-                <Link className="nav-link" to="/FileUpload" label="FileUpload">
+                <Link className="nav-link" to="/file/upload" label="FileUpload">
                   Upload Photo
                 </Link>
               </div>
@@ -103,18 +103,18 @@ const Nav = ({ params, logout, auth, login }) => {
     </nav>
   );
 };
-function NavBarLinks({ label, to, activeOnlyWhenExact }) {
-  let match = useRouteMatch({
-    path: to,
-    exact: activeOnlyWhenExact,
-  });
+// function NavBarLinks({ label, to, activeOnlyWhenExact }) {
+//   let match = useRouteMatch({
+//     path: to,
+//     exact: activeOnlyWhenExact,
+//   });
 
-  return (
-    <div className={match ? "active" : ""}>
-      {match && ""}
-      <Link to={to}>{label}</Link>
-    </div>
-  );
-}
+// return (
+//   <div className={match ? "active" : ""}>
+//     {match && ""}
+//     <Link to={to}>{label}</Link>
+//   </div>
+// );
+// }
 
 export default Nav;

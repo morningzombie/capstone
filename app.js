@@ -141,15 +141,27 @@ app.get("/api/religions", (req, res, next) => {
     .then((religions) => res.send(religions))
     .catch(next);
 });
-app.post("/api/religions", (req, res, next) => {
-  db.createReligion(req.user.id)
-    .then((religion) => res.send(religion))
+app.get("/api/pets", (req, res, next) => {
+  db.readPets()
+    .then((pets) => res.send(pets))
     .catch(next);
 });
-app.post("/api/careers", (req, res, next) => {
-  db.models
-    .createCareer(req.user.id)
-    .then((career) => res.send(career))
+app.get("/api/employment_status", (req, res, next) => {
+  db.readEmploymentStatus()
+    .then((employ) => res.send(employ))
+    .catch(next);
+});
+app.get("/api/political_parties", (req, res, next) => {
+  db.readPoliticalParties()
+    .then((party) => res.send(party))
+    .catch(next);
+});
+app.post("/api/user_profiles", (req, res, next) => {
+  db.createUserInfo(req.body);
+  console.log("RUID", req.user.id);
+  console
+    .log("RB", req.body)
+    .then((user) => res.send(user))
     .catch(next);
 });
 

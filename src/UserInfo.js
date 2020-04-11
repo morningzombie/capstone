@@ -5,8 +5,11 @@ const UserInfo = ({ login }) => {
   const [careers, setCareers] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
+  const [employmentStatus, setEmploymentStatus] = useState([]);
+  const [politicalParties, setPoliticalParties] = useState([]);
+  const [pets, setPets] = useState([]);
 
-  const [userBirthday, setUserBirthday] = useState("");
+  const [userBirthdate, setUserBirthdate] = useState("");
   const [userGender, setUserGender] = useState("-- select an option --");
   const [userPoliticalAffiliation, setUserPoliticalAffiliation] = useState(
     "-- select an option --"
@@ -15,10 +18,12 @@ const UserInfo = ({ login }) => {
     "-- select an option --"
   );
   const [userCareer, setUserCareer] = useState("-- select an option --");
-  const [employmentStatus, setEmploymentStatus] = useState("");
+  const [userEmploymentStatus, setUserEmploymentStatus] = useState(
+    "-- select an option --"
+  );
   const [userPets, setUserPets] = useState("-- select an option --");
   const [userAbout, setUserAbout] = useState("");
-
+  // console.log("USER", user);
   useEffect(() => {
     axios.get("/api/careers").then((response) => setCareers(response.data));
   }, []);
@@ -28,9 +33,23 @@ const UserInfo = ({ login }) => {
   useEffect(() => {
     axios.get("/api/genders").then((response) => setGenders(response.data));
   }, []);
+  useEffect(() => {
+    axios
+      .get("/api/employment_status")
+      .then((response) => setEmploymentStatus(response.data));
+  }, []);
+  useEffect(() => {
+    axios
+      .get("/api/political_parties")
+      .then((response) => setPoliticalParties(response.data));
+  }, []);
+  useEffect(() => {
+    axios.get("/api/pets").then((response) => setPets(response.data));
+  }, []);
+
   const createUserInfo = (user) => {
-    axios.post("/api/users", user).then((response) => {
-      console.log(response);
+    axios.post("/api/user_profiles", user).then((response) => {
+      console.log("USERINFO", response);
       login({ email, password }).catch((ex) =>
         setError(ex.response.data.message)
       );
@@ -44,11 +63,12 @@ const UserInfo = ({ login }) => {
     // } else
     {
       createUserInfo({
-        userBirthday,
+        userBirthdate,
         userGender,
         userPoliticalAffiliation,
         userReligiousAffiliation,
         userCareer,
+        userEmploymentStatus,
         userPets,
         userAbout,
       });
@@ -84,15 +104,18 @@ const UserInfo = ({ login }) => {
               className="form-control"
               id="employmentStatus"
               defaultValue
-              onChange={(ev) => setEmploymentStatus(ev.target.value)}
+              onChange={(ev) => setUserEmploymentStatus(ev.target.value)}
             >
-              <option value={employmentStatus}>{employmentStatus}</option>
-              <option value="full-time">Full-Time</option>
-              <option value="part-time">Part-Time</option>
-              <option value="unemployed">Unemployed</option>
-              <option value="in-school">In Schoool</option>
-              <option value="freelance">Freelance</option>
-              <option value="looking">Looking...</option>
+              <option value={userEmploymentStatus}>
+                {userEmploymentStatus}
+              </option>
+              {employmentStatus.map((employ) => {
+                return (
+                  <option key={employ.id} value={employ.status_name}>
+                    {employ.status_name}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -106,26 +129,24 @@ const UserInfo = ({ login }) => {
             onChange={(ev) => setUserPets(ev.target.value)}
           >
             <option value={userPets}>{userPets}</option>
-            <option value="bird">Bird</option>
-            <option value="cat">Cat</option>
-            <option value="dog">Dog</option>
-            <option value="hamster">Hamster</option>
-            <option value="horse">Horse</option>
-            <option value="rabbit">Rabbit</option>
-            <option value="reptile">Reptile</option>
-            <option value="other">Other</option>
-            <option value="na">No Pets</option>
+            {pets.map((pet) => {
+              return (
+                <option key={pet.id} value={pet.pet_name}>
+                  {pet.pet_name}
+                </option>
+              );
+            })}
           </select>
         </div>
 
         <div className="row">
           <div className="col">
-            <label htmlFor="birthday">When is your birthday?</label>
+            <label htmlFor="birthdate">When is your birthday?</label>
             <input
               className="form-control"
               type="date"
-              id="birthday"
-              onChange={(ev) => setUserBirthday(ev.target.value)}
+              id="birthdate"
+              onChange={(ev) => setUserBirthdate(ev.target.value)}
             />
           </div>
 
@@ -165,9 +186,13 @@ const UserInfo = ({ login }) => {
               <option value={userPoliticalAffiliation}>
                 {userPoliticalAffiliation}
               </option>
-              <option value="democrat">Democrat</option>
-              <option value="independent">Independent</option>
-              <option value="republican">Republican</option>
+              {politicalParties.map((party) => {
+                return (
+                  <option key={party.id} value={party.party_name}>
+                    {party.party_name}
+                  </option>
+                );
+              })}
             </select>
           </div>
 

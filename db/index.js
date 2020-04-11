@@ -1,7 +1,7 @@
-const client = require('./client');
-const fs = require('fs');
+const client = require("./client");
+const fs = require("fs");
 
-const { authenticate, compare, findUserFromToken, hash } = require('./auth');
+const { authenticate, compare, findUserFromToken, hash } = require("./auth");
 
 const models = ({
   users,
@@ -13,7 +13,7 @@ const models = ({
   employment_status,
   pets,
   political_parties,
-} = require('./models'));
+} = require("./models"));
 
 const sync = async () => {
   let SQL = `
@@ -118,7 +118,8 @@ const sync = async () => {
     pets VARCHAR(100),
     birthdate DATE,
     zipCode INT,
-    employmentStatus VARCHAR(100)
+    employmentStatus VARCHAR(100),
+    userAbout VARCHAR(250)
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
@@ -226,7 +227,7 @@ const sync = async () => {
   INSERT INTO employment_status (status_name) VALUES ('Freelance');
   INSERT INTO employment_status (status_name) VALUES ('Looking...');
   INSERT INTO employment_status (status_name) VALUES ('Does Not Matter');
-  
+
   INSERT INTO political_parties (party_name) VALUES ('Democrat');
   INSERT INTO political_parties (party_name) VALUES ('Independent');
   INSERT INTO political_parties (party_name) VALUES ('Republican');
@@ -254,36 +255,36 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      firstname: 'Lucy',
-      lastname: 'Anabell',
-      username: 'lucy',
-      zipcode: '12345',
-      email: 'lucy@gmail.com',
-      password: 'LUCY',
-      birthday: '12/31/1999',
-      gender: 'female',
-      role: 'ADMIN',
+      firstname: "Lucy",
+      lastname: "Anabell",
+      username: "lucy",
+      zipcode: "12345",
+      email: "lucy@gmail.com",
+      password: "LUCY",
+      birthday: "12/31/1999",
+      gender: "female",
+      role: "ADMIN",
     },
     moe: {
-      firstname: 'Moe',
-      lastname: 'Anabell',
-      username: 'moe',
-      zipcode: '12345',
-      email: 'moe@gmail.com',
-      password: 'MOE',
-      birthday: '12/31/1999',
-      gender: 'male',
-      role: 'USER',
+      firstname: "Moe",
+      lastname: "Anabell",
+      username: "moe",
+      zipcode: "12345",
+      email: "moe@gmail.com",
+      password: "MOE",
+      birthday: "12/31/1999",
+      gender: "male",
+      role: "USER",
     },
     curly: {
-      firstname: 'Larry',
-      lastname: 'Smith',
-      username: 'larry',
-      zipcode: '12345',
-      email: 'larry@gmail.com',
-      password: 'LARRY',
-      birthday: '12/31/1999',
-      gender: 'female',
+      firstname: "Larry",
+      lastname: "Smith",
+      username: "larry",
+      zipcode: "12345",
+      email: "larry@gmail.com",
+      password: "LARRY",
+      birthday: "12/31/1999",
+      gender: "female",
     },
   };
 
@@ -297,78 +298,78 @@ const sync = async () => {
   }, {});
 
   Promise.all([
-    careers.createCareer('Computers and Technology'),
-    careers.createCareer('Health Care and Allied Health'),
-    careers.createCareer('Education and Social Services'),
-    careers.createCareer('Arts and Communications'),
-    careers.createCareer('Trades and Transportation'),
-    careers.createCareer('Management, Business, and Finance'),
-    careers.createCareer('Architecture and Civil Engineering'),
-    careers.createCareer('Science'),
-    careers.createCareer('Hospitality, Tourism, and the Service Industry'),
-    careers.createCareer('Law and Law Enforcement'),
-    careers.createCareer('Other'),
-    careers.createCareer('Does not matter'),
+    careers.createCareer("Computers and Technology"),
+    careers.createCareer("Health Care and Allied Health"),
+    careers.createCareer("Education and Social Services"),
+    careers.createCareer("Arts and Communications"),
+    careers.createCareer("Trades and Transportation"),
+    careers.createCareer("Management, Business, and Finance"),
+    careers.createCareer("Architecture and Civil Engineering"),
+    careers.createCareer("Science"),
+    careers.createCareer("Hospitality, Tourism, and the Service Industry"),
+    careers.createCareer("Law and Law Enforcement"),
+    careers.createCareer("Other"),
+    careers.createCareer("Does not matter"),
   ]);
 
   const compid = await careers
-    .findCareerId('Computers and Technology')
+    .findCareerId("Computers and Technology")
     .then((response) => response.id);
   const eduid = await careers
-    .findCareerId('Education and Social Services')
+    .findCareerId("Education and Social Services")
     .then((response) => response.id);
   const othid = await careers
-    .findCareerId('Other')
+    .findCareerId("Other")
     .then((response) => response.id);
 
-  const lucyid = await users.findUserId('lucy').then((response) => response.id);
-  const moeid = await users.findUserId('moe').then((response) => response.id);
+  const lucyid = await users.findUserId("lucy").then((response) => response.id);
+  const moeid = await users.findUserId("moe").then((response) => response.id);
   const curlyid = await users
-    .findUserId('larry')
+    .findUserId("larry")
     .then((response) => response.id);
 
   Promise.all([
     profiles.createProfile({
       userId: lucyid,
-      communicationPreference: 'Email',
-      gender: 'Female',
-      orientation: 'Heterosexual',
-      politicalAffiliation: 'Democrat',
-      religiousAffiliation: 'Catholic',
+      communicationPreference: "Email",
+      gender: "Female",
+      orientation: "Heterosexual",
+      politicalAffiliation: "Democrat",
+      religiousAffiliation: "Catholic",
       careerId: eduid,
-      education: 'College educated',
-      pets: 'Dogs',
-      birthdate: '2/2/1996',
+      education: "College educated",
+      pets: "Dogs",
+      birthdate: "2/2/1996",
       zipCode: 32207,
-      employmentStatus: 'Full time',
+      employmentStatus: "Full time",
     }),
     profiles.createProfile({
       userId: moeid,
-      communicationPreference: 'Email',
-      gender: 'Male',
-      orientation: '',
-      politicalAffiliation: 'Independent',
-      religiousAffiliation: 'Athiest',
+      communicationPreference: "Email",
+      gender: "Male",
+      orientation: "",
+      politicalAffiliation: "Independent",
+      religiousAffiliation: "Athiest",
       careerId: othid,
-      education: 'Trade school',
-      pets: 'Reptiles',
-      birthdate: '5/5/1960',
+      education: "Trade school",
+      pets: "Reptiles",
+      birthdate: "5/5/1960",
       zipCode: 32210,
-      employmentStatus: 'Retired',
+      employmentStatus: "Retired",
     }),
     profiles.createProfile({
       userId: curlyid,
-      communicationPreference: 'Email',
-      gender: '',
-      orientation: 'Homosexual',
-      politicalAffiliation: 'Green Party',
-      religiousAffiliation: 'Protestant',
+      communicationPreference: "Email",
+      gender: "",
+      orientation: "Homosexual",
+      politicalAffiliation: "Green Party",
+      religiousAffiliation: "Protestant",
       careerId: compid,
-      education: 'High school',
-      pets: 'Cats',
-      birthdate: '10/10/1980',
+      education: "High school",
+      pets: "Cats",
+      birthdate: "10/10/1980",
       zipCode: 32073,
-      employmentStatus: 'Part time',
+      employmentStatus: "Part time",
     }),
   ]);
 
@@ -377,7 +378,7 @@ const sync = async () => {
   };
 };
 const readCareers = async () => {
-  return (await client.query('SELECT * from careers')).rows;
+  return (await client.query("SELECT * from careers")).rows;
 };
 const readReligions = async () => {
   return (await client.query("SELECT * from religions")).rows;
@@ -386,8 +387,46 @@ const readGenders = async () => {
   return (await client.query("SELECT * from genders")).rows;
 };
 const readHobbies = async () => {
-  return (await client.query('SELECT * from hobbies')).rows;
+  return (await client.query("SELECT * from hobbies")).rows;
 };
+const readEmploymentStatus = async () => {
+  return (await client.query("SELECT * from employment_status")).rows;
+};
+const readPoliticalParties = async () => {
+  return (await client.query("SELECT * from political_parties")).rows;
+};
+const readPets = async () => {
+  return (await client.query("SELECT * from pets")).rows;
+};
+const createUserInfo = async ([
+  user,
+  userGender,
+  userPoliticalAffiliation,
+  userReligiousAffiliation,
+  userPets,
+  userBirthdate,
+  userEmploymentStatus,
+  userAbout,
+  userEducation,
+  userZipcode,
+]) => {
+  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, education, zipcode) values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, ) returning *`;
+  return (
+    await client.query(SQL, [
+      user,
+      gender,
+      politicalAffiliation,
+      religiousAffiliation,
+      pets,
+      birthdate,
+      employmentStatus,
+      userAbout,
+      education,
+      zipcode,
+    ])
+  ).rows[0];
+};
+
 module.exports = {
   sync,
   models,
@@ -397,4 +436,8 @@ module.exports = {
   readHobbies,
   readReligions,
   readGenders,
+  readEmploymentStatus,
+  readPoliticalParties,
+  readPets,
+  createUserInfo,
 };

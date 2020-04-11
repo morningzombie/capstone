@@ -45,6 +45,10 @@ const users = {
     const SQL = `SELECT id FROM users WHERE username = $1`;
     return (await client.query(SQL, [username])).rows[0];
   },
+  getUserIdFromEmail: async (email) => {
+    const SQL = `SELECT id FROM users WHERE email = $1`;
+    return (await client.query(SQL, [email])).rows[0];
+  },
 };
 
 module.exports = users;

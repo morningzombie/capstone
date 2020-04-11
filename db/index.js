@@ -22,6 +22,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
   DROP TABLE IF EXISTS hobbies CASCADE;
+  DROP TABLE IF EXISTS genders CASCADE;
+  DROP TABLE IF EXISTS religions CASCADE;
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
 
@@ -117,6 +119,27 @@ const sync = async () => {
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Travel', 'image_Travel');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Books', 'image_Books');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('DIY', 'image_DIY');
+
+  INSERT INTO religions (religion_name) VALUES ('Christianity');
+  INSERT INTO religions (religion_name) VALUES ('Islam');
+  INSERT INTO religions (religion_name) VALUES ('Nonreligious');
+  INSERT INTO religions (religion_name) VALUES ('Hinduism');
+  INSERT INTO religions (religion_name) VALUES ('Chinese traditional');
+  INSERT INTO religions (religion_name) VALUES ('Buddhism');
+  INSERT INTO religions (religion_name) VALUES ('Primal-indigenous');
+  INSERT INTO religions (religion_name) VALUES ('African traditional');
+  INSERT INTO religions (religion_name) VALUES ('Sikhism');
+  INSERT INTO religions (religion_name) VALUES ('Juche');
+  INSERT INTO religions (religion_name) VALUES ('Spiritism');
+  INSERT INTO religions (religion_name) VALUES ('Judaism');
+  INSERT INTO religions (religion_name) VALUES ('Bahai');
+  INSERT INTO religions (religion_name) VALUES ('Jainism');
+  INSERT INTO religions (religion_name) VALUES ('Shinto');
+  INSERT INTO religions (religion_name) VALUES ('Cao Dai');
+  INSERT INTO religions (religion_name) VALUES ('Zoroastrianism');
+  INSERT INTO religions (religion_name) VALUES ('Tenrikyo');
+  INSERT INTO religions (religion_name) VALUES ('Neo-Paganism');
+  INSERT INTO religions (religion_name) VALUES ('Unitarian-Universalism');
 `;
 
   await client.query(SQL);
@@ -240,32 +263,8 @@ const sync = async () => {
     }),
   ]);
 
-  Promise.all([
-    religions.createReligion('Christianity'),
-    religions.createReligion('Islam'),
-    religions.createReligion('Nonreligious'),
-    religions.createReligion('Hinduism'),
-    religions.createReligion('Chinese traditional'),
-    religions.createReligion('Buddhism'),
-    religions.createReligion('Primal-indigenous'),
-    religions.createReligion('African traditional'),
-    religions.createReligion('Sikhism'),
-    religions.createReligion('Juche'),
-    religions.createReligion('Spiritism'),
-    religions.createReligion('Judaism'),
-    religions.createReligion('Bahai'),
-    religions.createReligion('Jainism'),
-    religions.createReligion('Shinto'),
-    religions.createReligion('Cao Dai'),
-    religions.createReligion('Zoroastrianism'),
-    religions.createReligion('Tenrikyo'),
-    religions.createReligion('Neo-Paganism'),
-    religions.createReligion('Unitarian-Universalism'),
-  ]);
-
   return {
     users: userMap,
-    // hobbies: hobbyMap,
   };
 };
 const readCareers = async () => {
@@ -279,8 +278,6 @@ module.exports = {
   models,
   authenticate,
   findUserFromToken,
-  // createCareer,
   readCareers,
   readHobbies,
-  // createHobby,
 };

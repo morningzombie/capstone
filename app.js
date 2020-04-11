@@ -122,7 +122,7 @@ app.get('/api/findUserId', (req, res, next) => {
 });
 
 app.get('/api/getUserIdFromEmail', (req, res, next) => {
-  db.getUserIdFromEmail(req.user.id)
+  db.getUserIdFromEmail(req.body)
     .then((userid) => res.send(userid))
     .catch(next);
 });

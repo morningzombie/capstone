@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const UserInfo = ({ login, users }) => {
-  console.log('login', login);
+const UserInfo = ({ login, auth }) => {
+  const [userid, setUserid] = useState('');
   const [careers, setCareers] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
@@ -24,7 +24,6 @@ const UserInfo = ({ login, users }) => {
   );
   const [userPets, setUserPets] = useState('-- select an option --');
   const [userAbout, setUserAbout] = useState('');
-  // console.log("USER", user);
   useEffect(() => {
     axios.get('/api/careers').then((response) => setCareers(response.data));
   }, []);
@@ -48,9 +47,6 @@ const UserInfo = ({ login, users }) => {
     axios.get('/api/pets').then((response) => setPets(response.data));
   }, []);
 
-  const email = login.email;
-  const user = users.getUserIdFromEmail(email);
-
   const createUserInfo = (user) => {
     axios.post('/api/user_profiles', user).then((response) => {
       console.log('USERINFO', response);
@@ -60,14 +56,23 @@ const UserInfo = ({ login, users }) => {
     });
   };
 
+  const getUserIdFromEmail = (email) => {
+    axios
+      .get('/api/getUserIdFromEmail', email)
+      .then((response) => setUserid(response.data));
+  };
+
   const onSubmit = (ev) => {
     ev.preventDefault();
     // if (confirmPassword !== password) {
     //   return setPasswordError("Please confirm correct password");
     // } else
     {
+      console.log('LOGIN after click', auth.email);
+      const email = auth.email;
+      const userId = getUserIdFromEmail(email);
       createUserInfo({
-        user,
+        userId,
         userGender,
         userPoliticalAffiliation,
         userReligiousAffiliation,

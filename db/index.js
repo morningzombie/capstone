@@ -398,6 +398,11 @@ const readPoliticalParties = async () => {
 const readPets = async () => {
   return (await client.query('SELECT * from pets')).rows;
 };
+const getUserIdFromEmail = async (email) => {
+  const SQL = `SELECT id FROM users WHERE email = $1`;
+  return (await client.query(SQL, [email])).rows[0];
+};
+
 const createUserInfo = async ([
   user,
   userGender,
@@ -440,4 +445,5 @@ module.exports = {
   readPoliticalParties,
   readPets,
   createUserInfo,
+  getUserIdFromEmail,
 };

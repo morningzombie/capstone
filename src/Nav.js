@@ -54,12 +54,12 @@ const Nav = ({ params, logout, auth, login }) => {
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <div className="nav-item">
                 <Link className="nav-link" to="/register">
-                  User Account
+                  Account Settings
                 </Link>
               </div>
               <div className="nav-item">
                 <Link className="nav-link" to="/UserInfo" label="UserInfo">
-                  User Info
+                  User Profile
                 </Link>
               </div>
 

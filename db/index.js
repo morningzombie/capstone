@@ -85,24 +85,24 @@ const sync = async () => {
     employmentStatus VARCHAR(100)
   );
 
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'image_Art');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Collecting', 'image_Collecting');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Model & Electronic', 'image_Model');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Sports & Outdoors', 'image_Sports');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Performing Arts', 'image_Performing_Arts');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Music', 'image_Music');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Spiritual', 'image_Spiritual');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Food & Drinks', 'image_Food');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Pets', 'image_Pets');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Shopping', 'image_Shopping');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Computers', 'image_Computers');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Automotive', 'image_Automotive');
-
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Genealogy', 'image_Genealogy');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Travel', 'image_Travel');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Books', 'image_Books');
-  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('DIY', 'image_DIY');
-
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Books', 'books.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Camping', 'camping.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Collecting', 'collecting.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Computers & Gaming', 'computers.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('DIY', 'DIY.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Food & Drinks', 'food.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Games', 'games.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Gardening', 'gardening.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Movies', 'movies.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Music', 'music.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Performing Arts', 'performing.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Pets', 'pet.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Photography', 'photography.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Sewing', 'sewing.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Shopping', 'shopping.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Sports & Outdoors', 'sports.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Travel', 'travel.png');
 
 `;
 

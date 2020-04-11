@@ -11,16 +11,14 @@ const UserHobbies = () => {
   useEffect(() => {
     axios.get("/api/hobbies").then((response) => setHobbies(response.data));
   }, []);
-
   return (
-    <div>
+    <div className="container">
       <h3>What are your hobbies?</h3>
       <form>
         <div className="form-group">
-          {/* {console.log(hobbies)}{" "}
           {hobbies.map((hobby) => {
             return <div key={hobby.id}>{hobby.hobby_name}</div>;
-          })} */}
+          })}
         </div>
       </form>
     </div>

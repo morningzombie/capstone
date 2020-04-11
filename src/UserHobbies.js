@@ -9,27 +9,23 @@ const UserHobbies = () => {
   const handleHobbies = (e) => {
     setUserHobbies(event.target.value);
   };
-  const webAddress = `http://www.terribailey.com/images/`;
-  //www.terribailey.com/images/art.png
-  http: useEffect(() => {
+  useEffect(() => {
     axios.get("/api/hobbies").then((response) => setHobbies(response.data));
   }, []);
   return (
-    <div className="container">
-      <h3>What are your hobbies?</h3>
-      <form>
-        <div className="form-group d-flex align-items-stretch">
+    <div className="">
+      <h3>What do you like to do?</h3>
+      <form className="container ">
+        <div className="form-group d-flex flex-wrap align-content-around">
           {hobbies.map((hobby) => {
             return (
-              <div key={hobby.id}>
+              <div key={hobby.id} className="hobby_img p-2 mb-4">
                 {/* <img
                   className="hobby_img"
                   src={`http://www.terribailey.com/images/${hobby.hobby_image}`}
                   alt={hobby.hobby_name}
                 /> */}
-
-                <br />
-                {hobby.hobby_name}
+                <p className="hobby-text mb-1">{hobby.hobby_name}</p>
               </div>
             );
           })}

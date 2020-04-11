@@ -1,5 +1,5 @@
-import React from "react";
-import qs from "qs";
+import React from 'react';
+import qs from 'qs';
 
 import {
   BrowserRouter as Router,
@@ -7,12 +7,13 @@ import {
   Route,
   Link,
   useRouteMatch,
-} from "react-router-dom";
-import UserInfo from "./UserInfo";
-import UserHobbies from "./UserHobbies";
-import FileUpload from "./components/FileUpload";
-import Login from "./Login";
-import Home from "./Home";
+} from 'react-router-dom';
+import UserInfo from './UserInfo';
+import UserHobbies from './UserHobbies';
+import SearchCriteria from './components/SearchCriteria';
+import FileUpload from './components/FileUpload';
+import Login from './Login';
+import Home from './Home';
 
 const Nav = ({ params, logout, auth, login }) => {
   return (
@@ -70,6 +71,16 @@ const Nav = ({ params, logout, auth, login }) => {
                   label="UserHobbies"
                 >
                   User Hobbies
+                </Link>
+              </div>
+
+              <div className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/components/SearchCriteria"
+                  label="SearchCriteria"
+                >
+                  Search Criteria
                 </Link>
               </div>
 

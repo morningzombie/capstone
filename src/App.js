@@ -9,7 +9,7 @@ import CreateNewUser from './components/User/CreateNewUser';
 import Header from './components/header/Header';
 import UserInfo from './UserInfo';
 import UserHobbies from './UserHobbies';
-import SearchCriteria from './components/SearchCriteria';
+import SearchCriteria from './SearchCriteria';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -98,7 +98,7 @@ const App = () => {
           <Route path="/UserInfo">
             <UserInfo />
           </Route>
-          <Route path="/component/SearchCriteria">
+          <Route path="/search/criteria">
             <SearchCriteria />
           </Route>
           <Route path="/UserHobbies">

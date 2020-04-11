@@ -3,7 +3,14 @@ const fs = require('fs');
 
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-const models = ({ users, profiles, careers, hobbies } = require('./models'));
+const models = ({
+  users,
+  profiles,
+  careers,
+  hobbies,
+  religions,
+  genders,
+} = require('./models'));
 
 const sync = async () => {
   let SQL = `
@@ -231,6 +238,29 @@ const sync = async () => {
       zipCode: 32073,
       employmentStatus: 'Part time',
     }),
+  ]);
+
+  Promise.all([
+    religions.createReligion('Christianity'),
+    religions.createReligion('Islam'),
+    religions.createReligion('Nonreligious'),
+    religions.createReligion('Hinduism'),
+    religions.createReligion('Chinese traditional'),
+    religions.createReligion('Buddhism'),
+    religions.createReligion('Primal-indigenous'),
+    religions.createReligion('African traditional'),
+    religions.createReligion('Sikhism'),
+    religions.createReligion('Juche'),
+    religions.createReligion('Spiritism'),
+    religions.createReligion('Judaism'),
+    religions.createReligion('Bahai'),
+    religions.createReligion('Jainism'),
+    religions.createReligion('Shinto'),
+    religions.createReligion('Cao Dai'),
+    religions.createReligion('Zoroastrianism'),
+    religions.createReligion('Tenrikyo'),
+    religions.createReligion('Neo-Paganism'),
+    religions.createReligion('Unitarian-Universalism'),
   ]);
 
   return {

@@ -109,26 +109,8 @@ app.post('/api/createProfile', (req, res, next) => {
     .catch(next);
 });
 
-// app.get('/api/getLineItems', (req, res, next) => {
-//   db.getLineItems(req.user.id)
-//     .then((lineItems) => res.send(lineItems))
-//     .catch(next);
-// });
-
-// app.post('/api/addToCart', (req, res, next) => {
-//   db.addToCart({ userId: req.user.id, productId: req.body.productId })
-//     .then((lineItem) => res.send(lineItem))
-//     .catch(next);
-// });
-
-// app.delete('/api/removeFromCart/:id', (req, res, next) => {
-//   db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
-//     .then(() => res.sendStatus(204))
-//     .catch(next);
-// });
-
-app.post('/api/createProfile', (req, res, next) => {
-  db.createProfile(req.body)
+app.post('/api/createSearch', (req, res, next) => {
+  db.createSearch(req.body)
     .then((profile) => res.send(profile))
     .catch(next);
 });

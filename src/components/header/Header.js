@@ -37,7 +37,7 @@ const Header = ({ login }) => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/SearchCriteria">
+            <Link className="nav-link" to="/search/criteria">
               Search
             </Link>
           </li>

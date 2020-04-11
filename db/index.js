@@ -1,9 +1,16 @@
-const client = require("./client");
-const fs = require("fs");
+const client = require('./client');
+const fs = require('fs');
 
-const { authenticate, compare, findUserFromToken, hash } = require("./auth");
+const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-const models = ({ users, profiles, careers, hobbies } = require("./models"));
+const models = ({
+  users,
+  profiles,
+  careers,
+  hobbies,
+  religions,
+  genders,
+} = require('./models'));
 
 const sync = async () => {
   let SQL = `
@@ -15,6 +22,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
   DROP TABLE IF EXISTS hobbies CASCADE;
+  DROP TABLE IF EXISTS genders CASCADE;
+  DROP TABLE IF EXISTS religions CASCADE;
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
 
@@ -27,6 +36,7 @@ const sync = async () => {
     email citext UNIQUE,
     password VARCHAR(100),
     birthday DATE NOT NULL ,
+    communicationPreference VARCHAR(5),
     gender VARCHAR(20),
     user_profile_id UUID,
     user_group_id UUID,
@@ -39,6 +49,14 @@ const sync = async () => {
   CREATE TABLE careers(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     career_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE religions(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    religion_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE genders(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    gender_name VARCHAR(100) NOT NULL
   );
   CREATE TABLE hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -73,7 +91,6 @@ const sync = async () => {
   CREATE TABLE user_profiles(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "userId" UUID REFERENCES users(id),
-    communicationPreference VARCHAR(5),
     gender VARCHAR(100),
     orientation VARCHAR(100),
     politicalAffiliation VARCHAR(100),
@@ -81,7 +98,8 @@ const sync = async () => {
     careerId UUID REFERENCES careers(id),
     education VARCHAR(100),
     pets VARCHAR(100),
-    age INT,
+    birthdate DATE,
+    zipCode INT,
     employmentStatus VARCHAR(100)
   );
 
@@ -97,49 +115,124 @@ const sync = async () => {
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Shopping', 'image_Shopping');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Computers', 'image_Computers');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Automotive', 'image_Automotive');
-
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Genealogy', 'image_Genealogy');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Travel', 'image_Travel');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Books', 'image_Books');
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('DIY', 'image_DIY');
 
+  INSERT INTO religions (religion_name) VALUES ('Christianity');
+  INSERT INTO religions (religion_name) VALUES ('Islam');
+  INSERT INTO religions (religion_name) VALUES ('Nonreligious');
+  INSERT INTO religions (religion_name) VALUES ('Hinduism');
+  INSERT INTO religions (religion_name) VALUES ('Chinese traditional');
+  INSERT INTO religions (religion_name) VALUES ('Buddhism');
+  INSERT INTO religions (religion_name) VALUES ('Primal-indigenous');
+  INSERT INTO religions (religion_name) VALUES ('African traditional');
+  INSERT INTO religions (religion_name) VALUES ('Sikhism');
+  INSERT INTO religions (religion_name) VALUES ('Juche');
+  INSERT INTO religions (religion_name) VALUES ('Spiritism');
+  INSERT INTO religions (religion_name) VALUES ('Judaism');
+  INSERT INTO religions (religion_name) VALUES ('Bahai');
+  INSERT INTO religions (religion_name) VALUES ('Jainism');
+  INSERT INTO religions (religion_name) VALUES ('Shinto');
+  INSERT INTO religions (religion_name) VALUES ('Cao Dai');
+  INSERT INTO religions (religion_name) VALUES ('Zoroastrianism');
+  INSERT INTO religions (religion_name) VALUES ('Tenrikyo');
+  INSERT INTO religions (religion_name) VALUES ('Neo-Paganism');
+  INSERT INTO religions (religion_name) VALUES ('Unitarian-Universalism');
 
+  INSERT INTO genders (gender_name) VALUES ('Agender');
+  INSERT INTO genders (gender_name) VALUES ('Androgyne');
+  INSERT INTO genders (gender_name) VALUES ('Androgynous');
+  INSERT INTO genders (gender_name) VALUES ('Bigender');
+  INSERT INTO genders (gender_name) VALUES ('Cis');
+  INSERT INTO genders (gender_name) VALUES ('Cis Female');
+  INSERT INTO genders (gender_name) VALUES ('Cis Male');
+  INSERT INTO genders (gender_name) VALUES ('Cis Man');
+  INSERT INTO genders (gender_name) VALUES ('Cis Woman');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Female');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Male');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Man');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Woman');
+  INSERT INTO genders (gender_name) VALUES ('Female to Male');
+  INSERT INTO genders (gender_name) VALUES ('FTM');
+  INSERT INTO genders (gender_name) VALUES ('Gender Fluid');
+  INSERT INTO genders (gender_name) VALUES ('Gender Nonconforming');
+  INSERT INTO genders (gender_name) VALUES ('Gender Questioning');
+  INSERT INTO genders (gender_name) VALUES ('Gender Variant');
+  INSERT INTO genders (gender_name) VALUES ('Genderqueer');
+  INSERT INTO genders (gender_name) VALUES ('Intersex');
+  INSERT INTO genders (gender_name) VALUES ('Male to Female');
+  INSERT INTO genders (gender_name) VALUES ('MTF');
+  INSERT INTO genders (gender_name) VALUES ('Neither');
+  INSERT INTO genders (gender_name) VALUES ('Neutrois');
+  INSERT INTO genders (gender_name) VALUES ('Non-binary');
+  INSERT INTO genders (gender_name) VALUES ('Other');
+  INSERT INTO genders (gender_name) VALUES ('Pangender');
+  INSERT INTO genders (gender_name) VALUES ('Trans');
+  INSERT INTO genders (gender_name) VALUES ('Trans Female');
+  INSERT INTO genders (gender_name) VALUES ('Trans Male');
+  INSERT INTO genders (gender_name) VALUES ('Trans Man');
+  INSERT INTO genders (gender_name) VALUES ('Trans Person');
+  INSERT INTO genders (gender_name) VALUES ('Trans Woman');
+  INSERT INTO genders (gender_name) VALUES ('Trans');
+  INSERT INTO genders (gender_name) VALUES ('Trans Female');
+  INSERT INTO genders (gender_name) VALUES ('Trans Male');
+  INSERT INTO genders (gender_name) VALUES ('Trans Man');
+  INSERT INTO genders (gender_name) VALUES ('Trans Person');
+  INSERT INTO genders (gender_name) VALUES ('Trans Woman');
+  INSERT INTO genders (gender_name) VALUES ('Transfeminine');
+  INSERT INTO genders (gender_name) VALUES ('Transgender');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Female');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Male');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Man');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Person');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Woman');
+  INSERT INTO genders (gender_name) VALUES ('Transmasculine');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Female');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Male');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Man');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Person');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Woman');
+  INSERT INTO genders (gender_name) VALUES ('Two-spirit');
 `;
 
   await client.query(SQL);
 
   const _users = {
     lucy: {
-      firstname: "Lucy",
-      lastname: "Anabell",
-      username: "lucy",
-      zipcode: "12345",
-      email: "lucy@gmail.com",
-      password: "LUCY",
-      birthday: "12/31/1999",
-      gender: "female",
-      role: "ADMIN",
+      firstname: 'Lucy',
+      lastname: 'Anabell',
+      username: 'lucy',
+      zipcode: '12345',
+      email: 'lucy@gmail.com',
+      password: 'LUCY',
+      birthday: '12/31/1999',
+      gender: 'female',
+      role: 'ADMIN',
     },
     moe: {
-      firstname: "Moe",
-      lastname: "Anabell",
-      username: "moe",
-      zipcode: "12345",
-      email: "moe@gmail.com",
-      password: "MOE",
-      birthday: "12/31/1999",
-      gender: "male",
-      role: "USER",
+      firstname: 'Moe',
+      lastname: 'Anabell',
+      username: 'moe',
+      zipcode: '12345',
+      email: 'moe@gmail.com',
+      password: 'MOE',
+      birthday: '12/31/1999',
+      gender: 'male',
+      role: 'USER',
     },
     curly: {
-      firstname: "Larry",
-      lastname: "Smith",
-      username: "larry",
-      zipcode: "12345",
-      email: "larry@gmail.com",
-      password: "LARRY",
-      birthday: "12/31/1999",
-      gender: "female",
+      firstname: 'Larry',
+      lastname: 'Smith',
+      username: 'larry',
+      zipcode: '12345',
+      email: 'larry@gmail.com',
+      password: 'LARRY',
+      birthday: '12/31/1999',
+      gender: 'female',
     },
   };
 
@@ -153,97 +246,95 @@ const sync = async () => {
   }, {});
 
   Promise.all([
-    careers.createCareer("Computers and Technology"),
-    careers.createCareer("Health Care and Allied Health"),
-    careers.createCareer("Education and Social Services"),
-    careers.createCareer("Arts and Communications"),
-    careers.createCareer("Trades and Transportation"),
-    careers.createCareer("Management, Business, and Finance"),
-    careers.createCareer("Architecture and Civil Engineering"),
-    careers.createCareer("Science"),
-    careers.createCareer("Hospitality, Tourism, and the Service Industry"),
-    careers.createCareer("Law and Law Enforcement"),
-    careers.createCareer("Other"),
+    careers.createCareer('Computers and Technology'),
+    careers.createCareer('Health Care and Allied Health'),
+    careers.createCareer('Education and Social Services'),
+    careers.createCareer('Arts and Communications'),
+    careers.createCareer('Trades and Transportation'),
+    careers.createCareer('Management, Business, and Finance'),
+    careers.createCareer('Architecture and Civil Engineering'),
+    careers.createCareer('Science'),
+    careers.createCareer('Hospitality, Tourism, and the Service Industry'),
+    careers.createCareer('Law and Law Enforcement'),
+    careers.createCareer('Other'),
   ]);
 
   const compid = await careers
-    .findCareerId("Computers and Technology")
+    .findCareerId('Computers and Technology')
     .then((response) => response.id);
   const eduid = await careers
-    .findCareerId("Education and Social Services")
+    .findCareerId('Education and Social Services')
     .then((response) => response.id);
   const othid = await careers
-    .findCareerId("Other")
+    .findCareerId('Other')
     .then((response) => response.id);
 
-  const lucyid = await users.findUserId("lucy").then((response) => response.id);
-  const moeid = await users.findUserId("moe").then((response) => response.id);
+  const lucyid = await users.findUserId('lucy').then((response) => response.id);
+  const moeid = await users.findUserId('moe').then((response) => response.id);
   const curlyid = await users
-    .findUserId("larry")
+    .findUserId('larry')
     .then((response) => response.id);
-
-  //console.log('curly', curlyid);
 
   Promise.all([
     profiles.createProfile({
       userId: lucyid,
-      communicationPreference: "Email",
-      gender: "Female",
-      orientation: "Heterosexual",
-      politicalAffiliation: "Democrat",
-      religiousAffiliation: "Catholic",
+      communicationPreference: 'Email',
+      gender: 'Female',
+      orientation: 'Heterosexual',
+      politicalAffiliation: 'Democrat',
+      religiousAffiliation: 'Catholic',
       careerId: eduid,
-      education: "College educated",
-      pets: "Dogs",
-      age: 34,
-      employmentStatus: "Full time",
+      education: 'College educated',
+      pets: 'Dogs',
+      birthdate: '2/2/1996',
+      zipCode: 32207,
+      employmentStatus: 'Full time',
     }),
     profiles.createProfile({
       userId: moeid,
-      communicationPreference: "Email",
-      gender: "Male",
-      orientation: "",
-      politicalAffiliation: "Independent",
-      religiousAffiliation: "Athiest",
+      communicationPreference: 'Email',
+      gender: 'Male',
+      orientation: '',
+      politicalAffiliation: 'Independent',
+      religiousAffiliation: 'Athiest',
       careerId: othid,
-      education: "Trade school",
-      pets: "Reptiles",
-      age: 69,
-      employmentStatus: "Retired",
+      education: 'Trade school',
+      pets: 'Reptiles',
+      birthdate: '5/5/1960',
+      zipCode: 32210,
+      employmentStatus: 'Retired',
     }),
     profiles.createProfile({
       userId: curlyid,
-      communicationPreference: "Email",
-      gender: "",
-      orientation: "Homosexual",
-      politicalAffiliation: "Green Party",
-      religiousAffiliation: "Protestant",
+      communicationPreference: 'Email',
+      gender: '',
+      orientation: 'Homosexual',
+      politicalAffiliation: 'Green Party',
+      religiousAffiliation: 'Protestant',
       careerId: compid,
-      education: "High school",
-      pets: "Cats",
-      age: 25,
-      employmentStatus: "Part time",
+      education: 'High school',
+      pets: 'Cats',
+      birthdate: '10/10/1980',
+      zipCode: 32073,
+      employmentStatus: 'Part time',
     }),
   ]);
 
   return {
     users: userMap,
-    // hobbies: hobbyMap,
   };
 };
 const readCareers = async () => {
-  return (await client.query("SELECT * from careers")).rows;
+  return (await client.query('SELECT * from careers')).rows;
 };
 const readHobbies = async () => {
-  return (await client.query("SELECT * from hobbies")).rows;
+  return (await client.query('SELECT * from hobbies')).rows;
 };
 module.exports = {
   sync,
   models,
   authenticate,
   findUserFromToken,
-  // createCareer,
   readCareers,
   readHobbies,
-  // createHobby,
 };

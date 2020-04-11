@@ -329,6 +329,12 @@ const sync = async () => {
 const readCareers = async () => {
   return (await client.query("SELECT * from careers")).rows;
 };
+const readReligions = async () => {
+  return (await client.query("SELECT * from religions")).rows;
+};
+const readGenders = async () => {
+  return (await client.query("SELECT * from genders")).rows;
+};
 const readHobbies = async () => {
   return (await client.query("SELECT * from hobbies")).rows;
 };
@@ -339,4 +345,6 @@ module.exports = {
   findUserFromToken,
   readCareers,
   readHobbies,
+  readReligions,
+  readGenders,
 };

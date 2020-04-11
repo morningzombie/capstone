@@ -4,26 +4,40 @@ import axios from 'axios';
 const SearchCriteria = ({ user }) => {
     const [criteria, setCriteria] = useState([
         {
-          first_name: "",
-          last_name: "",
-          password: ""
+          gender: "", 
+          orientation: "", 
+          politicalAffiliation: "", 
+          religiousAffiliation: "", 
+          careerId: "", 
+          education: "", 
+          pets: "", 
+          ageRange: "", 
+          employmentStatus : "", 
+          hobbies: "",
+          zipCode: ""
+          //gender: "", orientation: "", politicalAffiliation: "", 
+      //religiousAffiliation,: "", careerId: "", education: "", pets: "", ageRange,: "", employmentStatus : ""
         }
       ]);
-      const [criteria, setcriteria] = useState([
-        {
-          first_name: "",
-          last_name: "",
-          password: ""
-        }
-      ]);
+
+      //communicationPreference, gender, orientation, politicalAffiliation, 
+      //religiousAffiliation, careerId, education, pets, age, employmentStatus
       const [error, setError] = useState("");
     
       const [inputCriteria, setInputCriteria] = useReducer(
         (criteria, setCriteria) => ({ ...criteria, ...setCriteria }),
         {
-          first_name: criteria.first_name,
-          last_name: criteria.last_name,
-          password: criteria.password
+          gender: criteria.gender, 
+          orientation: criteria.orientation, 
+          politicalAffiliation: criteria.politicalAffiliation, 
+          religiousAffiliation: criteria.religiousAffiliation, 
+          careerId: criteria.careerId, 
+          education: criteria.education, 
+          pets: criteria.pets, 
+          ageRange: criteria.ageRange, 
+          employmentStatus : criteria.employmentStatus, 
+          hobbies: criteria.hobbies, 
+          zipCode: criteria.zipCode
         }
       );
       const handleChange = evt => {
@@ -38,9 +52,17 @@ const SearchCriteria = ({ user }) => {
           .then(response => setCriteria([response.data, ...criteria]))
           .then(() =>
             setInputCriteria({
-              first_name: "",
-              last_name: "",
-              password: ""
+              gender: "", 
+          orientation: "", 
+          politicalAffiliation: "", 
+          religiousAffiliation: "", 
+          careerId: "", 
+          education: "", 
+          pets: "", 
+          ageRange: "", 
+          employmentStatus : "", 
+          hobbies: "",
+          zipCode: ""
             })
           )
           .catch(Error);
@@ -52,9 +74,9 @@ const SearchCriteria = ({ user }) => {
               <h2 className="white-text">Who do you wanna hang with?</h2>
               <div className="error">{error}</div>
               <input
-                placeholder="first name"
-                name="first_name"
-                value={inputCriteria.first_name}
+                placeholder="Gender"
+                name="gender"
+                value={inputCriteria.gender}
                 onChange={handleChange}
                 required
               />

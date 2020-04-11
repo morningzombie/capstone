@@ -3,6 +3,7 @@ const client = require('../client');
 const readProfile = async () => {
   return (await client.query('SELECT * from user_profiles')).rows;
 };
+
 const createProfile = async (user_profile) => {
   const SQL = `INSERT INTO user_profiles("userId", gender, orientation, politicalAffiliation, religiousAffiliation, careerId, education, pets, birthdate, zipCode, employmentStatus) 
         values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning *`;

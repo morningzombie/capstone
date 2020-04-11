@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import UserInfo from "./UserInfo";
 import UserHobbies from "./UserHobbies";
-import SearchCriteria from "./components/SearchCriteria";
+import SearchCriteria from "./SearchCriteria";
 import FileUpload from "./components/FileUpload";
 import Login from "./Login";
 import Home from "./Home";
@@ -77,7 +77,7 @@ const Nav = ({ params, logout, auth, login }) => {
               <div className="nav-item">
                 <Link
                   className="nav-link"
-                  to="/SearchCriteria"
+                  to="/search/criteria"
                   label="SearchCriteria"
                 >
                   Search Criteria

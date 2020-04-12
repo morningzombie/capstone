@@ -41,16 +41,8 @@ const sync = async () => {
     lastname VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
     phone VARCHAR(20) NOT NULL,
-    --zipcode VARCHAR(5),
     email citext UNIQUE,
     password VARCHAR(100),
-    --birthday DATE NOT NULL ,
-    communicationPreference VARCHAR(5),
-    --gender VARCHAR(20),
-    user_profile_id UUID,
-    user_group_id UUID,
-   -- zipCode INT,
-    phoneNumber INT UNIQUE,
     userRating INT DEFAULT 0,
     role VARCHAR(20) DEFAULT 'USER',
     CHECK (char_length(username) > 0)
@@ -113,7 +105,6 @@ const sync = async () => {
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     "userId" UUID REFERENCES users(id),
     gender VARCHAR(100),
-    orientation VARCHAR(100),
     politicalAffiliation VARCHAR(100),
     religiousAffiliation VARCHAR(100),
     careerId UUID REFERENCES careers(id),
@@ -122,7 +113,8 @@ const sync = async () => {
     birthdate DATE,
     zipCode INT,
     employmentStatus VARCHAR(100),
-    userAbout VARCHAR(250)
+    about VARCHAR(250),
+    communicationPreference VARCHAR(5)
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
@@ -263,36 +255,27 @@ const sync = async () => {
       firstname: 'Lucy',
       lastname: 'Anabell',
       username: 'lucy',
-      // zipcode: '12345',
       phone: '904-321-4567',
       email: 'lucy@gmail.com',
       password: 'LUCY',
-      // birthday: '12/31/1999',
-      // gender: 'female',
       role: 'ADMIN',
     },
     moe: {
       firstname: 'Moe',
       lastname: 'Anabell',
       username: 'moe',
-      // zipcode: '12345',
       phone: '904-321-4567',
       email: 'moe@gmail.com',
       password: 'MOE',
-      // birthday: '12/31/1999',
-      // gender: 'male',
       role: 'USER',
     },
     curly: {
       firstname: 'Larry',
       lastname: 'Smith',
       username: 'larry',
-      // zipcode: '12345',
       phone: '904-321-4567',
       email: 'larry@gmail.com',
       password: 'LARRY',
-      // birthday: '12/31/1999',
-      // gender: 'female',
     },
   };
 
@@ -339,9 +322,7 @@ const sync = async () => {
   Promise.all([
     profiles.createProfile({
       userId: lucyid,
-      communicationPreference: 'Email',
       gender: 'Female',
-      orientation: 'Heterosexual',
       politicalAffiliation: 'Democrat',
       religiousAffiliation: 'Catholic',
       careerId: eduid,
@@ -350,12 +331,12 @@ const sync = async () => {
       birthdate: '2/2/1996',
       zipCode: 32207,
       employmentStatus: 'Full time',
+      about: 'Extrovert',
+      communicationPreference: 'Email',
     }),
     profiles.createProfile({
       userId: moeid,
-      communicationPreference: 'Email',
       gender: 'Male',
-      orientation: '',
       politicalAffiliation: 'Independent',
       religiousAffiliation: 'Athiest',
       careerId: othid,
@@ -364,12 +345,12 @@ const sync = async () => {
       birthdate: '5/5/1960',
       zipCode: 32210,
       employmentStatus: 'Retired',
+      about: 'Introvert',
+      communicationPreference: 'Text',
     }),
     profiles.createProfile({
       userId: curlyid,
-      communicationPreference: 'Email',
-      gender: '',
-      orientation: 'Homosexual',
+      gender: 'Male',
       politicalAffiliation: 'Green Party',
       religiousAffiliation: 'Protestant',
       careerId: compid,
@@ -378,6 +359,8 @@ const sync = async () => {
       birthdate: '10/10/1980',
       zipCode: 32073,
       employmentStatus: 'Part time',
+      about: 'Life of the party!',
+      communicationPreference: 'Email',
     }),
   ]);
 
@@ -406,10 +389,6 @@ const readPoliticalParties = async () => {
 const readPets = async () => {
   return (await client.query('SELECT * from pets')).rows;
 };
-const getUserIdFromEmail = async (email) => {
-  const SQL = `SELECT id FROM users WHERE email = $1`;
-  return (await client.query(SQL, [email])).rows[0];
-};
 
 const createUserInfo = async ([
   user,
@@ -421,8 +400,9 @@ const createUserInfo = async ([
   userEmploymentStatus,
   userAbout,
   userZipcode,
+  userCommunicationPreference,
 ]) => {
-  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode) values($1, $2, $3, $4, $5, $6, $7, $8, $9 ) returning *`;
+  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode, communicationPreference) values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 ) returning *`;
   return (
     await client.query(SQL, [
       user,
@@ -434,6 +414,7 @@ const createUserInfo = async ([
       employmentStatus,
       userAbout,
       zipcode,
+      communicationPreference,
     ])
   ).rows[0];
 };
@@ -451,5 +432,4 @@ module.exports = {
   readPoliticalParties,
   readPets,
   createUserInfo,
-  getUserIdFromEmail,
 };

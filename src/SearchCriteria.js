@@ -229,6 +229,20 @@ const SearchCriteria = ({ user }) => {
               })}
             </select>
           </div>
+
+          <div className="col">
+            <label htmlFor="hobby">What is their hobby?</label>
+            <select
+              className="form-control"
+              id="hobby"
+              value={criteriaInput.hobby}
+              onChange={handleChange}
+            >
+              {hobbies.map((hobby) => {
+                return <option key={hobby.id}>{hobby.hobby_name}</option>;
+              })}
+            </select>
+          </div>
         </div>
         <button type="submit">Submit</button>
       </form>

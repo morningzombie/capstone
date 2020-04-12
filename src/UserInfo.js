@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const UserInfo = ({ login, auth }) => {
-  const [userid, setUserid] = useState("");
+  const [userid, setUserid] = useState('');
   const [careers, setCareers] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
@@ -10,74 +10,59 @@ const UserInfo = ({ login, auth }) => {
   const [politicalParties, setPoliticalParties] = useState([]);
   const [pets, setPets] = useState([]);
 
-  const [userBirthdate, setUserBirthdate] = useState("");
-  const [userGender, setUserGender] = useState("-- select an option --");
+  const [userBirthdate, setUserBirthdate] = useState('');
+  const [userZipCode, setUserZipCode] = useState('');
+  const [userGender, setUserGender] = useState('-- select an option --');
   const [userPoliticalAffiliation, setUserPoliticalAffiliation] = useState(
-    "-- select an option --"
+    '-- select an option --'
   );
   const [userReligiousAffiliation, setUserReligiousAffiliation] = useState(
-    "-- select an option --"
+    '-- select an option --'
   );
-  const [userCareer, setUserCareer] = useState("-- select an option --");
+  const [userCareer, setUserCareer] = useState('-- select an option --');
   const [userEmploymentStatus, setUserEmploymentStatus] = useState(
-    "-- select an option --"
+    '-- select an option --'
   );
-  const [userPets, setUserPets] = useState("-- select an option --");
-  const [userAbout, setUserAbout] = useState("");
+  const [userPets, setUserPets] = useState('-- select an option --');
+  const [userAbout, setUserAbout] = useState('');
   useEffect(() => {
-    axios.get("/api/careers").then((response) => setCareers(response.data));
+    axios.get('/api/careers').then((response) => setCareers(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/religions").then((response) => setReligions(response.data));
+    axios.get('/api/religions').then((response) => setReligions(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/genders").then((response) => setGenders(response.data));
+    axios.get('/api/genders').then((response) => setGenders(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get("/api/employment_status")
+      .get('/api/employment_status')
       .then((response) => setEmploymentStatus(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get("/api/political_parties")
+      .get('/api/political_parties')
       .then((response) => setPoliticalParties(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/pets").then((response) => setPets(response.data));
+    axios.get('/api/pets').then((response) => setPets(response.data));
   }, []);
 
   const createUserInfo = (user) => {
-    axios.post("/api/user_profiles", user).then((response) => {
-      console.log("USERINFO", response);
+    axios.post('/api/user_profiles', user).then((response) => {
+      console.log('USERINFO', response);
       login({ email, password }).catch((ex) =>
         setError(ex.response.data.message)
       );
     });
   };
 
-  const getUserIdFromEmail = (email) => {
-    axios
-      .get("/api/getUserIdFromEmail", email)
-      .then((response) => setUserid(response.data));
-  };
-
   const onSubmit = (ev) => {
     ev.preventDefault();
-    // if (confirmPassword !== password) {
-    //   return setPasswordError("Please confirm correct password");
-    // } else
     {
-<<<<<<< HEAD
-      const userIdwork = auth.id;
-      console.log('does this bring the id', userIdwork);
-=======
-      console.log("LOGIN after click", auth.email);
->>>>>>> master
-      const email = auth.email;
-      const userId = getUserIdFromEmail(email);
+      const userId = auth.id;
       createUserInfo({
-        userIdwork,
+        userId,
         userGender,
         userPoliticalAffiliation,
         userReligiousAffiliation,
@@ -85,8 +70,7 @@ const UserInfo = ({ login, auth }) => {
         userBirthdate,
         userEmploymentStatus,
         userAbout,
-        userEducation,
-        userZipcode,
+        userZipCode,
       });
     }
   };
@@ -94,6 +78,16 @@ const UserInfo = ({ login, auth }) => {
     <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us All About You</h3>
       <form>
+        <div>
+          <label htmlFor="career">Where do you live?</label>
+          <input
+            placeholder="Zip Code"
+            type="text"
+            pattern="(\d{5}([\-]\d{4})?)"
+            id="zipCode"
+            onChange={(ev) => setUserZipCode(ev.target.value)}
+          />
+        </div>
         <div className="row">
           <div className="col">
             <label htmlFor="career">What is your occupation?</label>
@@ -167,7 +161,7 @@ const UserInfo = ({ login, auth }) => {
           </div>
 
           <div className="col">
-            {" "}
+            {' '}
             <label htmlFor="gender">Your gender?</label>
             <select
               className="form-control"
@@ -189,7 +183,7 @@ const UserInfo = ({ login, auth }) => {
 
         <div className="row mt-3">
           <div className="col">
-            {" "}
+            {' '}
             <label htmlFor="politicalAffiliation">
               What is your political affiliation?
             </label>

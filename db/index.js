@@ -412,10 +412,9 @@ const createUserInfo = async ([
   userBirthdate,
   userEmploymentStatus,
   userAbout,
-  userEducation,
   userZipcode,
 ]) => {
-  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, education, zipcode) values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, ) returning *`;
+  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode) values($1, $2, $3, $4, $5, $6, $7, $8, $9 ) returning *`;
   return (
     await client.query(SQL, [
       user,
@@ -426,7 +425,6 @@ const createUserInfo = async ([
       birthdate,
       employmentStatus,
       userAbout,
-      education,
       zipcode,
     ])
   ).rows[0];

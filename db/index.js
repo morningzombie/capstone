@@ -13,6 +13,7 @@ const models = ({
   employment_status,
   pets,
   political_parties,
+  searches,
 } = require('./models'));
 
 const { changePassword } = require('./userMethods');

@@ -5,13 +5,13 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 const SearchCriteria = ({ user }) => {
   const [criteria, setCriteria] = useState([
     {
-      carreerId: '-- select an option --',
-      employmentStatus: '-- select an option --',
-      pets: '-- select an option --',
-      ageRange: '-- select an option --',
-      gender: '-- select an option --',
-      politicalAffiliation: '-- select an option --',
-      religiousAffiliation: '-- select an option --',
+      carreerId: '',
+      employmentStatus: '',
+      pets: '',
+      ageRange: '',
+      gender: '',
+      politicalAffiliation: '',
+      religiousAffiliation: '',
       zipCode: '',
     },
   ]);
@@ -19,13 +19,13 @@ const SearchCriteria = ({ user }) => {
   const [criteriaInput, setCriteriaInput] = useReducer(
     (criteria, setCriteriaInput) => ({ ...criteria, ...setCriteriaInput }),
     {
-      carreerId: '-- select an option --',
-      employmentStatus: '-- select an option --',
-      pets: '-- select an option --',
-      ageRange: '-- select an option --',
-      gender: '-- select an option --',
-      politicalAffiliation: '-- select an option --',
-      religiousAffiliation: '-- select an option --',
+      carreerId: '',
+      employmentStatus: '',
+      pets: '',
+      ageRange: '',
+      gender: '',
+      politicalAffiliation: '',
+      religiousAffiliation: '',
       zipCode: '',
     }
   );
@@ -42,22 +42,6 @@ const SearchCriteria = ({ user }) => {
   const [pets, setPets] = useState([]);
   const [hobbies, setHobbies] = useState([]);
   const [ageRange, setAgeRange] = useState('');
-
-  // const [userGender, setUserGender] = useState('-- select an option --');
-  // // const [userSexualPreference, setUserSexualPreference] = useState(
-  // //   '-- select an option --'
-  // // );
-  // const [userPoliticalAffiliation, setUserPoliticalAffiliation] = useState(
-  //   '-- select an option --'
-  // );
-  // const [userReligiousAffiliation, setUserReligiousAffiliation] = useState(
-  //   '-- select an option --'
-  // );
-
-  // const [userCareer, setUserCareer] = useState('-- select an option --');
-
-  // const [userPets, setUserPets] = useState('-- select an option --');
-  // const [userAbout, setUserAbout] = useState('');
 
   useEffect(() => {
     axios.get('/api/religions').then((response) => setReligions(response.data));

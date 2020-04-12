@@ -38,11 +38,7 @@ const SearchCriteria = ({ user }) => {
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
   const [employmentStatus, setEmploymentStatus] = useState([]);
-<<<<<<< HEAD
   const [politicalAffiliation, setPoliticalAffiliation] = useState([]);
-=======
-  const [politicalParties, setPoliticalParties] = useState([]);
->>>>>>> master
   const [pets, setPets] = useState([]);
   const [hobbies, setHobbies] = useState([]);
   const [ageRange, setAgeRange] = useState('');
@@ -71,21 +67,13 @@ const SearchCriteria = ({ user }) => {
   }, []);
   useEffect(() => {
     axios
-<<<<<<< HEAD
       .get('/api/employment_status')
-=======
-      .get('/api/employmentStatus')
->>>>>>> master
       .then((response) => setEmploymentStatus(response.data));
   }, []);
   useEffect(() => {
     axios
       .get('/api/political_parties')
-<<<<<<< HEAD
       .then((response) => setPoliticalAffiliation(response.data));
-=======
-      .then((response) => setPoliticalParties(response.data));
->>>>>>> master
   }, []);
   useEffect(() => {
     axios.get('/api/pets').then((response) => setPets(response.data));
@@ -102,11 +90,6 @@ const SearchCriteria = ({ user }) => {
       .post('/api/searchCriteria', criteriaInput)
       .then((response) => setCriteria([response.data, ...criteria]));
   };
-<<<<<<< HEAD
-  // console.log('empty?', employmentStatus);
-=======
-  console.log('empty?', employmentStatus);
->>>>>>> master
   return (
     <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us Who You Want to Hang With</h3>
@@ -116,11 +99,7 @@ const SearchCriteria = ({ user }) => {
           <input
             placeholder="Zip Code"
             type="text"
-<<<<<<< HEAD
             pattern="(\d{5}([\-]\d{4})?)"
-=======
-            pattern="[0-9]"
->>>>>>> master
             id="zipCode"
             name="zipCode"
             value={criteriaInput.zipCode}
@@ -178,14 +157,23 @@ const SearchCriteria = ({ user }) => {
         <div className="row">
           <div className="col">
             <label htmlFor="age">What is their age?</label>
-            <input
-              className="form-control"
+            <select
               type="text"
               id="ageRange"
               name="ageRange"
               value={criteriaInput.ageRange}
               onChange={handleChange}
-            />
+            >
+              <option value="teens">18 to 21</option>
+              <option value="twenties">22 to 29</option>
+              <option value="thirties">30 t0 39</option>
+              <option value="forties">40 to 49</option>
+              <option value="fifties">50 to 59 </option>
+              <option value="sixties">60 to 69</option>
+              <option value="seventies">70 to 79</option>
+              <option value="goldenYears">80 and up</option>
+              <option value="doesntMatter">Does Not Matter</option>
+            </select>
           </div>
 
           <div className="col">

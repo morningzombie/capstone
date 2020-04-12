@@ -15,6 +15,8 @@ const models = ({
   political_parties,
 } = require('./models'));
 
+const { changePassword } = require('./userMethods');
+
 const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -38,12 +40,13 @@ const sync = async () => {
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
-    zipcode VARCHAR(5),
+    phone VARCHAR(20) NOT NULL,
+    --zipcode VARCHAR(5),
     email citext UNIQUE,
     password VARCHAR(100),
-    birthday DATE NOT NULL ,
+    --birthday DATE NOT NULL ,
     communicationPreference VARCHAR(5),
-    gender VARCHAR(20),
+    --gender VARCHAR(20),
     user_profile_id UUID,
     user_group_id UUID,
    -- zipCode INT,
@@ -258,33 +261,36 @@ const sync = async () => {
       firstname: 'Lucy',
       lastname: 'Anabell',
       username: 'lucy',
-      zipcode: '12345',
+      // zipcode: '12345',
+      phone: '904-321-4567',
       email: 'lucy@gmail.com',
       password: 'LUCY',
-      birthday: '12/31/1999',
-      gender: 'female',
+      // birthday: '12/31/1999',
+      // gender: 'female',
       role: 'ADMIN',
     },
     moe: {
       firstname: 'Moe',
       lastname: 'Anabell',
       username: 'moe',
-      zipcode: '12345',
+      // zipcode: '12345',
+      phone: '904-321-4567',
       email: 'moe@gmail.com',
       password: 'MOE',
-      birthday: '12/31/1999',
-      gender: 'male',
+      // birthday: '12/31/1999',
+      // gender: 'male',
       role: 'USER',
     },
     curly: {
       firstname: 'Larry',
       lastname: 'Smith',
       username: 'larry',
-      zipcode: '12345',
+      // zipcode: '12345',
+      phone: '904-321-4567',
       email: 'larry@gmail.com',
       password: 'LARRY',
-      birthday: '12/31/1999',
-      gender: 'female',
+      // birthday: '12/31/1999',
+      // gender: 'female',
     },
   };
 

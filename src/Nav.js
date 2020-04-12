@@ -1,5 +1,5 @@
-import React from "react";
-import qs from "qs";
+import React from 'react';
+import qs from 'qs';
 
 import {
   BrowserRouter as Router,
@@ -7,13 +7,13 @@ import {
   Route,
   Link,
   useRouteMatch,
-} from "react-router-dom";
-import UserInfo from "./UserInfo";
-import UserHobbies from "./UserHobbies";
-import SearchCriteria from "./SearchCriteria";
-import FileUpload from "./components/FileUpload";
-import Login from "./Login";
-import Home from "./Home";
+} from 'react-router-dom';
+import UserInfo from './UserInfo';
+import UserHobbies from './UserHobbies';
+import SearchCriteria from './SearchCriteria';
+import FileUpload from './components/FileUpload';
+import Login from './Login';
+import Home from './Home';
 
 const Nav = ({ params, logout, auth, login }) => {
   return (
@@ -41,9 +41,10 @@ const Nav = ({ params, logout, auth, login }) => {
           </li>
 
           <li className="nav-item dropdown">
-            <a
+            <Link
+              to="/userinfo"
               className="nav-link dropdown-toggle"
-              href="#"
+              // href="#"
               id="navbarDropdown"
               role="button"
               data-toggle="dropdown"
@@ -51,8 +52,26 @@ const Nav = ({ params, logout, auth, login }) => {
               aria-expanded="false"
             >
               User Info
-            </a>
+            </Link>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+              {/* current change starts here (what CM had before) */}
+              <Link to="/userprofile" className="dropdown-item">
+                User Profile
+              </Link>
+              <br />
+              <Link to="/userhobbies" className="dropdown-item">
+                User Hobbies
+              </Link>
+              <Link to="/useraccount" className="dropdown-item">
+                User Account
+              </Link>
+              <a className="dropdown-item" href="#">
+                User Events
+              </a>
+              <div className="dropdown-divider"></div>
+              <a className="dropdown-item">Upload a Photo</a>
+              {/* current change ends here */}
+              {/* incoming below */}
               <div className="nav-item">
                 <Link className="nav-link" to="/register">
                   Account Settings
@@ -97,6 +116,7 @@ const Nav = ({ params, logout, auth, login }) => {
                   User Schedule
                 </Link>
               </div>
+              {/* incoming ends here */}
             </div>
           </li>
         </ul>

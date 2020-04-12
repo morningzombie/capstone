@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const CreateNewUser = ({ login }) => {
@@ -7,6 +8,7 @@ const CreateNewUser = ({ login }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [birthday, setBirthday] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -32,11 +34,12 @@ const CreateNewUser = ({ login }) => {
         firstname,
         lastname,
         username,
-        zipcode,
+        // zipcode,
         email,
+        phone,
         password,
-        birthday,
-        gender,
+        // birthday,
+        // gender,
       });
     }
   };
@@ -75,7 +78,7 @@ const CreateNewUser = ({ login }) => {
             onChange={(ev) => setUsername(ev.target.value)}
           />
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Zipcode</label>
           <input
             value={zipcode}
@@ -83,6 +86,16 @@ const CreateNewUser = ({ login }) => {
             type="text"
             placeholder="Zipcode"
             onChange={(ev) => setZipcode(ev.target.value)}
+          />
+        </div> */}
+        <div className="form-group">
+          <label>Phone number</label>
+          <input
+            value={phone}
+            className="form-control"
+            type="text"
+            placeholder="Phone number"
+            onChange={(ev) => setPhone(ev.target.value)}
           />
         </div>
         <div className="form-group">
@@ -118,7 +131,7 @@ const CreateNewUser = ({ login }) => {
           />
           <div>{passwordError}</div>
         </div>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label>Birthday</label>
           <input
             value={birthday}
@@ -141,10 +154,12 @@ const CreateNewUser = ({ login }) => {
             <option>Female</option>
           </select>
           {gender}
-        </div>
-        {/* <Link to="/profile"> */}
-        <button className="btn btn-primary">Create Account</button>
-        {/* </Link> */}
+        </div> */}
+
+        {/* <button className="btn btn-primary">Create Account</button> */}
+        <Link to="/useraccount" className="btn btn-primary">
+          Create Account
+        </Link>
       </form>
     </div>
   );

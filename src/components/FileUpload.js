@@ -16,7 +16,6 @@ const FileUpload = ({ auth, params }) => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
   };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();

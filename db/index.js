@@ -119,12 +119,8 @@ const sync = async () => {
     birthdate DATE,
     zipCode INT,
     employmentStatus VARCHAR(100),
-<<<<<<< HEAD
-    about VARCHAR(250)
-=======
     about VARCHAR(250),
     communicationPreference VARCHAR(5)
->>>>>>> master
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');

@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const Login = ({ login }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const history = useHistory();
+  const goToUpload = () => history.push('/file/upload');
+
   const onSubmit = (ev) => {
-    login({ email, password }).catch((ex) =>
-      setError(ex.response.data.message)
-    );
+    ev.preventDefault();
+    login({ email, password })
+      .then(() => goToUpload())
+      .catch((ex) => {
+        setError(ex.response.data.message);
+      });
   };
 
   return (
     <div className="container">
-      <form>
+      <form onSubmit={onSubmit}>
         <h1>Login</h1>
         <div className="error">{error}</div>
         <div className="form-group">
@@ -40,9 +47,7 @@ const Login = ({ login }) => {
             onChange={(ev) => setPassword(ev.target.value)}
           />
         </div>
-        <Link className="btn btn-primary" to="/file/upload" onClick={onSubmit}>
-          Log In
-        </Link>
+        <button className="btn btn-primary">Log In</button>
       </form>
       <hr />
       <Link to="/register">Create Account</Link>

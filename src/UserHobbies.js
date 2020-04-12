@@ -15,9 +15,13 @@ const UserHobbies = (auth) => {
   }, []);
 
   const createUserHobbies = (ev) => {
-    axios.post("/api/user_hobbies", { userId }).then((response) => {
-      setError(ex.response.data.message);
-    });
+    axios
+      .post("/api/user_hobbies", { hobbies })
+      .then((response) => setHobbies([response.data, ...hobbies]))
+      // .then(() => setUserHobbies(""))
+      .then((response) => {
+        setError(ex.response.data.message);
+      });
   };
 
   const onSubmit = (ev) => {
@@ -29,6 +33,7 @@ const UserHobbies = (auth) => {
       createUserHobbies({
         userId,
         userHobbies,
+        hobbies,
       });
     }
   };

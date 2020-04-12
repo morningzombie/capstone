@@ -1,7 +1,7 @@
-const client = require('./client');
-const fs = require('fs');
+const client = require("./client");
+const fs = require("fs");
 
-const { authenticate, compare, findUserFromToken, hash } = require('./auth');
+const { authenticate, compare, findUserFromToken, hash } = require("./auth");
 
 const models = ({
   users,
@@ -13,9 +13,9 @@ const models = ({
   employment_status,
   pets,
   political_parties,
-} = require('./models'));
+} = require("./models"));
 
-const { changePassword } = require('./userMethods');
+const { changePassword } = require("./userMethods");
 
 const sync = async () => {
   let SQL = `
@@ -34,6 +34,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS pets CASCADE;
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
+  DROP TABLE IF EXISTS education CASCADE;
+
 
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -54,6 +56,10 @@ const sync = async () => {
   CREATE TABLE religions(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     religion_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE education(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    education_name VARCHAR(100) NOT NULL
   );
   CREATE TABLE genders(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -113,8 +119,12 @@ const sync = async () => {
     birthdate DATE,
     zipCode INT,
     employmentStatus VARCHAR(100),
+<<<<<<< HEAD
+    about VARCHAR(250)
+=======
     about VARCHAR(250),
     communicationPreference VARCHAR(5)
+>>>>>>> master
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
@@ -246,36 +256,44 @@ const sync = async () => {
   INSERT INTO pets (pet_name) VALUES ('Multiple Types of Animals');
   INSERT INTO pets (pet_name) VALUES ('No Pets');
   INSERT INTO pets (pet_name) VALUES ('Does Not Matter');
+
+  INSERT INTO education (education_name) VALUES ('High School');
+  INSERT INTO education (education_name) VALUES ('Certificate');
+  INSERT INTO education (education_name) VALUES ('Trade School');
+  INSERT INTO education (education_name) VALUES ('Some College');
+  INSERT INTO education (education_name) VALUES ('Bachelors Degree');
+  INSERT INTO education (education_name) VALUES ('Graduate Degree');
+  INSERT INTO education (education_name) VALUES ('PhD');
 `;
 
   await client.query(SQL);
 
   const _users = {
     lucy: {
-      firstname: 'Lucy',
-      lastname: 'Anabell',
-      username: 'lucy',
-      phone: '904-321-4567',
-      email: 'lucy@gmail.com',
-      password: 'LUCY',
-      role: 'ADMIN',
+      firstname: "Lucy",
+      lastname: "Anabell",
+      username: "lucy",
+      phone: "904-321-4567",
+      email: "lucy@gmail.com",
+      password: "LUCY",
+      role: "ADMIN",
     },
     moe: {
-      firstname: 'Moe',
-      lastname: 'Anabell',
-      username: 'moe',
-      phone: '904-321-4567',
-      email: 'moe@gmail.com',
-      password: 'MOE',
-      role: 'USER',
+      firstname: "Moe",
+      lastname: "Anabell",
+      username: "moe",
+      phone: "904-321-4567",
+      email: "moe@gmail.com",
+      password: "MOE",
+      role: "USER",
     },
     curly: {
-      firstname: 'Larry',
-      lastname: 'Smith',
-      username: 'larry',
-      phone: '904-321-4567',
-      email: 'larry@gmail.com',
-      password: 'LARRY',
+      firstname: "Larry",
+      lastname: "Smith",
+      username: "larry",
+      phone: "904-321-4567",
+      email: "larry@gmail.com",
+      password: "LARRY",
     },
   };
 
@@ -289,78 +307,78 @@ const sync = async () => {
   }, {});
 
   Promise.all([
-    careers.createCareer('Computers and Technology'),
-    careers.createCareer('Health Care and Allied Health'),
-    careers.createCareer('Education and Social Services'),
-    careers.createCareer('Arts and Communications'),
-    careers.createCareer('Trades and Transportation'),
-    careers.createCareer('Management, Business, and Finance'),
-    careers.createCareer('Architecture and Civil Engineering'),
-    careers.createCareer('Science'),
-    careers.createCareer('Hospitality, Tourism, and the Service Industry'),
-    careers.createCareer('Law and Law Enforcement'),
-    careers.createCareer('Other'),
-    careers.createCareer('Does not matter'),
+    careers.createCareer("Computers and Technology"),
+    careers.createCareer("Health Care and Allied Health"),
+    careers.createCareer("Education and Social Services"),
+    careers.createCareer("Arts and Communications"),
+    careers.createCareer("Trades and Transportation"),
+    careers.createCareer("Management, Business, and Finance"),
+    careers.createCareer("Architecture and Civil Engineering"),
+    careers.createCareer("Science"),
+    careers.createCareer("Hospitality, Tourism, and the Service Industry"),
+    careers.createCareer("Law and Law Enforcement"),
+    careers.createCareer("Other"),
+    careers.createCareer("Does not matter"),
   ]);
 
   const compid = await careers
-    .findCareerId('Computers and Technology')
+    .findCareerId("Computers and Technology")
     .then((response) => response.id);
   const eduid = await careers
-    .findCareerId('Education and Social Services')
+    .findCareerId("Education and Social Services")
     .then((response) => response.id);
   const othid = await careers
-    .findCareerId('Other')
+    .findCareerId("Other")
     .then((response) => response.id);
 
-  const lucyid = await users.findUserId('lucy').then((response) => response.id);
-  const moeid = await users.findUserId('moe').then((response) => response.id);
+  const lucyid = await users.findUserId("lucy").then((response) => response.id);
+  const moeid = await users.findUserId("moe").then((response) => response.id);
   const curlyid = await users
-    .findUserId('larry')
+    .findUserId("larry")
     .then((response) => response.id);
 
   Promise.all([
-    profiles.createProfile({
-      userId: lucyid,
-      gender: 'Female',
-      politicalAffiliation: 'Democrat',
-      religiousAffiliation: 'Catholic',
-      careerId: eduid,
-      education: 'College educated',
-      pets: 'Dogs',
-      birthdate: '2/2/1996',
-      zipCode: 32207,
-      employmentStatus: 'Full time',
-      about: 'Extrovert',
-      communicationPreference: 'Email',
-    }),
+    // profiles.createProfile({
+    //   userId: lucyid,
+    //   gender: 'Female',
+    //   politicalAffiliation: 'Democrat',
+    //   religiousAffiliation: 'Catholic',
+    //   careerId: eduid,
+    //   education: 'College educated',
+    //   pets: 'Dogs',
+    //   birthdate: '2/2/1996',
+    //   zipCode: 32207,
+    //   employmentStatus: 'Full time',
+    //   about: 'Extrovert',
+    //   communicationPreference: 'Email',
+    // }),
     profiles.createProfile({
       userId: moeid,
-      gender: 'Male',
-      politicalAffiliation: 'Independent',
-      religiousAffiliation: 'Athiest',
+      gender: "Male",
+      politicalAffiliation: "Independent",
+      religiousAffiliation: "Athiest",
       careerId: othid,
-      education: 'Trade school',
-      pets: 'Reptiles',
-      birthdate: '5/5/1960',
+      education: "Trade school",
+      pets: "Reptiles",
+      birthdate: "5/5/1960",
       zipCode: 32210,
-      employmentStatus: 'Retired',
-      about: 'Introvert',
-      communicationPreference: 'Text',
+      employmentStatus: "Retired",
+      about: "Introvert",
+      communicationPreference: "Text",
     }),
     profiles.createProfile({
       userId: curlyid,
-      gender: 'Male',
-      politicalAffiliation: 'Green Party',
-      religiousAffiliation: 'Protestant',
+      gender: "Male",
+      politicalAffiliation: "Green Party",
+      religiousAffiliation: "Protestant",
       careerId: compid,
-      education: 'High school',
-      pets: 'Cats',
-      birthdate: '10/10/1980',
+      education: "High school",
+      pets: "Cats",
+      birthdate: "10/10/1980",
       zipCode: 32073,
-      employmentStatus: 'Part time',
-      about: 'Life of the party!',
-      communicationPreference: 'Email',
+      employmentStatus: "Part time",
+      about: "Life of the party!",
+      communicationPreference: "Email",
     }),
   ]);
 
@@ -369,25 +387,28 @@ const sync = async () => {
   };
 };
 const readCareers = async () => {
-  return (await client.query('SELECT * from careers')).rows;
+  return (await client.query("SELECT * from careers")).rows;
 };
 const readReligions = async () => {
-  return (await client.query('SELECT * from religions')).rows;
+  return (await client.query("SELECT * from religions")).rows;
 };
 const readGenders = async () => {
-  return (await client.query('SELECT * from genders')).rows;
+  return (await client.query("SELECT * from genders")).rows;
 };
 const readHobbies = async () => {
-  return (await client.query('SELECT * from hobbies')).rows;
+  return (await client.query("SELECT * from hobbies")).rows;
 };
 const readEmploymentStatus = async () => {
-  return (await client.query('SELECT * from employment_status')).rows;
+  return (await client.query("SELECT * from employment_status")).rows;
 };
 const readPoliticalParties = async () => {
-  return (await client.query('SELECT * from political_parties')).rows;
+  return (await client.query("SELECT * from political_parties")).rows;
 };
 const readPets = async () => {
-  return (await client.query('SELECT * from pets')).rows;
+  return (await client.query("SELECT * from pets")).rows;
+};
+const readEducation = async () => {
+  return (await client.query("SELECT * from education")).rows;
 };
 
 const createUserInfo = async ([
@@ -418,7 +439,6 @@ const createUserInfo = async ([
     ])
   ).rows[0];
 };
-
 module.exports = {
   sync,
   models,
@@ -431,5 +451,9 @@ module.exports = {
   readEmploymentStatus,
   readPoliticalParties,
   readPets,
+  // createUserInfo,
+  // getUserIdFromEmail,
+  // createUserHobbies,
+  readEducation,
   createUserInfo,
 };

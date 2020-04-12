@@ -163,6 +163,8 @@ const sync = async () => {
   INSERT INTO religions (religion_name) VALUES ('Unitarian-Universalism');
   INSERT INTO religions (religion_name) VALUES ('Other');
 
+  INSERT INTO genders (gender_name) VALUES ('Female');
+  INSERT INTO genders (gender_name) VALUES ('Male');
   INSERT INTO genders (gender_name) VALUES ('Agender');
   INSERT INTO genders (gender_name) VALUES ('Androgyne');
   INSERT INTO genders (gender_name) VALUES ('Androgynous');

@@ -9,6 +9,9 @@ import CreateNewUser from './components/User/CreateNewUser';
 import Header from './components/header/Header';
 import UserInfo from './UserInfo';
 import UserHobbies from './UserHobbies';
+import UserAccount from './components/User/UserAccount';
+import EditUserAccount from './components/User/EditUserAccount';
+import ChangeUserPassword from './components/User/ChangeUserPassword';
 
 // import Orders from './Orders';
 // import Cart from './Cart';
@@ -57,6 +60,7 @@ const App = () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);
+  console.log(auth, 'auth in app');
 
   const { view } = params;
 
@@ -81,6 +85,21 @@ const App = () => {
         <Switch>
           <Route path="/file/upload" exact>
             <FileUpload />
+          </Route>
+          <Route path="/userinfo" exact>
+            <UserInfo />
+          </Route>
+          <Route path="/userhobbies" exact>
+            <UserHobbies />
+          </Route>
+          <Route path="/useraccount/edit" exact>
+            <EditUserAccount auth={auth} setAuth={setAuth} />
+          </Route>
+          <Route path="/useraccount" exact>
+            <UserAccount logout={logout} auth={auth} setAuth={setAuth} />
+          </Route>
+          <Route path="/useraccount/password" exact>
+            <ChangeUserPassword auth={auth} setAuth={setAuth} />
           </Route>
           {/* Terry try to use react routing with your commented out code and let me know if you get it */}
           {/* <div>

@@ -51,6 +51,7 @@ app.get('/', (req, res, next) =>
 );
 
 app.post('/api/auth', (req, res, next) => {
+  //console.log(req.body, 'in auth at the top');
   db.authenticate(req.body)
     .then((token) => res.send({ token }))
     .catch(() => {
@@ -159,6 +160,26 @@ app.get('/api/hobbies', (req, res, next) => {
     .catch(next);
 });
 
+//validating password change
+app.post('/api/auth/validate', (req, res, next) => {
+  db.authenticate(req.body)
+    .then((token) => {
+      res.send({ token });
+    })
+    .catch(() => {
+      const error = Error('Incorrect current password');
+      error.status = 401;
+      next(error);
+    });
+});
+
+//change password
+app.put('/api/user/password/:id', (req, res, next) => {
+  db.changePassword(req.body)
+    .then((response) => res.send(response))
+    .catch(next);
+});
+
 Object.keys(models).forEach((key) => {
   app.get(`/api/${key}`, isLoggedIn, isAdmin, (req, res, next) => {
     models[key]
@@ -171,6 +192,20 @@ Object.keys(models).forEach((key) => {
     models[key]
       .create(req.body)
       .then((items) => res.send(items))
+      .catch(next);
+  });
+  app.put(`/api/${key}/:id`, (req, res, next) => {
+    // console.log(req.body, 'user put');
+    models[key]
+      .update(req.body, req.params.id)
+      .then((items) => res.send(items))
+      .catch(next);
+  });
+  app.delete(`/api/${key}/:id`, (req, res, next) => {
+    console.log(req.params.id, 'user delet');
+    models[key]
+      .delete(req.params.id)
+      .then(() => res.sendStatus(204))
       .catch(next);
   });
 });

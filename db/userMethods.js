@@ -1,5 +1,16 @@
-import React from 'react';
+const client = require('./client');
+const { hash } = require('./auth');
 
-const userMethods = () => {};
+//changePassword
+const changePassword = async ({ id, password }) => {
+  return (
+    await client.query(
+      `UPDATE "users" set password=$1 WHERE id = $2 returning *`,
+      [await hash(password), id]
+    )
+  ).rows[0];
+};
 
-export default userMethods;
+module.exports = {
+  changePassword,
+};

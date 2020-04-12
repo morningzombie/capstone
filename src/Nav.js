@@ -35,9 +35,10 @@ const Nav = ({ params, logout, auth }) => {
             </a>
           </li>
           <li className="nav-item dropdown">
-            <a
+            <Link
+              to="/userinfo"
               className="nav-link dropdown-toggle"
-              href="#"
+              // href="#"
               id="navbarDropdown"
               role="button"
               data-toggle="dropdown"
@@ -45,30 +46,40 @@ const Nav = ({ params, logout, auth }) => {
               aria-expanded="false"
             >
               User Info
-            </a>
+            </Link>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a
+              <Link
+                to="/userprofile"
                 className="dropdown-item"
-                href={`#${qs.stringify({ view: 'UserInfo' })}`}
+                // href={`#${qs.stringify({ view: 'UserInfo' })}`}
                 className={params === 'UserInfo' ? 'selected' : '/'}
               >
                 User Profile
-              </a>
+              </Link>
               <br />
-              <a
+              <Link
+                to="/userhobbies"
                 className="dropdown-item"
-                href={`#${qs.stringify({ view: 'UserHobbies' })}`}
+                // href={`#${qs.stringify({ view: 'UserHobbies' })}`}
                 className={params === 'UserHobbies' ? 'selected' : '/'}
               >
                 User Hobbies
-              </a>
+              </Link>
+              <Link
+                to="/useraccount"
+                className="dropdown-item"
+                // href={`#${qs.stringify({ view: 'UserInfo' })}`}
+                className={params === 'UserInfo' ? 'selected' : '/'}
+              >
+                User Account
+              </Link>
               <a className="dropdown-item" href="#">
                 User Events
               </a>
               <div className="dropdown-divider"></div>
               <a
                 className="dropdown-item"
-                href={`#${qs.stringify({ view: 'FileUpload' })}`}
+                // href={`#${qs.stringify({ view: 'FileUpload' })}`}
                 className={params === 'FileUpload' ? 'selected' : '/'}
               >
                 Upload a Photo

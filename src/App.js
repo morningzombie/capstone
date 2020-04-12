@@ -70,7 +70,7 @@ const App = () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);
-  console.log(auth, 'auth in app');
+  // console.log(auth, 'auth in app');
 
   const { view } = params;
 

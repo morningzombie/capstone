@@ -43,21 +43,21 @@ const SearchCriteria = ({ user }) => {
   const [hobbies, setHobbies] = useState([]);
   const [ageRange, setAgeRange] = useState('');
 
-  const [userGender, setUserGender] = useState('-- select an option --');
-  // const [userSexualPreference, setUserSexualPreference] = useState(
+  // const [userGender, setUserGender] = useState('-- select an option --');
+  // // const [userSexualPreference, setUserSexualPreference] = useState(
+  // //   '-- select an option --'
+  // // );
+  // const [userPoliticalAffiliation, setUserPoliticalAffiliation] = useState(
   //   '-- select an option --'
   // );
-  const [userPoliticalAffiliation, setUserPoliticalAffiliation] = useState(
-    '-- select an option --'
-  );
-  const [userReligiousAffiliation, setUserReligiousAffiliation] = useState(
-    '-- select an option --'
-  );
+  // const [userReligiousAffiliation, setUserReligiousAffiliation] = useState(
+  //   '-- select an option --'
+  // );
 
-  const [userCareer, setUserCareer] = useState('-- select an option --');
+  // const [userCareer, setUserCareer] = useState('-- select an option --');
 
-  const [userPets, setUserPets] = useState('-- select an option --');
-  const [userAbout, setUserAbout] = useState('');
+  // const [userPets, setUserPets] = useState('-- select an option --');
+  // const [userAbout, setUserAbout] = useState('');
 
   useEffect(() => {
     axios.get('/api/religions').then((response) => setReligions(response.data));
@@ -87,7 +87,7 @@ const SearchCriteria = ({ user }) => {
   const onSubmit = (ev) => {
     ev.preventDefault();
     axios
-      .post('/api/searchCriteria', criteriaInput)
+      .post('/api/search/criteria', criteriaInput)
       .then((response) => setCriteria([response.data, ...criteria]));
   };
   return (

@@ -68,11 +68,12 @@ const UserInfo = ({ login, auth }) => {
     //   return setPasswordError("Please confirm correct password");
     // } else
     {
-      console.log('LOGIN after click', auth.email);
+      const userIdwork = auth.id;
+      console.log('does this bring the id', userIdwork);
       const email = auth.email;
       const userId = getUserIdFromEmail(email);
       createUserInfo({
-        userId,
+        userIdwork,
         userGender,
         userPoliticalAffiliation,
         userReligiousAffiliation,

@@ -3,14 +3,46 @@ import axios from 'axios';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 const SearchCriteria = ({ user }) => {
-  const [careers, setCareers] = useState([]);
-  // const [employmentStatus, setEmploymentStatus] = useState([]);
-  const [gender, setGender] = useState([]);
-  const [pets, setPets] = useState([]);
-  const [politicalParties, setPoliticalParties] = useState([]);
-  const [religions, setReligions] = useState([]);
+  const [criteria, setCriteria] = useState([
+    {
+      carreerId: '-- select an option --',
+      employmentStatus: '-- select an option --',
+      pets: '-- select an option --',
+      ageRange: '-- select an option --',
+      gender: '-- select an option --',
+      politicalAffiliation: '-- select an option --',
+      religiousAffiliation: '-- select an option --',
+      zipCode: '',
+    },
+  ]);
 
-  const [userAgeRange, setUserAgeRange] = useState();
+  const [criteriaInput, setCriteriaInput] = useReducer(
+    (criteria, setCriteriaInput) => ({ ...criteria, ...setCriteriaInput }),
+    {
+      carreerId: '-- select an option --',
+      employmentStatus: '-- select an option --',
+      pets: '-- select an option --',
+      ageRange: '-- select an option --',
+      gender: '-- select an option --',
+      politicalAffiliation: '-- select an option --',
+      religiousAffiliation: '-- select an option --',
+      zipCode: '',
+    }
+  );
+
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    setCriteriaInput({ [name]: value });
+  };
+  const [careers, setCareers] = useState([]);
+  const [religions, setReligions] = useState([]);
+  const [genders, setGenders] = useState([]);
+  const [employmentStatus, setEmploymentStatus] = useState([]);
+  const [politicalParties, setPoliticalParties] = useState([]);
+  const [pets, setPets] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
+  const [ageRange, setAgeRange] = useState('');
+
   const [userGender, setUserGender] = useState('-- select an option --');
   // const [userSexualPreference, setUserSexualPreference] = useState(
   //   '-- select an option --'
@@ -23,61 +55,71 @@ const SearchCriteria = ({ user }) => {
   );
 
   const [userCareer, setUserCareer] = useState('-- select an option --');
-  const [employmentStatus, setEmploymentStatus] = useState('');
+
   const [userPets, setUserPets] = useState('-- select an option --');
   const [userAbout, setUserAbout] = useState('');
 
   useEffect(() => {
+    axios.get('/api/religions').then((response) => setReligions(response.data));
+  }, []);
+  useEffect(() => {
+    axios.get('/api/genders').then((response) => setGenders(response.data));
+  }, []);
+  useEffect(() => {
+    axios
+      .get('/api/employmentStatus')
+      .then((response) => setEmploymentStatus(response.data));
+  }, []);
+  useEffect(() => {
+    axios
+      .get('/api/political_parties')
+      .then((response) => setPoliticalParties(response.data));
+  }, []);
+  useEffect(() => {
+    axios.get('/api/pets').then((response) => setPets(response.data));
+  }, []);
+  useEffect(() => {
+    axios.get('/api/hobbies').then((response) => setHobbies(response.data));
+  }, []);
+  useEffect(() => {
     axios.get('/api/careers').then((response) => setCareers(response.data));
   }, []);
-
-  const createUserInfo = (user) => {
-    axios.post('/api/users', user).then((response) => {
-      console.log(response);
-      login({ email, password }).catch((ex) =>
-        setError(ex.response.data.message)
-      );
-    });
-  };
-
   const onSubmit = (ev) => {
     ev.preventDefault();
-    if (confirmPassword !== password) {
-      return setPasswordError('Please confirm correct password');
-    } else {
-      createUserInfo({
-        userAgeRange,
-        userGender,
-        // userSexualPreference,
-        userPoliticalAffiliation,
-        userReligiousAffiliation,
-        userCareer,
-        userPets,
-        userAbout,
-      });
-    }
+    axios
+      .post('/api/searchCriteria', criteriaInput)
+      .then((response) => setCriteria([response.data, ...criteria]));
   };
+  console.log('empty?', employmentStatus);
   return (
     <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us Who You Want to Hang With</h3>
       <form>
+        <div>
+          <label htmlFor="career">Where do they live?</label>
+          <input
+            placeholder="Zip Code"
+            type="text"
+            pattern="[0-9]"
+            id="zipCode"
+            name="zipCode"
+            value={criteriaInput.zipCode}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div className="row">
           <div className="col">
             <label htmlFor="career">What is their occupation?</label>
             <select
               className="form-control"
-              id="career"
-              defaultValue
-              onChange={(ev) => setUserCareer(ev.target.value)}
+              id="careerId"
+              name="careerId"
+              value={criteriaInput.careerId}
+              onChange={handleChange}
             >
-              <option value={userCareer}>{userCareer}</option>
-
               {careers.map((career) => {
-                return (
-                  <option key={career.id} value={career.career_name}>
-                    {career.career_name}
-                  </option>
-                );
+                return <option key={career.id}>{career.career_name}</option>;
               })}
             </select>
           </div>
@@ -87,16 +129,13 @@ const SearchCriteria = ({ user }) => {
             <select
               className="form-control"
               id="employmentStatus"
-              defaultValue
-              onChange={(ev) => setEmploymentStatus(ev.target.value)}
+              name="employmentStatus"
+              value={criteriaInput.employmentStatus}
+              onChange={handleChange}
             >
-              <option value={employmentStatus}>{employmentStatus}</option>
-              <option value="full-time">Full-Time</option>
-              <option value="part-time">Part-Time</option>
-              <option value="unemployed">Unemployed</option>
-              <option value="in-school">In Schoool</option>
-              <option value="freelance">Freelance</option>
-              <option value="looking">Looking...</option>
+              {employmentStatus.map((status) => {
+                return <option key={status.id}>{status.status_name}</option>;
+              })}
             </select>
           </div>
         </div>
@@ -279,174 +318,6 @@ const SearchCriteria = ({ user }) => {
       </form>
     </div>
   );
-  // const [genders, setGenders] = useState([]);
-  // useEffect(() => {
-  //   axios.get('/api/genders').then((response) => setGenders(response.data));
-  // }, []);
-  // const [careers, setCareers] = useState([]);
-  // useEffect(() => {
-  //   axios.get('/api/careers').then((response) => setCareers(response.data));
-  // }, []);
-  // const [criteria, setCriteria] = useState([
-  //   {
-  //     gender: '',
-  //     orientation: '',
-  //     politicalAffiliation: '',
-  //     religiousAffiliation: '',
-  //     careerId: '',
-  //     education: '',
-  //     pets: '',
-  //     ageRange: '',
-  //     employmentStatus: '',
-  //     hobbies: '',
-  //     zipCode: '',
-  //   },
-  // ]);
-  // const [error, setError] = useState('');
-  // const [inputCriteria, setInputCriteria] = useReducer(
-  //   (criteria, setCriteria) => ({ ...criteria, ...setCriteria }),
-  //   {
-  //     gender: criteria.gender,
-  //     orientation: criteria.orientation,
-  //     politicalAffiliation: criteria.politicalAffiliation,
-  //     religiousAffiliation: criteria.religiousAffiliation,
-  //     careerId: criteria.careerId,
-  //     education: criteria.education,
-  //     pets: criteria.pets,
-  //     ageRange: criteria.ageRange,
-  //     employmentStatus: criteria.employmentStatus,
-  //     hobbies: criteria.hobbies,
-  //     zipCode: criteria.zipCode,
-  //   }
-  // );
-  // const handleChange = (evt) => {
-  //   const { name, value } = evt.target;
-  //   setInputCriteria({ [name]: value });
-  // };
-  // const createCriteria = (event) => {
-  //   event.preventDefault();
-  //   axios
-  //     .post('/api/createCriteria', inputCriteria)
-  //     .then((response) => setCriteria([response.data, ...criteria]))
-  //     .then(() =>
-  //       setInputCriteria({
-  //         gender: '-- select an option --',
-  //         politicalAffiliation: '-- select an option --',
-  //         religiousAffiliation: '-- select an option --',
-  //         careerId: '-- select an option --',
-  //         education: '-- select an option --',
-  //         pets: '-- select an option --',
-  //         ageRange: '-- select an option --',
-  //         employmentStatus: '-- select an option --',
-  //         hobbies: '-- select an option --',
-  //         zipCode: '',
-  //       })
-  //     )
-  //     .catch(Error);
-  // };
-  // return (
-  //   <div>
-  //     <div className="box-background lower">
-  //       <form onSubmit={(ev) => createCriteria(ev)}>
-  //         <h2 className="white-text">Who do you wanna hang with?</h2>
-  //         <div>
-  //           <select
-  //             className="form-control"
-  //             id="gender"
-  //             placeholder="Gender"
-  //             name="gender"
-  //             defaultValue
-  //             onChange={handleChange}
-  //           >
-  //             <option value={userCareer}>{userCareer}</option>
-  //             <option value={inputCriteria.gender}>{genders}</option>
-  //             {genders.map((gender) => {
-  //               return (
-  //                 <option key={gender.id} value={gender.gender_name}>
-  //                   {gender.gender_name}
-  //                 </option>
-  //               );
-  //             })}
-  //           </select>
-  //         </div>
-  //         {/* <div className="error">{error}</div>
-  //         <label htmlFor="career">What type of person?</label>
-  //         <select
-  //           className="form-control"
-  //           id="gender"
-  //           placeholder="Gender"
-  //           name="gender"
-  //           defaultValue
-  //           onChange={handleChange}
-  //         >
-  //           <option value={inputCriteria.gender}>{genders}</option>
-  //           {genders.map((gender) => {
-  //             return (
-  //               <option key={gender.id} value={gender.gender_name}>
-  //                 {gender.gender_name}
-  //               </option>
-  //             );
-  //           })}
-  //         </select>
-  //         <input
-  //           placeholder="last name"
-  //           name="last_name"
-  //           value={inputCriteria.last_name}
-  //           onChange={handleChange}
-  //         />
-  //         <div className="col">
-  //           <label htmlFor="career">What do they do for a living?</label>
-  //           <select
-  //             className="form-control"
-  //             id="career"
-  //             defaultValue
-  //             onChange={handleChange}
-  //           >
-  //             <option value={inputCriteria.career}>{careers}</option>
-  //             {careers.map((career) => {
-  //               return (
-  //                 <option key={career.id} value={career.career_name}>
-  //                   {career.career_name}
-  //                 </option>
-  //               );
-  //             })}
-  //           </select>
-  //         </div>
-  //         <div className="col">
-  //           <label htmlFor="employmentStatus">
-  //             What is their employment status?
-  //           </label>
-  //           <select
-  //             className="form-control"
-  //             id="employmentStatus"
-  //             defaultValue
-  //             onChange={handleChange}
-  //           >
-  //             <option value={inputCriteria.employmentStatus}>
-  //               {inputCriteria.employmentStatus}
-  //             </option>
-  //             <option value="full-time">Full-Time</option>
-  //             <option value="part-time">Part-Time</option>
-  //             <option value="unemployed">Unemployed</option>
-  //             <option value="in-school">In Schoool</option>
-  //             <option value="freelance">Freelance</option>
-  //             <option value="looking">Looking...</option>
-  //           </select>
-  //         </div>
-  //         <input
-  //           placeholder="password"
-  //           name="password"
-  //           value={inputCriteria.password}
-  //           onChange={handleChange}
-  //           required
-  //         />
-  //         <button className="button5" type="submit">
-  //           <h3>Search</h3>
-  //         </button> */}
-  //       </form>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default SearchCriteria;

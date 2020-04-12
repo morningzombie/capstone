@@ -12,10 +12,7 @@ import UserHobbies from './UserHobbies';
 import UserAccount from './components/User/UserAccount';
 import EditUserAccount from './components/User/EditUserAccount';
 import ChangeUserPassword from './components/User/ChangeUserPassword';
-
-// import Orders from './Orders';
-// import Cart from './Cart';
-// import Products from './Products';
+import SearchCriteria from './SearchCriteria';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -30,6 +27,7 @@ const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
   const [hobbies, setHobbies] = useState([]);
+  const [userCareer, setUserCareer] = useState('');
 
   const login = async (credentials) => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -52,8 +50,20 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('/api/hobbies').then((response) => setHobbies(response.data));
-  }, []);
+    if (auth.id) {
+      axios.get('/api/getHobbies', headers()).then((response) => {
+        setHobbies(response.data);
+      });
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
+      axios.get('/api/getCareers', headers()).then((response) => {
+        setUserCareer(response.data);
+      });
+    }
+  }, [auth]);
 
   useEffect(() => {
     window.addEventListener('hashchange', () => {
@@ -84,13 +94,19 @@ const App = () => {
         <Nav logout={logout} auth={auth} />
         <Switch>
           <Route path="/file/upload" exact>
+            <FileUpload auth={auth} logout={logout} />
+          </Route>
+          <Link path="/FileUpload">
             <FileUpload />
+          </Link>
+          <Route path="/UserInfo">
+            <UserInfo auth={auth} login={login} />
           </Route>
-          <Route path="/userinfo" exact>
-            <UserInfo />
+          <Route path="/search/criteria">
+            <SearchCriteria />
           </Route>
-          <Route path="/userhobbies" exact>
-            <UserHobbies />
+          <Route path="/UserHobbies">
+            <UserHobbies auth={auth} />
           </Route>
           <Route path="/useraccount/edit" exact>
             <EditUserAccount auth={auth} setAuth={setAuth} />
@@ -101,21 +117,6 @@ const App = () => {
           <Route path="/useraccount/password" exact>
             <ChangeUserPassword auth={auth} setAuth={setAuth} />
           </Route>
-          {/* Terry try to use react routing with your commented out code and let me know if you get it */}
-          {/* <div>
-        {
-          <div className="">
-            <Nav logout={logout} />
-            {/* <button type="button" onClick={logout}>
-              Logout {auth.username}{" "}
-            </button> */}
-          {/*<div className="container mt-4">
-              {params.view === undefined ? <FileUpload /> : null}
-              {params.view === 'UserInfo' && <UserInfo />}
-              {params.view === 'FileUpload' && <FileUpload />}
-              {params.view === 'UserHobbies' && <UserHobbies />}
-            </div>{' '}
-            */}
         </Switch>
       </Router>
     );

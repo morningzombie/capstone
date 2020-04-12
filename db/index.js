@@ -3,7 +3,17 @@ const fs = require('fs');
 
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-const models = ({ users, profiles, careers, hobbies } = require('./models'));
+const models = ({
+  users,
+  profiles,
+  careers,
+  hobbies,
+  religions,
+  genders,
+  employment_status,
+  pets,
+  political_parties,
+} = require('./models'));
 
 const { changePassword } = require('./userMethods');
 
@@ -17,6 +27,11 @@ const sync = async () => {
   DROP TABLE IF EXISTS meetup_locations CASCADE;
   DROP TABLE IF EXISTS careers CASCADE;
   DROP TABLE IF EXISTS hobbies CASCADE;
+  DROP TABLE IF EXISTS genders CASCADE;
+  DROP TABLE IF EXISTS religions CASCADE;
+  DROP TABLE IF EXISTS employment_status CASCADE;
+  DROP TABLE IF EXISTS political_parties CASCADE;
+  DROP TABLE IF EXISTS pets CASCADE;
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
 
@@ -30,9 +45,10 @@ const sync = async () => {
     email citext UNIQUE,
     password VARCHAR(100),
     --birthday DATE NOT NULL ,
+    communicationPreference VARCHAR(5),
     --gender VARCHAR(20),
-    --user_profile_id UUID,
-    --user_group_id UUID,
+    user_profile_id UUID,
+    user_group_id UUID,
    -- zipCode INT,
     phoneNumber INT UNIQUE,
     userRating INT DEFAULT 0,
@@ -42,6 +58,26 @@ const sync = async () => {
   CREATE TABLE careers(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     career_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE religions(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    religion_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE genders(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    gender_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE employment_status(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    status_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE political_parties(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    party_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE pets(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    pet_name VARCHAR(100) NOT NULL
   );
   CREATE TABLE hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -75,8 +111,7 @@ const sync = async () => {
   );
   CREATE TABLE user_profiles(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    "userId" UUID REFERENCES users(id) ON DELETE CASCADE,
-    communicationPreference VARCHAR(5),
+    "userId" UUID REFERENCES users(id),
     gender VARCHAR(100),
     orientation VARCHAR(100),
     politicalAffiliation VARCHAR(100),
@@ -84,13 +119,139 @@ const sync = async () => {
     careerId UUID REFERENCES careers(id),
     education VARCHAR(100),
     pets VARCHAR(100),
-    age INT,
-    employmentStatus VARCHAR(100)
+    birthdate DATE,
+    zipCode INT,
+    employmentStatus VARCHAR(100),
+    userAbout VARCHAR(250)
   );
 
-  INSERT INTO hobbies (hobby_name) VALUES ('Art');
-  INSERT INTO hobbies (hobby_name) VALUES ('Fishing');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Books', 'books.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Camping', 'camping.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Collecting', 'collecting.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Computers & Gaming', 'computers.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('DIY', 'DIY.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Food & Drinks', 'food.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Games', 'games.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Gardening', 'gardening.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Movies', 'movies.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Music', 'music.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Performing Arts', 'performing.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Pets', 'pet.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Photography', 'photography.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Sewing', 'sewing.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Shopping', 'shopping.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Sports & Outdoors', 'sports.png');
+  INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Travel', 'travel.png');
 
+  INSERT INTO religions (religion_name) VALUES ('Christianity');
+  INSERT INTO religions (religion_name) VALUES ('Islam');
+  INSERT INTO religions (religion_name) VALUES ('Nonreligious');
+  INSERT INTO religions (religion_name) VALUES ('Hinduism');
+  INSERT INTO religions (religion_name) VALUES ('Chinese traditional');
+  INSERT INTO religions (religion_name) VALUES ('Buddhism');
+  INSERT INTO religions (religion_name) VALUES ('Primal-indigenous');
+  INSERT INTO religions (religion_name) VALUES ('African traditional');
+  INSERT INTO religions (religion_name) VALUES ('Sikhism');
+  INSERT INTO religions (religion_name) VALUES ('Juche');
+  INSERT INTO religions (religion_name) VALUES ('Spiritism');
+  INSERT INTO religions (religion_name) VALUES ('Judaism');
+  INSERT INTO religions (religion_name) VALUES ('Bahai');
+  INSERT INTO religions (religion_name) VALUES ('Jainism');
+  INSERT INTO religions (religion_name) VALUES ('Shinto');
+  INSERT INTO religions (religion_name) VALUES ('Cao Dai');
+  INSERT INTO religions (religion_name) VALUES ('Zoroastrianism');
+  INSERT INTO religions (religion_name) VALUES ('Tenrikyo');
+  INSERT INTO religions (religion_name) VALUES ('Neo-Paganism');
+  INSERT INTO religions (religion_name) VALUES ('Unitarian-Universalism');
+  INSERT INTO religions (religion_name) VALUES ('Other');
+
+  INSERT INTO genders (gender_name) VALUES ('Agender');
+  INSERT INTO genders (gender_name) VALUES ('Androgyne');
+  INSERT INTO genders (gender_name) VALUES ('Androgynous');
+  INSERT INTO genders (gender_name) VALUES ('Bigender');
+  INSERT INTO genders (gender_name) VALUES ('Cis');
+  INSERT INTO genders (gender_name) VALUES ('Cis Female');
+  INSERT INTO genders (gender_name) VALUES ('Cis Male');
+  INSERT INTO genders (gender_name) VALUES ('Cis Man');
+  INSERT INTO genders (gender_name) VALUES ('Cis Woman');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Female');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Male');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Man');
+  INSERT INTO genders (gender_name) VALUES ('Cisgender Woman');
+  INSERT INTO genders (gender_name) VALUES ('Female to Male');
+  INSERT INTO genders (gender_name) VALUES ('FTM');
+  INSERT INTO genders (gender_name) VALUES ('Gender Fluid');
+  INSERT INTO genders (gender_name) VALUES ('Gender Nonconforming');
+  INSERT INTO genders (gender_name) VALUES ('Gender Questioning');
+  INSERT INTO genders (gender_name) VALUES ('Gender Variant');
+  INSERT INTO genders (gender_name) VALUES ('Genderqueer');
+  INSERT INTO genders (gender_name) VALUES ('Intersex');
+  INSERT INTO genders (gender_name) VALUES ('Male to Female');
+  INSERT INTO genders (gender_name) VALUES ('MTF');
+  INSERT INTO genders (gender_name) VALUES ('Neither');
+  INSERT INTO genders (gender_name) VALUES ('Neutrois');
+  INSERT INTO genders (gender_name) VALUES ('Non-binary');
+  INSERT INTO genders (gender_name) VALUES ('Other');
+  INSERT INTO genders (gender_name) VALUES ('Pangender');
+  INSERT INTO genders (gender_name) VALUES ('Trans');
+  INSERT INTO genders (gender_name) VALUES ('Trans Female');
+  INSERT INTO genders (gender_name) VALUES ('Trans Male');
+  INSERT INTO genders (gender_name) VALUES ('Trans Man');
+  INSERT INTO genders (gender_name) VALUES ('Trans Person');
+  INSERT INTO genders (gender_name) VALUES ('Trans Woman');
+  INSERT INTO genders (gender_name) VALUES ('Trans');
+  INSERT INTO genders (gender_name) VALUES ('Trans Female');
+  INSERT INTO genders (gender_name) VALUES ('Trans Male');
+  INSERT INTO genders (gender_name) VALUES ('Trans Man');
+  INSERT INTO genders (gender_name) VALUES ('Trans Person');
+  INSERT INTO genders (gender_name) VALUES ('Trans Woman');
+  INSERT INTO genders (gender_name) VALUES ('Transfeminine');
+  INSERT INTO genders (gender_name) VALUES ('Transgender');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Female');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Male');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Man');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Person');
+  INSERT INTO genders (gender_name) VALUES ('Transgender Woman');
+  INSERT INTO genders (gender_name) VALUES ('Transmasculine');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Female');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Male');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Man');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Person');
+  INSERT INTO genders (gender_name) VALUES ('Transsexual Woman');
+  INSERT INTO genders (gender_name) VALUES ('Two-spirit');
+
+  INSERT INTO employment_status (status_name) VALUES ('Full-Time');
+  INSERT INTO employment_status (status_name) VALUES ('Part-Time');
+  INSERT INTO employment_status (status_name) VALUES ('Unemployed');
+  INSERT INTO employment_status (status_name) VALUES ('In Schoool');
+  INSERT INTO employment_status (status_name) VALUES ('Freelance');
+  INSERT INTO employment_status (status_name) VALUES ('Looking...');
+  INSERT INTO employment_status (status_name) VALUES ('Does Not Matter');
+
+  INSERT INTO political_parties (party_name) VALUES ('Democrat');
+  INSERT INTO political_parties (party_name) VALUES ('Independent');
+  INSERT INTO political_parties (party_name) VALUES ('Republican');
+  INSERT INTO political_parties (party_name) VALUES ('Conservative');
+  INSERT INTO political_parties (party_name) VALUES ('Liberal');
+  INSERT INTO political_parties (party_name) VALUES ('Green');
+  INSERT INTO political_parties (party_name) VALUES ('Tea');
+  INSERT INTO political_parties (party_name) VALUES ('Libertarian');
+  INSERT INTO political_parties (party_name) VALUES ('Other');
+  INSERT INTO political_parties (party_name) VALUES ('Does Not Matter');
+
+  INSERT INTO pets (pet_name) VALUES ('Birds');
+  INSERT INTO pets (pet_name) VALUES ('Cats');
+  INSERT INTO pets (pet_name) VALUES ('Dogs');
+  INSERT INTO pets (pet_name) VALUES ('Rodents');
+  INSERT INTO pets (pet_name) VALUES ('Horses');
+  INSERT INTO pets (pet_name) VALUES ('Reptiles');
+  INSERT INTO pets (pet_name) VALUES ('Other');
+  INSERT INTO pets (pet_name) VALUES ('Multiple Types of Animals');
+  INSERT INTO pets (pet_name) VALUES ('No Pets');
+  INSERT INTO pets (pet_name) VALUES ('Does Not Matter');
 `;
 
   await client.query(SQL);
@@ -133,46 +294,14 @@ const sync = async () => {
     },
   };
 
-  // const readHobbies = async () => {
-  //   return (await client.query("SELECT * FROM hobbies")).rows;
-  // };
-  // const createHobbies = async ({ hobby_name }) => {
-  //   return (
-  //     await client.query(
-  //       "INSERT INTO hobbies(hobby_name) VALUES ($1) returning *",
-  //       [hobby_name]
-  //     )
-  //   ).rows[0];
-  // };
-  // const _hobbies = {
-  //   art: {
-  //     hobby_name: "Art",
-  //   },
-  //   fishing: {
-  //     hobby_name: "Fishing",
-  //   },
-  // };
-
   const [lucy, moe, curly] = await Promise.all(
     Object.values(_users).map((user) => users.create(user))
   );
-  // const [art, fishing] = await Promise.all(
-  //   Object.values(_hobbies).map((hobby) => {
-  //     console.log(hobbies.create);
-  //     hobbies.create(hobby);
-  //   })
-  // );
 
   const userMap = (await users.read()).reduce((acc, user) => {
     acc[user.username] = user;
     return acc;
   }, {});
-  //console.log(userMap);
-
-  // const hobbyMap = (await hobbies.read()).reduce((acc, hobby) => {
-  //   acc[hobby.hobby_name] = hobby;
-  //   return acc;
-  // }, {});
 
   Promise.all([
     careers.createCareer('Computers and Technology'),
@@ -186,6 +315,7 @@ const sync = async () => {
     careers.createCareer('Hospitality, Tourism, and the Service Industry'),
     careers.createCareer('Law and Law Enforcement'),
     careers.createCareer('Other'),
+    careers.createCareer('Does not matter'),
   ]);
 
   const compid = await careers
@@ -204,8 +334,6 @@ const sync = async () => {
     .findUserId('larry')
     .then((response) => response.id);
 
-  //console.log('curly', curlyid);
-
   Promise.all([
     profiles.createProfile({
       userId: lucyid,
@@ -217,7 +345,8 @@ const sync = async () => {
       careerId: eduid,
       education: 'College educated',
       pets: 'Dogs',
-      age: 34,
+      birthdate: '2/2/1996',
+      zipCode: 32207,
       employmentStatus: 'Full time',
     }),
     profiles.createProfile({
@@ -230,7 +359,8 @@ const sync = async () => {
       careerId: othid,
       education: 'Trade school',
       pets: 'Reptiles',
-      age: 69,
+      birthdate: '5/5/1960',
+      zipCode: 32210,
       employmentStatus: 'Retired',
     }),
     profiles.createProfile({
@@ -243,15 +373,67 @@ const sync = async () => {
       careerId: compid,
       education: 'High school',
       pets: 'Cats',
-      age: 25,
+      birthdate: '10/10/1980',
+      zipCode: 32073,
       employmentStatus: 'Part time',
     }),
   ]);
 
   return {
     users: userMap,
-    // hobbies: hobbyMap,
   };
+};
+const readCareers = async () => {
+  return (await client.query('SELECT * from careers')).rows;
+};
+const readReligions = async () => {
+  return (await client.query('SELECT * from religions')).rows;
+};
+const readGenders = async () => {
+  return (await client.query('SELECT * from genders')).rows;
+};
+const readHobbies = async () => {
+  return (await client.query('SELECT * from hobbies')).rows;
+};
+const readEmploymentStatus = async () => {
+  return (await client.query('SELECT * from employment_status')).rows;
+};
+const readPoliticalParties = async () => {
+  return (await client.query('SELECT * from political_parties')).rows;
+};
+const readPets = async () => {
+  return (await client.query('SELECT * from pets')).rows;
+};
+const getUserIdFromEmail = async (email) => {
+  const SQL = `SELECT id FROM users WHERE email = $1`;
+  return (await client.query(SQL, [email])).rows[0];
+};
+
+const createUserInfo = async ([
+  user,
+  userGender,
+  userPoliticalAffiliation,
+  userReligiousAffiliation,
+  userPets,
+  userBirthdate,
+  userEmploymentStatus,
+  userAbout,
+  userZipcode,
+]) => {
+  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode) values($1, $2, $3, $4, $5, $6, $7, $8, $9 ) returning *`;
+  return (
+    await client.query(SQL, [
+      user,
+      gender,
+      politicalAffiliation,
+      religiousAffiliation,
+      pets,
+      birthdate,
+      employmentStatus,
+      userAbout,
+      zipcode,
+    ])
+  ).rows[0];
 };
 
 module.exports = {
@@ -259,7 +441,13 @@ module.exports = {
   models,
   authenticate,
   findUserFromToken,
-  changePassword,
-  // readHobbies,
-  // createHobbies,
+  readCareers,
+  readHobbies,
+  readReligions,
+  readGenders,
+  readEmploymentStatus,
+  readPoliticalParties,
+  readPets,
+  createUserInfo,
+  getUserIdFromEmail,
 };

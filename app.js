@@ -86,23 +86,23 @@ app.post('/upload', (req, res) => {
 });
 //============PHOTO UPLOAD END=================//
 
-app.get('/api/getCart', (req, res, next) => {
-  db.getCart(req.user.id)
-    .then((cart) => res.send(cart))
-    .catch(next);
-});
+// app.get('/api/getCart', (req, res, next) => {
+//   db.getCart(req.user.id)
+//     .then((cart) => res.send(cart))
+//     .catch(next);
+// });
 
-app.get('/api/getOrders', (req, res, next) => {
-  db.getOrders(req.user.id)
-    .then((orders) => res.send(orders))
-    .catch(next);
-});
+// app.get('/api/getOrders', (req, res, next) => {
+//   db.getOrders(req.user.id)
+//     .then((orders) => res.send(orders))
+//     .catch(next);
+// });
 
-app.post('/api/createOrder', (req, res, next) => {
-  db.createOrder(req.user.id)
-    .then((order) => res.send(order))
-    .catch(next);
-});
+// app.post('/api/createOrder', (req, res, next) => {
+//   db.createOrder(req.user.id)
+//     .then((order) => res.send(order))
+//     .catch(next);
+// });
 
 app.post('/api/createProfile', (req, res, next) => {
   db.createProfile(req.body)
@@ -110,28 +110,9 @@ app.post('/api/createProfile', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/api/getLineItems', (req, res, next) => {
-  db.getLineItems(req.user.id)
-    .then((lineItems) => res.send(lineItems))
-    .catch(next);
-});
-
-app.post('/api/addToCart', (req, res, next) => {
-  db.addToCart({ userId: req.user.id, productId: req.body.productId })
-    .then((lineItem) => res.send(lineItem))
-    .catch(next);
-});
-
-app.delete('/api/removeFromCart/:id', (req, res, next) => {
-  db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
-    .then(() => res.sendStatus(204))
-    .catch(next);
-});
-app.post('/api/hobbies', (req, res, next) => {
-  db.createHobbies(req.body)
-    .then((hobby) => {
-      res.send(hobby);
-    })
+app.post('/api/createSearch', (req, res, next) => {
+  db.createSearch(req.body)
+    .then((profile) => res.send(profile))
     .catch(next);
 });
 
@@ -141,21 +122,64 @@ app.get('/api/findUserId', (req, res, next) => {
     .catch(next);
 });
 
+app.get('/api/getUserIdFromEmail', (req, res, next) => {
+  db.getUserIdFromEmail(req.body)
+    .then((userid) => res.send(userid))
+    .catch(next);
+});
+
 app.get('/api/findCareerId', (req, res, next) => {
   db.findCareerId(req.user.id)
     .then((careerid) => res.send(careerid))
     .catch(next);
 });
-
-// app.get('/api/hobbies', (req, res, next) => {
-//   db.hobbies
-//     .read()
-//     .then((hobbies) => res.send(hobbies))
+app.get('/api/careers', (req, res, next) => {
+  db.readCareers()
+    .then((careers) => res.send(careers))
+    .catch(next);
+});
+app.get('/api/genders', (req, res, next) => {
+  db.readGenders()
+    .then((genders) => res.send(genders))
+    .catch(next);
+});
+app.get('/api/religions', (req, res, next) => {
+  db.readReligions()
+    .then((religions) => res.send(religions))
+    .catch(next);
+});
+app.get('/api/pets', (req, res, next) => {
+  db.readPets()
+    .then((pets) => res.send(pets))
+    .catch(next);
+});
+app.get('/api/employment_status', (req, res, next) => {
+  db.readEmploymentStatus()
+    .then((employ) => res.send(employ))
+    .catch(next);
+});
+app.get('/api/political_parties', (req, res, next) => {
+  db.readPoliticalParties()
+    .then((party) => res.send(party))
+    .catch(next);
+});
+app.post('/api/user_profiles', (req, res, next) => {
+  db.createUserInfo(req.body)
+    .then((user) => res.send(user))
+    .catch(next);
+});
 
 app.get('/api/hobbies', (req, res, next) => {
   db.readHobbies()
     .then((hobbies) => {
       res.send(hobbies);
+    })
+    .catch(next);
+});
+app.post('/api/user_hobbies', (req, res, next) => {
+  db.createUserHobbies(req.body)
+    .then((userId) => {
+      res.send(userId);
     })
     .catch(next);
 });

@@ -36,6 +36,11 @@ const Header = ({ login }) => {
               profile
             </Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/search/criteria">
+              Search
+            </Link>
+          </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
           <Link

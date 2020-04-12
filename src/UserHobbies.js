@@ -18,7 +18,7 @@ const UserHobbies = (auth) => {
     axios
       .post("/api/user_hobbies", { hobbies })
       .then((response) => setHobbies([response.data, ...hobbies]))
-      // .then(() => setName(""))
+      // .then(() => setUserHobbies(""))
       .then((response) => {
         setError(ex.response.data.message);
       });

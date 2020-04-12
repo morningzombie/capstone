@@ -177,8 +177,8 @@ app.get("/api/hobbies", (req, res, next) => {
 });
 app.post("/api/user_hobbies", (req, res, next) => {
   db.createUserHobbies(req.body)
-    .then((userId) => {
-      res.send(userId);
+    .then((hobbies) => {
+      res.send(hobbies);
     })
     .catch(next);
 });

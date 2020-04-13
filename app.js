@@ -164,6 +164,7 @@ app.get('/api/political_parties', (req, res, next) => {
     .catch(next);
 });
 app.post('/api/user_profiles', (req, res, next) => {
+  //console.log(req.body, 'in api route');
   db.createUserInfo(req.body)
     .then((user) => res.send(user))
     .catch(next);
@@ -205,6 +206,7 @@ app.put('/api/user/password/:id', (req, res, next) => {
 });
 
 Object.keys(models).forEach((key) => {
+  console.log(models);
   app.get(`/api/${key}`, isLoggedIn, isAdmin, (req, res, next) => {
     models[key]
       .read({ user: req.user })
@@ -226,7 +228,7 @@ Object.keys(models).forEach((key) => {
       .catch(next);
   });
   app.delete(`/api/${key}/:id`, (req, res, next) => {
-    console.log(req.params.id, 'user delet');
+    //console.log(req.params.id, 'user delet');
     models[key]
       .delete(req.params.id)
       .then(() => res.sendStatus(204))

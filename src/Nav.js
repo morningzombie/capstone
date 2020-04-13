@@ -73,7 +73,7 @@ const Nav = ({ params, logout, auth, login }) => {
               {/* current change ends here */}
               {/* incoming below */}
               <div className="nav-item">
-                <Link className="nav-link" to="/register">
+                <Link className="nav-link" to="/useraccount">
                   Account Settings
                 </Link>
               </div>

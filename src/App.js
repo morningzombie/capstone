@@ -96,9 +96,9 @@ const App = () => {
           <Route path="/file/upload" exact>
             <FileUpload auth={auth} logout={logout} />
           </Route>
-          <Link path="/FileUpload">
+          <Route path="/FileUpload">
             <FileUpload />
-          </Link>
+          </Route>
           <Route path="/UserInfo">
             <UserInfo auth={auth} login={login} />
           </Route>

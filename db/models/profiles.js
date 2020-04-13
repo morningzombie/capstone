@@ -5,7 +5,8 @@ const readProfile = async () => {
 };
 
 const createProfile = async (user_profile) => {
-  const SQL = `INSERT INTO user_profiles("userId", gender, orientation, politicalAffiliation, religiousAffiliation, careerId, education, pets, birthdate, zipCode, employmentStatus) 
+  console.log(user_profile, 'in createProfile');
+  const SQL = `INSERT INTO user_profiles("userId", gender, orientation, politicalAffiliation, religiousAffiliation, careerId, education, pets, birthdate, zipCode, employmentStatus)
         values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning *`;
   return (
     await client.query(SQL, [

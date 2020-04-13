@@ -35,6 +35,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS pets CASCADE;
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
+  DROP TABLE IF EXISTS education CASCADE;
+
 
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -55,6 +57,10 @@ const sync = async () => {
   CREATE TABLE religions(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     religion_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE education(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    education_name VARCHAR(100) NOT NULL
   );
   CREATE TABLE genders(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -247,6 +253,14 @@ const sync = async () => {
   INSERT INTO pets (pet_name) VALUES ('Multiple Types of Animals');
   INSERT INTO pets (pet_name) VALUES ('No Pets');
   INSERT INTO pets (pet_name) VALUES ('Does Not Matter');
+
+  INSERT INTO education (education_name) VALUES ('High School');
+  INSERT INTO education (education_name) VALUES ('Certificate');
+  INSERT INTO education (education_name) VALUES ('Trade School');
+  INSERT INTO education (education_name) VALUES ('Some College');
+  INSERT INTO education (education_name) VALUES ('Bachelors Degree');
+  INSERT INTO education (education_name) VALUES ('Graduate Degree');
+  INSERT INTO education (education_name) VALUES ('PhD');
 `;
 
   await client.query(SQL);
@@ -321,20 +335,20 @@ const sync = async () => {
     .then((response) => response.id);
 
   Promise.all([
-    profiles.createProfile({
-      userId: lucyid,
-      gender: 'Female',
-      politicalAffiliation: 'Democrat',
-      religiousAffiliation: 'Catholic',
-      careerId: eduid,
-      education: 'College educated',
-      pets: 'Dogs',
-      birthdate: '2/2/1996',
-      zipCode: 32207,
-      employmentStatus: 'Full time',
-      about: 'Extrovert',
-      communicationPreference: 'Email',
-    }),
+    // profiles.createProfile({
+    //   userId: lucyid,
+    //   gender: 'Female',
+    //   politicalAffiliation: 'Democrat',
+    //   religiousAffiliation: 'Catholic',
+    //   careerId: eduid,
+    //   education: 'College educated',
+    //   pets: 'Dogs',
+    //   birthdate: '2/2/1996',
+    //   zipCode: 32207,
+    //   employmentStatus: 'Full time',
+    //   about: 'Extrovert',
+    //   communicationPreference: 'Email',
+    // }),
     profiles.createProfile({
       userId: moeid,
       gender: 'Male',
@@ -390,6 +404,9 @@ const readPoliticalParties = async () => {
 const readPets = async () => {
   return (await client.query('SELECT * from pets')).rows;
 };
+const readEducation = async () => {
+  return (await client.query('SELECT * from education')).rows;
+};
 
 const createUserInfo = async ([
   user,
@@ -419,7 +436,6 @@ const createUserInfo = async ([
     ])
   ).rows[0];
 };
-
 module.exports = {
   sync,
   models,
@@ -432,5 +448,9 @@ module.exports = {
   readEmploymentStatus,
   readPoliticalParties,
   readPets,
+  // createUserInfo,
+  // getUserIdFromEmail,
+  // createUserHobbies,
+  readEducation,
   createUserInfo,
 };

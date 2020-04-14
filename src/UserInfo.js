@@ -12,20 +12,14 @@ const UserInfo = ({ login, auth }) => {
   const [educations, setEducations] = useState([]);
 
   const [birthdate, setBirthdate] = useState("");
-  const [zipCode, setZipCode] = useState("-- enter zipcode --");
-  const [gender, setGender] = useState("-- select an option --");
-  const [education, setEducation] = useState("-- select an option --");
-  const [politicalAffiliation, setPoliticalAffiliation] = useState(
-    "-- select an option --"
-  );
-  const [religiousAffiliation, setReligiousAffiliation] = useState(
-    "-- select an option --"
-  );
-  const [careerId, setCareerId] = useState("-- select an option --");
-  const [employmentStatus, setEmploymentStatus] = useState(
-    "-- select an option --"
-  );
-  const [pets, setPets] = useState("-- select an option --");
+  const [zipCode, setZipCode] = useState("");
+  const [gender, setGender] = useState("");
+  const [education, setEducation] = useState("");
+  const [politicalAffiliation, setPoliticalAffiliation] = useState("");
+  const [religiousAffiliation, setReligiousAffiliation] = useState("");
+  const [careerId, setCareerId] = useState("");
+  const [employmentStatus, setEmploymentStatus] = useState("");
+  const [pets, setPets] = useState("");
   const [about, setAbout] = useState("");
   useEffect(() => {
     axios.get("/api/careers").then((response) => setCareers(response.data));
@@ -120,7 +114,7 @@ const UserInfo = ({ login, auth }) => {
               defaultValue
               onChange={(ev) => setEducation(ev.target.value)}
             >
-              <option value={education}>{education}</option>
+              <option value={education}> --select your option-- </option>
               {educations.map((school) => {
                 return (
                   <option key={school.id} value={school.education_name}>
@@ -141,7 +135,7 @@ const UserInfo = ({ login, auth }) => {
               defaultValue
               onChange={(ev) => setCareerId(ev.target.value)}
             >
-              <option value={careerId}>{careerId}</option>
+              <option value={careerId}> --required-- </option>
               {careers.map((career) => {
                 return (
                   <option key={career.id} value={career.id}>
@@ -160,7 +154,7 @@ const UserInfo = ({ login, auth }) => {
               defaultValue
               onChange={(ev) => setEmploymentStatus(ev.target.value)}
             >
-              <option value={employmentStatus}>{employmentStatus}</option>
+              <option value={employmentStatus}> --select your option-- </option>
               {employment.map((employ) => {
                 return (
                   <option key={employ.id} value={employ.status_name}>
@@ -180,7 +174,7 @@ const UserInfo = ({ login, auth }) => {
             defaultValue
             onChange={(ev) => setPets(ev.target.value)}
           >
-            <option value={pets}>{pets}</option>
+            <option value={pets}> --select your option-- </option>
             {pet.map((p) => {
               return (
                 <option key={p.id} value={p.pet_name}>
@@ -211,7 +205,7 @@ const UserInfo = ({ login, auth }) => {
               defaultValue
               onChange={(ev) => setGender(ev.target.value)}
             >
-              <option value={gender}>{gender}</option>
+              <option value={gender}> --select your option-- </option>
               {genders.map((g) => {
                 return (
                   <option key={g.id} value={g.gender_name}>
@@ -236,7 +230,7 @@ const UserInfo = ({ login, auth }) => {
               onChange={(ev) => setPoliticalAffiliation(ev.target.value)}
             >
               <option value={politicalAffiliation}>
-                {politicalAffiliation}
+                --select your option--
               </option>
               {politicalParties.map((party) => {
                 return (
@@ -259,7 +253,7 @@ const UserInfo = ({ login, auth }) => {
               onChange={(ev) => setReligiousAffiliation(ev.target.value)}
             >
               <option value={religiousAffiliation}>
-                {religiousAffiliation}
+                --select your option--
               </option>
               {religions.map((religion) => {
                 return (

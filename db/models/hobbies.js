@@ -1,7 +1,7 @@
-const client = require("../client");
+const client = require('../client');
 
 const readUserHobbies = async () => {
-  return (await client.query("SELECT * from hobbies")).rows;
+  return (await client.query('SELECT * from hobbies')).rows;
 };
 
 const createUserHobbies = async (user_hobbies) => {

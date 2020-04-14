@@ -1,7 +1,7 @@
-const client = require("../client");
+const client = require('../client');
 
 const readProfile = async () => {
-  return (await client.query("SELECT * from user_profiles")).rows;
+  return (await client.query('SELECT * from user_profiles')).rows;
 };
 
 const createProfile = async (user_profile) => {

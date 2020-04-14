@@ -1,5 +1,4 @@
 const client = require('../client');
-const { hash } = require('../auth');
 
 const events = {
   read: async () => {
@@ -45,7 +44,9 @@ const events = {
     return updatedEvent;
   },
   delete: async (id) => {
-    await client.query(`DELETE FROM "events" WHERE id=$1 returning *`, [id]);
+    return await client.query(`DELETE FROM "events" WHERE id=$1 returning *`, [
+      id,
+    ]);
   },
 };
 

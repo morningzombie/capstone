@@ -206,7 +206,7 @@ app.put('/api/user/password/:id', (req, res, next) => {
 });
 
 Object.keys(models).forEach((key) => {
-  console.log(models);
+  //console.log(models);
   app.get(`/api/${key}`, isLoggedIn, isAdmin, (req, res, next) => {
     models[key]
       .read({ user: req.user })

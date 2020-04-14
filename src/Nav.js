@@ -38,6 +38,15 @@ const Nav = ({ params, logout, auth, login }) => {
             <Link className="nav-link" to="/#">
               Home <span className="sr-only">(current)</span>
             </Link>
+            <Link className="nav-link" to="/meetups">
+              Meetups
+            </Link>
+            <Link className="nav-link" to="/friends">
+              Meet Friends
+            </Link>
+            <Link className="nav-link" to="/my/meetups">
+              My Meetups
+            </Link>
           </li>
 
           <li className="nav-item dropdown">
@@ -106,6 +115,15 @@ const Nav = ({ params, logout, auth, login }) => {
               <div className="nav-item">
                 <Link className="nav-link" to="/file/upload" label="FileUpload">
                   Upload Photo
+                </Link>
+              </div>
+              <div className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/create/event"
+                  label="CreateEvent"
+                >
+                  Create Event
                 </Link>
               </div>
 

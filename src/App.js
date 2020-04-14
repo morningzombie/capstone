@@ -13,6 +13,10 @@ import UserAccount from './components/User/UserAccount';
 import EditUserAccount from './components/User/EditUserAccount';
 import ChangeUserPassword from './components/User/ChangeUserPassword';
 import SearchCriteria from './SearchCriteria';
+import RenderEvents from './components/Event/RenderEvents';
+import RenderUsers from './components/User/RenderUsers';
+import CreateEvent from './components/Event/CreateEvent';
+import UserEvents from './components/Event/UserEvents';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -28,6 +32,8 @@ const App = () => {
   const [auth, setAuth] = useState({});
   const [hobbies, setHobbies] = useState([]);
   const [userCareer, setUserCareer] = useState('');
+  const [events, setEvents] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const login = async (credentials) => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -48,6 +54,22 @@ const App = () => {
   useEffect(() => {
     exchangeTokenForAuth();
   }, []);
+
+  useEffect(() => {
+    if (auth.id) {
+      axios
+        .get('/api/events', headers())
+        .then((response) => setEvents(response.data));
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
+      axios
+        .get('/api/users', headers())
+        .then((response) => setUsers(response.data));
+    }
+  }, [auth]);
 
   useEffect(() => {
     if (auth.id) {
@@ -116,6 +138,24 @@ const App = () => {
           </Route>
           <Route path="/useraccount/password" exact>
             <ChangeUserPassword auth={auth} setAuth={setAuth} />
+          </Route>
+          <Route path="/meetups">
+            <RenderEvents events={events} />
+          </Route>
+          <Route path="/my/meetups">
+            <UserEvents events={events} auth={auth} />
+          </Route>
+          <Route path="/create/event">
+            <CreateEvent
+              auth={auth}
+              setAuth={setAuth}
+              setEvents={setEvents}
+              events={events}
+              headers={headers}
+            />
+          </Route>
+          <Route path="/friends">
+            <RenderUsers users={users} auth={auth} />
           </Route>
         </Switch>
       </Router>

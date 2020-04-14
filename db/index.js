@@ -4,7 +4,6 @@ const fs = require('fs');
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
 const models = ({
-  events,
   users,
   profiles,
   careers,
@@ -14,6 +13,7 @@ const models = ({
   employment_status,
   pets,
   political_parties,
+  events,
 } = require('./models'));
 
 const { changePassword } = require('./userMethods');
@@ -61,7 +61,7 @@ const sync = async () => {
   CREATE TABLE events(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) NOT NULL,
-    date DATE NOT NULL,
+    date TIMESTAMP NOT NULL,
     location VARCHAR(100) NOT NULL,
     description VARCHAR(100) NOT NULL,
     "isPublic" BOOLEAN default false,
@@ -322,53 +322,43 @@ const sync = async () => {
   }, {});
 
   //seed events
-  // const _events = {
-  //   park: {
-  //     name: 'park',
-  //     date: '2/2/1996',
-  //     location: 'park',
-  //     description: 'some activity',
-  //     isPublic: true,
-  //     userId: lucy.id,
-  //   },
-  //   beach: {
-  //     name: 'beach',
-  //     date: '2/2/1996',
-  //     location: 'beach',
-  //     description: 'some activity',
-  //     isPublic: false,
-  //     userId: lucy.id,
-  //   },
-  //   dog: {
-  //     name: 'dog',
-  //     date: '2/2/1996',
-  //     location: 'dog',
-  //     description: 'some activity',
-  //     isPublic: false,
-  //     userId: moe.id,
-  //   },
-  // };
-
-  // const [park, beach, dog] = await Promise.all(
-  //   Object.values(_events).map((event) => events.create(event))
-  // );
-
-  // const eventMap = (await events.read()).reduce((acc, event) => {
-  //   acc[event.id] = event;
-  //   return acc;
-  // }, {});
-
-  const doggie = {
-    name: 'dog',
-    date: '2/2/1996',
-    location: 'dog',
-    description: 'some activity',
-    isPublic: false,
-    userId: moe.id,
+  const _events = {
+    park: {
+      name: 'park',
+      date: '2/2/1996',
+      location: 'park',
+      description: 'some activity',
+      isPublic: true,
+      userId: lucy.id,
+    },
+    beach: {
+      name: 'beach',
+      date: '2/2/1996',
+      location: 'beach',
+      description: 'some activity',
+      isPublic: false,
+      userId: lucy.id,
+    },
+    dog: {
+      name: 'dog',
+      date: '2/2/1996 3:00 PM',
+      location: 'dog',
+      description: 'some activity',
+      isPublic: false,
+      userId: moe.id,
+    },
   };
 
-  const created = await Promise(events.create(doggie));
-  console.log(created);
+  const [park, beach, dog] = await Promise.all(
+    Object.values(_events).map((event) => events.create(event))
+  );
+
+  const eventMap = (await events.read()).reduce((acc, event) => {
+    acc[event.name] = event;
+    return acc;
+  }, {});
+
+  //console.log(eventMap, 'events');
 
   Promise.all([
     careers.createCareer('Computers and Technology'),

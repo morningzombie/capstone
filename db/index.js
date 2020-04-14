@@ -13,6 +13,7 @@ const models = ({
   employment_status,
   pets,
   political_parties,
+  events,
   searches,
 } = require('./models'));
 
@@ -22,6 +23,8 @@ const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   CREATE EXTENSION IF NOT EXISTS citext;
+  DROP TABLE IF EXISTS user_events;
+  DROP TABLE IF EXISTS events;
   DROP TABLE IF EXISTS user_groups CASCADE;
   DROP TABLE IF EXISTS user_profiles CASCADE;
   DROP TABLE IF EXISTS user_hobbies CASCADE;
@@ -49,6 +52,21 @@ const sync = async () => {
     userRating INT DEFAULT 0,
     role VARCHAR(20) DEFAULT 'USER',
     CHECK (char_length(username) > 0)
+  );
+  CREATE TABLE events(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(50) NOT NULL,
+    date TIMESTAMP NOT NULL,
+    location VARCHAR(100) NOT NULL,
+    description VARCHAR(100) NOT NULL,
+    "isPublic" BOOLEAN default false,
+    "userId" UUID REFERENCES users(id) NOT NULL
+  );
+  CREATE TABLE user_events(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "userId" UUID REFERENCES users(id) NOT NULL,
+    "eventId" UUID REFERENCES events(id) NOT NULL
+
   );
   CREATE TABLE careers(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -306,6 +324,45 @@ const sync = async () => {
     return acc;
   }, {});
 
+  //seed events
+  const _events = {
+    park: {
+      name: 'park',
+      date: '2/2/1996',
+      location: 'park',
+      description: 'some activity',
+      isPublic: true,
+      userId: lucy.id,
+    },
+    beach: {
+      name: 'beach',
+      date: '2/2/1996',
+      location: 'beach',
+      description: 'some activity',
+      isPublic: false,
+      userId: lucy.id,
+    },
+    dog: {
+      name: 'dog',
+      date: '2/2/1996 3:00 PM',
+      location: 'dog',
+      description: 'some activity',
+      isPublic: false,
+      userId: moe.id,
+    },
+  };
+
+  const [park, beach, dog] = await Promise.all(
+    Object.values(_events).map((event) => events.create(event))
+  );
+
+  const eventMap = (await events.read()).reduce((acc, event) => {
+    acc[event.name] = event;
+    return acc;
+  }, {});
+
+  //console.log(eventMap, 'events');
+
   Promise.all([
     careers.createCareer('Computers and Technology'),
     careers.createCareer('Health Care and Allied Health'),
@@ -386,6 +443,7 @@ const sync = async () => {
     users: userMap,
   };
 };
+
 const readCareers = async () => {
   return (await client.query('SELECT * from careers')).rows;
 };
@@ -411,7 +469,7 @@ const readEducation = async () => {
   return (await client.query('SELECT * from education')).rows;
 };
 const readProfiles = async () => {
-  return (await client.query("SELECT * from user_profiles")).rows;
+  return (await client.query('SELECT * from user_profiles')).rows;
 };
 // const createUserInfo = async ([
 //   user,

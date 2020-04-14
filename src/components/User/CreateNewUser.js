@@ -18,7 +18,7 @@ const CreateNewUser = ({ login }) => {
 
   const createUser = (user) => {
     axios.post('/api/users', user).then((response) => {
-      console.log(response);
+      console.log(response.data);
       login({ email, password }).catch((ex) =>
         setError(ex.response.data.message)
       );
@@ -156,10 +156,10 @@ const CreateNewUser = ({ login }) => {
           {gender}
         </div> */}
 
-        {/* <button className="btn btn-primary">Create Account</button> */}
-        <Link to="/useraccount" className="btn btn-primary">
+        <button className="btn btn-primary">Create Account</button>
+        {/* <Link to="/useraccount" className="btn btn-primary">
           Create Account
-        </Link>
+        </Link> */}
       </form>
     </div>
   );

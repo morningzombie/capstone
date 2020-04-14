@@ -17,6 +17,8 @@ import RenderEvents from './components/Event/RenderEvents';
 import RenderUsers from './components/User/RenderUsers';
 import CreateEvent from './components/Event/CreateEvent';
 import UserEvents from './components/Event/UserEvents';
+import UserProfile from './UserProfile';
+import SearchResults from './SearchResults';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -92,7 +94,7 @@ const App = () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);
-  console.log(auth, 'auth in app');
+  // console.log(auth, 'auth in app');
 
   const { view } = params;
 
@@ -121,11 +123,17 @@ const App = () => {
           <Route path="/FileUpload">
             <FileUpload />
           </Route>
+          <Route path="/UserProfile">
+            <UserProfile auth={auth} login={login} />
+          </Route>
           <Route path="/UserInfo">
             <UserInfo auth={auth} login={login} />
           </Route>
           <Route path="/search/criteria">
             <SearchCriteria />
+          </Route>
+          <Route path="/search/results">
+            <SearchResults />
           </Route>
           <Route path="/UserHobbies">
             <UserHobbies auth={auth} />

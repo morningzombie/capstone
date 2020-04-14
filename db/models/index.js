@@ -8,4 +8,5 @@ module.exports = {
   political_parties: require('./political_parties'),
   employment_status: require('./employment_status'),
   pets: require('./pets'),
+  hobbies: require('./hobbies'),
 };

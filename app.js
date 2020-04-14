@@ -86,33 +86,24 @@ app.post('/upload', (req, res) => {
 });
 //============PHOTO UPLOAD END=================//
 
-// app.get('/api/getCart', (req, res, next) => {
-//   db.getCart(req.user.id)
-//     .then((cart) => res.send(cart))
-//     .catch(next);
-// });
-
-// app.get('/api/getOrders', (req, res, next) => {
-//   db.getOrders(req.user.id)
-//     .then((orders) => res.send(orders))
-//     .catch(next);
-// });
-
-// app.post('/api/createOrder', (req, res, next) => {
-//   db.createOrder(req.user.id)
-//     .then((order) => res.send(order))
-//     .catch(next);
-// });
-
 app.post('/api/createProfile', (req, res, next) => {
-  db.createProfile(req.body)
+  models.profiles
+    .createProfile(req.body)
     .then((profile) => res.send(profile))
     .catch(next);
 });
 
-app.post('/api/createSearch', (req, res, next) => {
-  db.createSearch(req.body)
-    .then((profile) => res.send(profile))
+app.post('/api/search/perfect_match', (req, res, next) => {
+  models.searches
+    .searchPerfectMatch(req.body)
+    .then((usernames) => res.send(usernames))
+    .catch(next);
+});
+
+app.post('/api/search/zipcode', (req, res, next) => {
+  models.searches
+    .searchZipCode(req.body)
+    .then((usernames) => res.send(usernames))
     .catch(next);
 });
 
@@ -163,12 +154,6 @@ app.get('/api/political_parties', (req, res, next) => {
     .then((party) => res.send(party))
     .catch(next);
 });
-app.post('/api/user_profiles', (req, res, next) => {
-  //console.log(req.body, 'in api route');
-  db.createUserInfo(req.body)
-    .then((user) => res.send(user))
-    .catch(next);
-});
 
 app.get('/api/hobbies', (req, res, next) => {
   db.readHobbies()
@@ -177,11 +162,39 @@ app.get('/api/hobbies', (req, res, next) => {
     })
     .catch(next);
 });
+app.get('/api/profiles', (req, res, next) => {
+  db.readProfiles()
+    .then((profiles) => {
+      res.send(profiles);
+    })
+    .catch(next);
+});
+app.get('/api/education', (req, res, next) => {
+  db.readEducation()
+    .then((school) => {
+      res.send(school);
+    })
+    .catch(next);
+});
+app.get('/api/users', (req, res, next) => {
+  models.users
+    .read()
+    .then((user) => {
+      res.send(user);
+    })
+    .catch(next);
+});
 app.post('/api/user_hobbies', (req, res, next) => {
   db.createUserHobbies(req.body)
-    .then((userId) => {
-      res.send(userId);
+    .then((hobbies) => {
+      res.send(hobbies);
     })
+    .catch(next);
+});
+app.post('/api/createUserHobbies', (req, res, next) => {
+  models.hobbies
+    .createUserHobbies(req.body)
+    .then((hobbies) => res.send(hobbies))
     .catch(next);
 });
 

@@ -1,18 +1,22 @@
-const client = require('../client');
+const client = require("../client");
 
 const readProfile = async () => {
-  return (await client.query('SELECT * from user_profiles')).rows;
+  return (await client.query("SELECT * from user_profiles")).rows;
 };
 
 const createProfile = async (user_profile) => {
+<<<<<<< HEAD
   //console.log(user_profile, 'in createProfile');
   const SQL = `INSERT INTO user_profiles("userId", gender, orientation, politicalAffiliation, religiousAffiliation, careerId, education, pets, birthdate, zipCode, employmentStatus)
         values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning *`;
+=======
+  const SQL = `INSERT INTO user_profiles("userId", gender, politicalAffiliation, religiousAffiliation, careerId, education, pets, birthdate, zipCode,  employmentStatus, about, communicationPreference)
+        values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning *`;
+>>>>>>> master
   return (
     await client.query(SQL, [
       user_profile.userId,
       user_profile.gender,
-      user_profile.orientation,
       user_profile.politicalAffiliation,
       user_profile.religiousAffiliation,
       user_profile.careerId,
@@ -21,6 +25,8 @@ const createProfile = async (user_profile) => {
       user_profile.birthdate,
       user_profile.zipCode,
       user_profile.employmentStatus,
+      user_profile.about,
+      user_profile.communicationPreference,
     ])
   ).rows[0];
 };

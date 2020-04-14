@@ -1,59 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const UserInfo = ({ login, auth }) => {
-  const [userid, setUserid] = useState('');
+  const [userid, setUserid] = useState("");
   const [careers, setCareers] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
-  const [employmentStatus, setEmploymentStatus] = useState([]);
+  const [employment, setEmployment] = useState([]);
   const [politicalParties, setPoliticalParties] = useState([]);
-  const [pets, setPets] = useState([]);
+  const [pet, setPet] = useState([]);
+  const [educations, setEducations] = useState([]);
 
-  const [userBirthdate, setUserBirthdate] = useState('');
-  const [userZipCode, setUserZipCode] = useState('');
-  const [userGender, setUserGender] = useState('-- select an option --');
-  const [userPoliticalAffiliation, setUserPoliticalAffiliation] = useState(
-    '-- select an option --'
-  );
-  const [userReligiousAffiliation, setUserReligiousAffiliation] = useState(
-    '-- select an option --'
-  );
-  const [userCareer, setUserCareer] = useState('-- select an option --');
-  const [userEmploymentStatus, setUserEmploymentStatus] = useState(
-    '-- select an option --'
-  );
-  const [userPets, setUserPets] = useState('-- select an option --');
-  const [userAbout, setUserAbout] = useState('');
+  const [birthdate, setBirthdate] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [gender, setGender] = useState("");
+  const [education, setEducation] = useState("");
+  const [politicalAffiliation, setPoliticalAffiliation] = useState("");
+  const [religiousAffiliation, setReligiousAffiliation] = useState("");
+  const [careerId, setCareerId] = useState("");
+  const [employmentStatus, setEmploymentStatus] = useState("");
+  const [pets, setPets] = useState("");
+  const [about, setAbout] = useState("");
   useEffect(() => {
-    axios.get('/api/careers').then((response) => setCareers(response.data));
+    axios.get("/api/careers").then((response) => setCareers(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/religions').then((response) => setReligions(response.data));
+    axios.get("/api/religions").then((response) => setReligions(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/genders').then((response) => setGenders(response.data));
+    axios.get("/api/genders").then((response) => setGenders(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get('/api/employment_status')
-      .then((response) => setEmploymentStatus(response.data));
+      .get("/api/employment_status")
+      .then((response) => setEmployment(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get('/api/political_parties')
+      .get("/api/political_parties")
       .then((response) => setPoliticalParties(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/pets').then((response) => setPets(response.data));
+    axios.get("/api/pets").then((response) => setPet(response.data));
+  }, []);
+  useEffect(() => {
+    axios
+      .get("/api/education")
+      .then((response) => setEducations(response.data));
   }, []);
 
   const createUserInfo = (user) => {
-    axios.post('/api/user_profiles', user).then((response) => {
-      console.log('USERINFO', response);
-      login({ email, password }).catch((ex) =>
-        setError(ex.response.data.message)
-      );
+    axios.post("/api/createProfile", user).then((response) => {
+      console.log("USERINFO", response);
+      // login({ email, password }).catch((ex) =>
+      //   setError(ex.response.data.message)
+      // );
     });
   };
 
@@ -63,44 +64,81 @@ const UserInfo = ({ login, auth }) => {
       const userId = auth.id;
       createUserInfo({
         userId,
-        userGender,
-        userPoliticalAffiliation,
-        userReligiousAffiliation,
-        userPets,
-        userBirthdate,
-        userEmploymentStatus,
-        userAbout,
-        userZipCode,
+        gender,
+        politicalAffiliation,
+        religiousAffiliation,
+        careerId,
+        education,
+        pets,
+        birthdate,
+        zipCode,
+        employmentStatus,
+        about,
       });
     }
   };
+
+  // user_profile.userId,
+  //     user_profile.gender,
+  //     user_profile.orientation,
+  //     user_profile.politicalAffiliation,
+  //     user_profile.religiousAffiliation,
+  //     user_profile.careerId,
+  //     user_profile.education,
+  //     user_profile.pets,
+  //     user_profile.birthdate,
+  //     user_profile.zipCode,
+  //     user_profile.employmentStatus,
   return (
     <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us All About You</h3>
       <form>
-        <div>
-          <label htmlFor="career">Where do you live?</label>
-          <input
-            placeholder="Zip Code"
-            type="text"
-            pattern="(\d{5}([\-]\d{4})?)"
-            id="zipCode"
-            onChange={(ev) => setUserZipCode(ev.target.value)}
-          />
-        </div>
         <div className="row">
+          <div className="col">
+            <label htmlFor="zipCode">Where do you live?</label>
+            <br />
+            <input
+              placeholder=" -- enter zip code --"
+              type="text"
+              pattern="(\d{5}([\-]\d{4})?)"
+              id="zipCode"
+              onChange={(ev) => setZipCode(ev.target.value)}
+            />
+          </div>
+
+          <div className="col">
+            <label htmlFor="education">What is your education?</label>
+            <select
+              className="form-control"
+              id="education"
+              defaultValue
+              onChange={(ev) => setEducation(ev.target.value)}
+            >
+              <option value={education}> --select your option-- </option>
+              {educations.map((school) => {
+                return (
+                  <option key={school.id} value={school.education_name}>
+                    {school.education_name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+
+        <div className="row  mt-3">
           <div className="col">
             <label htmlFor="career">What is your occupation?</label>
             <select
               className="form-control"
               id="career"
               defaultValue
-              onChange={(ev) => setUserCareer(ev.target.value)}
+              onChange={(ev) => setCareerId(ev.target.value)}
             >
-              <option value={userCareer}>{userCareer}</option>
+              <option value={careerId}> --required-- </option>
               {careers.map((career) => {
                 return (
-                  <option key={career.id} value={career.career_name}>
+                  <option key={career.id} value={career.id}>
                     {career.career_name}
                   </option>
                 );
@@ -114,12 +152,10 @@ const UserInfo = ({ login, auth }) => {
               className="form-control"
               id="employmentStatus"
               defaultValue
-              onChange={(ev) => setUserEmploymentStatus(ev.target.value)}
+              onChange={(ev) => setEmploymentStatus(ev.target.value)}
             >
-              <option value={userEmploymentStatus}>
-                {userEmploymentStatus}
-              </option>
-              {employmentStatus.map((employ) => {
+              <option value={employmentStatus}> --select your option-- </option>
+              {employment.map((employ) => {
                 return (
                   <option key={employ.id} value={employ.status_name}>
                     {employ.status_name}
@@ -136,13 +172,13 @@ const UserInfo = ({ login, auth }) => {
             className="form-control"
             id="pets"
             defaultValue
-            onChange={(ev) => setUserPets(ev.target.value)}
+            onChange={(ev) => setPets(ev.target.value)}
           >
-            <option value={userPets}>{userPets}</option>
-            {pets.map((pet) => {
+            <option value={pets}> --select your option-- </option>
+            {pet.map((p) => {
               return (
-                <option key={pet.id} value={pet.pet_name}>
-                  {pet.pet_name}
+                <option key={p.id} value={p.pet_name}>
+                  {p.pet_name}
                 </option>
               );
             })}
@@ -156,24 +192,24 @@ const UserInfo = ({ login, auth }) => {
               className="form-control"
               type="date"
               id="birthdate"
-              onChange={(ev) => setUserBirthdate(ev.target.value)}
+              onChange={(ev) => setBirthdate(ev.target.value)}
             />
           </div>
 
           <div className="col">
-            {' '}
+            {" "}
             <label htmlFor="gender">Your gender?</label>
             <select
               className="form-control"
               id="gender"
               defaultValue
-              onChange={(ev) => setUserGender(ev.target.value)}
+              onChange={(ev) => setGender(ev.target.value)}
             >
-              <option value={userGender}>{userGender}</option>
-              {genders.map((gender) => {
+              <option value={gender}> --select your option-- </option>
+              {genders.map((g) => {
                 return (
-                  <option key={gender.id} value={gender.gender_name}>
-                    {gender.gender_name}
+                  <option key={g.id} value={g.gender_name}>
+                    {g.gender_name}
                   </option>
                 );
               })}
@@ -183,7 +219,7 @@ const UserInfo = ({ login, auth }) => {
 
         <div className="row mt-3">
           <div className="col">
-            {' '}
+            {" "}
             <label htmlFor="politicalAffiliation">
               What is your political affiliation?
             </label>
@@ -191,10 +227,10 @@ const UserInfo = ({ login, auth }) => {
               className="form-control"
               id="politicalAffiliation"
               defaultValue
-              onChange={(ev) => setUserPoliticalAffiliation(ev.target.value)}
+              onChange={(ev) => setPoliticalAffiliation(ev.target.value)}
             >
-              <option value={userPoliticalAffiliation}>
-                {userPoliticalAffiliation}
+              <option value={politicalAffiliation}>
+                --select your option--
               </option>
               {politicalParties.map((party) => {
                 return (
@@ -214,10 +250,10 @@ const UserInfo = ({ login, auth }) => {
               className="form-control"
               id="religion"
               defaultValue
-              onChange={(ev) => setUserReligiousAffiliation(ev.target.value)}
+              onChange={(ev) => setReligiousAffiliation(ev.target.value)}
             >
-              <option value={userReligiousAffiliation}>
-                {userReligiousAffiliation}
+              <option value={religiousAffiliation}>
+                --select your option--
               </option>
               {religions.map((religion) => {
                 return (
@@ -237,7 +273,7 @@ const UserInfo = ({ login, auth }) => {
             type="text"
             id="about"
             rows="5"
-            onChange={(ev) => setUserAbout(ev.target.value)}
+            onChange={(ev) => setAbout(ev.target.value)}
           />
         </div>
         <button>Submit</button>

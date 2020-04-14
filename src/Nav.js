@@ -1,5 +1,5 @@
-import React from 'react';
-import qs from 'qs';
+import React from "react";
+import qs from "qs";
 
 import {
   BrowserRouter as Router,
@@ -7,13 +7,13 @@ import {
   Route,
   Link,
   useRouteMatch,
-} from 'react-router-dom';
-import UserInfo from './UserInfo';
-import UserHobbies from './UserHobbies';
-import SearchCriteria from './SearchCriteria';
-import FileUpload from './components/FileUpload';
-import Login from './Login';
-import Home from './Home';
+} from "react-router-dom";
+import UserInfo from "./UserInfo";
+import UserHobbies from "./UserHobbies";
+import SearchCriteria from "./SearchCriteria";
+import FileUpload from "./components/FileUpload";
+import Login from "./Login";
+import Home from "./Home";
 
 const Nav = ({ params, logout, auth, login }) => {
   return (
@@ -64,7 +64,7 @@ const Nav = ({ params, logout, auth, login }) => {
             </Link>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               {/* current change starts here (what CM had before) */}
-              <Link to="/userprofile" className="dropdown-item">
+              {/* <Link to="/userprofile" className="dropdown-item">
                 User Profile
               </Link>
               <br />
@@ -78,7 +78,7 @@ const Nav = ({ params, logout, auth, login }) => {
                 User Events
               </a>
               <div className="dropdown-divider"></div>
-              <a className="dropdown-item">Upload a Photo</a>
+              <a className="dropdown-item">Upload a Photo</a> */}
               {/* current change ends here */}
               {/* incoming below */}
               <div className="nav-item">
@@ -87,8 +87,17 @@ const Nav = ({ params, logout, auth, login }) => {
                 </Link>
               </div>
               <div className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/UserProfile"
+                  label="UserProfile"
+                >
+                  My Profile
+                </Link>
+              </div>
+              <div className="nav-item">
                 <Link className="nav-link" to="/UserInfo" label="UserInfo">
-                  User Profile
+                  Set User Profile
                 </Link>
               </div>
 
@@ -98,7 +107,7 @@ const Nav = ({ params, logout, auth, login }) => {
                   to="/UserHobbies"
                   label="UserHobbies"
                 >
-                  User Hobbies
+                  Set User Hobbies
                 </Link>
               </div>
 
@@ -114,7 +123,7 @@ const Nav = ({ params, logout, auth, login }) => {
 
               <div className="nav-item">
                 <Link className="nav-link" to="/file/upload" label="FileUpload">
-                  Upload Photo
+                  Upload User Photo
                 </Link>
               </div>
               <div className="nav-item">

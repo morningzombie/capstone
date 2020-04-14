@@ -2,7 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
-const SearchCriteria = ({ user }) => {
+const SearchCriteria = () => {
   const [criteria, setCriteria] = useState([
     {
       carreerId: '',
@@ -15,6 +15,8 @@ const SearchCriteria = ({ user }) => {
       zipCode: '',
     },
   ]);
+
+  const [results, setResults] = useState([]);
 
   const [criteriaInput, setCriteriaInput] = useReducer(
     (criteria, setCriteriaInput) => ({ ...criteria, ...setCriteriaInput }),
@@ -68,14 +70,20 @@ const SearchCriteria = ({ user }) => {
   useEffect(() => {
     axios.get('/api/careers').then((response) => setCareers(response.data));
   }, []);
-  const onSubmit = (ev) => {
-    ev.preventDefault();
+
+  const searchPerfectMatch = () => {
     axios
-      .post('/api/search/criteria', criteriaInput)
-      .then((response) => setCriteria([response.data, ...criteria]));
+      .post('/api/search/perfect_match', criteriaInput)
+      .then((response) => setResults([response.data, ...results]));
   };
+  const searchZipCode = () => {
+    axios
+      .post('/api/search/zipcode', criteriaInput.zipCode)
+      .then((response) => setResults([response.data, ...results]));
+  };
+
   return (
-    <div className="container" onSubmit={onSubmit}>
+    <div className="container">
       <h3>Tell Us Who You Want to Hang With</h3>
       <form>
         <div>
@@ -228,7 +236,16 @@ const SearchCriteria = ({ user }) => {
             </select>
           </div>
         </div>
-        <button type="submit">Submit</button>
+        <div className="nav-item">
+          <Link
+            className="nav-link"
+            to="/search/results"
+            label="SearchResults"
+            onClick={searchZipCode}
+          >
+            Next
+          </Link>
+        </div>
       </form>
     </div>
   );

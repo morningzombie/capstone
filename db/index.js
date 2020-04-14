@@ -163,6 +163,8 @@ const sync = async () => {
   INSERT INTO religions (religion_name) VALUES ('Tenrikyo');
   INSERT INTO religions (religion_name) VALUES ('Neo-Paganism');
   INSERT INTO religions (religion_name) VALUES ('Unitarian-Universalism');
+  INSERT INTO religions (religion_name) VALUES ('Athiest');
+  INSERT INTO religions (religion_name) VALUES ('Agnostic');
   INSERT INTO religions (religion_name) VALUES ('Other');
 
   INSERT INTO genders (gender_name) VALUES ('Female');
@@ -230,6 +232,7 @@ const sync = async () => {
   INSERT INTO employment_status (status_name) VALUES ('In Schoool');
   INSERT INTO employment_status (status_name) VALUES ('Freelance');
   INSERT INTO employment_status (status_name) VALUES ('Looking...');
+  INSERT INTO employment_status (status_name) VALUES ('Retired');
   INSERT INTO employment_status (status_name) VALUES ('Does Not Matter');
 
   INSERT INTO political_parties (party_name) VALUES ('Democrat');
@@ -335,20 +338,20 @@ const sync = async () => {
     .then((response) => response.id);
 
   Promise.all([
-    // profiles.createProfile({
-    //   userId: lucyid,
-    //   gender: 'Female',
-    //   politicalAffiliation: 'Democrat',
-    //   religiousAffiliation: 'Catholic',
-    //   careerId: eduid,
-    //   education: 'College educated',
-    //   pets: 'Dogs',
-    //   birthdate: '2/2/1996',
-    //   zipCode: 32207,
-    //   employmentStatus: 'Full time',
-    //   about: 'Extrovert',
-    //   communicationPreference: 'Email',
-    // }),
+    profiles.createProfile({
+      userId: lucyid,
+      gender: 'Female',
+      politicalAffiliation: 'Democrat',
+      religiousAffiliation: 'Christianity',
+      careerId: eduid,
+      education: 'College educated',
+      pets: 'Dogs',
+      birthdate: '2/2/1996',
+      zipCode: 32207,
+      employmentStatus: 'Full time',
+      about: 'Extrovert',
+      communicationPreference: 'Email',
+    }),
     profiles.createProfile({
       userId: moeid,
       gender: 'Male',

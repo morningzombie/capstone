@@ -13,10 +13,10 @@ const EventDetail = ({ events, auth }) => {
     <div>
       <h1>My events ({events.length})</h1>
       {events
-        .filter((e) => e.userId === auth.id)
+        .filter((e) => e.isPublic)
         .map((event) => {
           return (
-            <div className="card" key={event.id} style={{ width: '18rem' }}>
+            <div className="card" key={event.id} style={{ width: '35rem' }}>
               <div className="card-body">
                 <h5 className="card-title">{event.name}</h5>
                 <h5 className="card-title">

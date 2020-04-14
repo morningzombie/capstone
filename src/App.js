@@ -19,6 +19,7 @@ import CreateEvent from './components/Event/CreateEvent';
 import UserEvents from './components/Event/UserEvents';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
+import EventDetail from './components/Event/EventDetatil';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -149,6 +150,9 @@ const App = () => {
           </Route>
           <Route path="/meetups">
             <RenderEvents events={events} />
+          </Route>
+          <Route path="/event/details">
+            <EventDetail events={events} />
           </Route>
           <Route path="/my/meetups">
             <UserEvents events={events} auth={auth} />

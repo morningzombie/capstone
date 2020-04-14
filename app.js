@@ -93,9 +93,17 @@ app.post("/api/createProfile", (req, res, next) => {
     .catch(next);
 });
 
-app.post("/api/createSearch", (req, res, next) => {
-  db.createSearch(req.body)
-    .then((profile) => res.send(profile))
+app.post("/api/search/perfect_match", (req, res, next) => {
+  models.searches
+    .searchPerfectMatch(req.body)
+    .then((usernames) => res.send(usernames))
+    .catch(next);
+});
+
+app.post("/api/search/zipcode", (req, res, next) => {
+  models.searches
+    .searchZipCode(req.body)
+    .then((usernames) => res.send(usernames))
     .catch(next);
 });
 
@@ -146,11 +154,6 @@ app.get("/api/political_parties", (req, res, next) => {
     .then((party) => res.send(party))
     .catch(next);
 });
-// app.post("/api/user_profiles", (req, res, next) => {
-//   db.createUserInfo(req.body)
-//     .then((user) => res.send(user))
-//     .catch(next);
-// });
 
 app.get("/api/hobbies", (req, res, next) => {
   db.readHobbies()
@@ -178,6 +181,13 @@ app.get("/api/users", (req, res, next) => {
     .read()
     .then((user) => {
       res.send(user);
+    })
+    .catch(next);
+});
+app.post("/api/user_hobbies", (req, res, next) => {
+  db.createUserHobbies(req.body)
+    .then((hobbies) => {
+      res.send(hobbies);
     })
     .catch(next);
 });

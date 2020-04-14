@@ -10,10 +10,11 @@ import Header from "./components/header/Header";
 import UserInfo from "./UserInfo";
 import UserHobbies from "./UserHobbies";
 import UserAccount from "./components/User/UserAccount";
-import UserProfile from "./UserProfile";
 import EditUserAccount from "./components/User/EditUserAccount";
+import UserProfile from "./UserProfile";
 import ChangeUserPassword from "./components/User/ChangeUserPassword";
 import SearchCriteria from "./SearchCriteria";
+import SearchResults from "./SearchResults";
 
 const headers = () => {
   const token = window.localStorage.getItem("token");
@@ -108,6 +109,9 @@ const App = () => {
           </Route>
           <Route path="/search/criteria">
             <SearchCriteria />
+          </Route>
+          <Route path="/search/results">
+            <SearchResults />
           </Route>
           <Route path="/UserHobbies">
             <UserHobbies auth={auth} />

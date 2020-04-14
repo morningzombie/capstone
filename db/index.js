@@ -406,35 +406,37 @@ const readPets = async () => {
 const readEducation = async () => {
   return (await client.query("SELECT * from education")).rows;
 };
-
-const createUserInfo = async ([
-  user,
-  userGender,
-  userPoliticalAffiliation,
-  userReligiousAffiliation,
-  userPets,
-  userBirthdate,
-  userEmploymentStatus,
-  userAbout,
-  userZipcode,
-  userCommunicationPreference,
-]) => {
-  const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode, communicationPreference) values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 ) returning *`;
-  return (
-    await client.query(SQL, [
-      user,
-      gender,
-      politicalAffiliation,
-      religiousAffiliation,
-      pets,
-      birthdate,
-      employmentStatus,
-      userAbout,
-      zipcode,
-      communicationPreference,
-    ])
-  ).rows[0];
+const readProfiles = async () => {
+  return (await client.query("SELECT * from user_profiles")).rows;
 };
+// const createUserInfo = async ([
+//   user,
+//   userGender,
+//   userPoliticalAffiliation,
+//   userReligiousAffiliation,
+//   userPets,
+//   userBirthdate,
+//   userEmploymentStatus,
+//   userAbout,
+//   userZipcode,
+//   userCommunicationPreference,
+// ]) => {
+//   const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode, communicationPreference) values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 ) returning *`;
+//   return (
+//     await client.query(SQL, [
+//       user,
+//       gender,
+//       politicalAffiliation,
+//       religiousAffiliation,
+//       pets,
+//       birthdate,
+//       employmentStatus,
+//       userAbout,
+//       zipcode,
+//       communicationPreference,
+//     ])
+//   ).rows[0];
+// };
 module.exports = {
   sync,
   models,
@@ -451,5 +453,6 @@ module.exports = {
   // getUserIdFromEmail,
   // createUserHobbies,
   readEducation,
-  createUserInfo,
+  readProfiles,
+  // createUserInfo,
 };

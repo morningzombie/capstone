@@ -159,6 +159,13 @@ app.get("/api/hobbies", (req, res, next) => {
     })
     .catch(next);
 });
+app.get("/api/profiles", (req, res, next) => {
+  db.readProfiles()
+    .then((profiles) => {
+      res.send(profiles);
+    })
+    .catch(next);
+});
 app.get("/api/education", (req, res, next) => {
   db.readEducation()
     .then((school) => {
@@ -166,11 +173,18 @@ app.get("/api/education", (req, res, next) => {
     })
     .catch(next);
 });
-app.post("/api/user_hobbies", (req, res, next) => {
-  db.createUserHobbies(req.body)
-    .then((hobbies) => {
-      res.send(hobbies);
+app.get("/api/users", (req, res, next) => {
+  models.users
+    .read()
+    .then((user) => {
+      res.send(user);
     })
+    .catch(next);
+});
+app.post("/api/createUserHobbies", (req, res, next) => {
+  models.hobbies
+    .createUserHobbies(req.body)
+    .then((hobbies) => res.send(hobbies))
     .catch(next);
 });
 

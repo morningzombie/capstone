@@ -78,8 +78,17 @@ const Nav = ({ params, logout, auth, login }) => {
                 </Link>
               </div>
               <div className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/UserProfile"
+                  label="UserProfile"
+                >
+                  My Profile
+                </Link>
+              </div>
+              <div className="nav-item">
                 <Link className="nav-link" to="/UserInfo" label="UserInfo">
-                  User Profile
+                  Set User Profile
                 </Link>
               </div>
 
@@ -89,7 +98,7 @@ const Nav = ({ params, logout, auth, login }) => {
                   to="/UserHobbies"
                   label="UserHobbies"
                 >
-                  User Hobbies
+                  Set User Hobbies
                 </Link>
               </div>
 
@@ -105,7 +114,7 @@ const Nav = ({ params, logout, auth, login }) => {
 
               <div className="nav-item">
                 <Link className="nav-link" to="/file/upload" label="FileUpload">
-                  Upload Photo
+                  Upload User Photo
                 </Link>
               </div>
 

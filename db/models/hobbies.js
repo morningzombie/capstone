@@ -1,11 +1,14 @@
 const client = require("../client");
 
-const readHobbies = async () => {
+const readUserHobbies = async () => {
   return (await client.query("SELECT * from hobbies")).rows;
 };
-const createHobby = async (hobby) => {
-  const SQL = `INSERT INTO hobbies (hobby_name, hobby_image) values($1, $2) returning *`;
-  return (await client.query(SQL, [hobby])).rows[0];
+
+const createUserHobbies = async (user_hobbies) => {
+  const SQL = `INSERT INTO user_hobbies(user_id, hobby_id)
+        values($1, $2) returning *`;
+  return (await client.query(SQL, [user_hobbies.userId, user_hobbies.hobbyId]))
+    .rows[0];
 };
 
-module.exports = { readHobbies, createHobby };
+module.exports = { readUserHobbies, createUserHobbies };

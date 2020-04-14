@@ -16,6 +16,7 @@ const UserProfile = (auth) => {
   useEffect(() => {
     axios.get("/api/users").then((response) => setUsers(response.data));
   }, []);
+  console.log(users);
   return (
     <div>
       <h3>All About Me</h3>
@@ -25,7 +26,7 @@ const UserProfile = (auth) => {
           {users.map((user) => {
             return (
               <div key={user.id} className="">
-                <p className="">{user.first_name}</p>
+                <p className="">{user.firstname}</p>
               </div>
             );
           })}

@@ -21,3 +21,6 @@ h3 {
   text-align: center;
   margin: 15px 0 25px;
 }
+.userName {
+  text-transform: capitalize;
+}

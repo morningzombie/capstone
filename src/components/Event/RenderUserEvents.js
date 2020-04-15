@@ -4,6 +4,7 @@ import moment from 'moment';
 
 const UserEvents = ({ events, auth }) => {
   const myEvents = events.filter((e) => e.userId === auth.id);
+
   // useEffect(() => {
   //   console.log('use effect');
   // }, [events]);
@@ -26,7 +27,7 @@ const UserEvents = ({ events, auth }) => {
                 </h6>
                 {/* <p className="card-text">{event.description}</p> */}
                 {event.isPublic ? (
-                  ''
+                  'is Public'
                 ) : (
                   <a href="#" className="card-link">
                     Invite a friend

@@ -4,6 +4,7 @@ const fs = require('fs');
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
 const models = ({
+  user_events,
   users,
   profiles,
   careers,
@@ -64,9 +65,10 @@ const sync = async () => {
   );
   CREATE TABLE user_events(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    "userId" UUID REFERENCES users(id) NOT NULL,
-    "eventId" UUID REFERENCES events(id) NOT NULL
-
+    "joinedUserId" UUID REFERENCES users(id),
+    "eventId" UUID REFERENCES events(id) NOT NULL,
+    "isFavorite" BOOLEAN default false,
+    status VARCHAR(10) DEFAULT 'open'
   );
   CREATE TABLE careers(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -347,12 +349,36 @@ const sync = async () => {
       date: '2/2/1996 3:00 PM',
       location: 'dog',
       description: 'some activity',
-      isPublic: false,
+      isPublic: true,
+      userId: curly.id,
+    },
+    soccer: {
+      name: 'soccer',
+      date: '2/2/1996 3:00 PM',
+      location: 'jax beach',
+      description: 'play soccer on the beach',
+      isPublic: true,
       userId: moe.id,
+    },
+    joke: {
+      name: 'joke',
+      date: '2/2/1996 3:00 PM',
+      location: 'zoom',
+      description: 'just want to tell you jokes',
+      isPublic: true,
+      userId: moe.id,
+    },
+    nap: {
+      name: 'nap',
+      date: '2/2/1996 3:00 PM',
+      location: 'my house',
+      description: 'take a nap together',
+      isPublic: true,
+      userId: curly.id,
     },
   };
 
-  const [park, beach, dog] = await Promise.all(
+  const [park, beach, dog, soccer, joke, nap] = await Promise.all(
     Object.values(_events).map((event) => events.create(event))
   );
 
@@ -361,7 +387,42 @@ const sync = async () => {
     return acc;
   }, {});
 
-  //console.log(eventMap, 'events');
+  //seeding user_events
+  const _user_events = {
+    beach: {
+      joinedUserId: curly.id,
+      eventId: beach.id,
+      status: 'accepted',
+    },
+    soccer: {
+      eventId: beach.id,
+      status: null,
+    },
+    joke: {
+      joinedUserId: lucy.id,
+      eventId: joke.id,
+      isFavorite: true,
+      status: 'declined',
+    },
+    dog: {
+      joinedUserId: lucy.id,
+      eventId: dog.id,
+      isFavorite: true,
+      status: 'accepted',
+    },
+  };
+  const [upark, ubeach, udog, usoccer, ujoke, unap] = await Promise.all(
+    Object.values(_user_events).map((user_event) =>
+      user_events.create(user_event)
+    )
+  );
+
+  const userEventMap = (await user_events.read()).reduce((acc, user_event) => {
+    acc[user_event.status] = user_event;
+    return acc;
+  }, {});
+
+  //console.log(userEventMap, 'userEvents');
 
   Promise.all([
     careers.createCareer('Computers and Technology'),

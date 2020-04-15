@@ -1,4 +1,5 @@
 module.exports = {
+  user_events: require('./user_events'),
   events: require('./events'),
   users: require('./users'),
   profiles: require('./profiles'),

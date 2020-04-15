@@ -10,6 +10,20 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log(
+    'method',
+    req.method,
+    ' URL: ',
+    req.url,
+    ' body: ',
+    req.body,
+    'user',
+    req.user
+  );
+  next();
+});
+
 const isLoggedIn = (req, res, next) => {
   //console.log(req.user, 'req.user in isLoggedin');
   if (!req.user) {

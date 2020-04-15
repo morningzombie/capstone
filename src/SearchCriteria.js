@@ -36,6 +36,7 @@ const SearchCriteria = () => {
     const { name, value } = evt.target;
     setCriteriaInput({ [name]: value });
   };
+  const [zipCode, setZipCode] = useState('');
   const [careers, setCareers] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
@@ -71,32 +72,32 @@ const SearchCriteria = () => {
     axios.get('/api/careers').then((response) => setCareers(response.data));
   }, []);
 
-  const searchPerfectMatch = () => {
+  // const searchPerfectMatch = () => {
+  //   axios
+  //     .post('/api/search/perfect_match', criteriaInput)
+  //     .then((response) => setResults([response.data, ...results]));
+  // };
+  const searchZipCode = (zipcode) => {
     axios
-      .post('/api/search/perfect_match', criteriaInput)
+      .post('/api/search/zipcode', zipcode)
       .then((response) => setResults([response.data, ...results]));
   };
-  const searchZipCode = () => {
-    axios
-      .post('/api/search/zipcode', criteriaInput.zipCode)
-      .then((response) => setResults([response.data, ...results]));
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    searchZipCode(zipCode);
   };
-
   return (
-    <div className="container">
+    <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us Who You Want to Hang With</h3>
       <form>
         <div>
           <label htmlFor="career">Where do they live?</label>
           <input
-            placeholder="Zip Code"
+            placeholder=" -- enter zip code --"
             type="text"
             pattern="(\d{5}([\-]\d{4})?)"
             id="zipCode"
-            name="zipCode"
-            value={criteriaInput.zipCode}
-            onChange={handleChange}
-            required
+            onChange={(ev) => setZipCode(ev.target.value)}
           />
         </div>
         <div className="row">
@@ -237,14 +238,15 @@ const SearchCriteria = () => {
           </div>
         </div>
         <div className="nav-item">
-          <Link
+          {/* <Link
             className="nav-link"
             to="/search/results"
             label="SearchResults"
             onClick={searchZipCode}
           >
             Next
-          </Link>
+          </Link> */}
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>

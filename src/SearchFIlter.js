@@ -1,4 +1,4 @@
-import React from 'react';
+mport React, { useState, useEffect } from 'react';
 
 const SearchFilter = ({ results, criteria }) => {
   const [filter, setFilter] = useState('');

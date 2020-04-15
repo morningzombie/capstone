@@ -1,6 +1,6 @@
-import React from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import qs from "qs";
+import React from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import qs from 'qs';
 
 const Header = ({ login }) => {
   return (
@@ -36,11 +36,11 @@ const Header = ({ login }) => {
               profile
             </Link>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link className="nav-link" to="/search/criteria">
               Search
             </Link>
-          </li>
+          </li> */}
         </ul>
         <form className="form-inline my-2 my-lg-0">
           <Link

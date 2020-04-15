@@ -19,6 +19,7 @@ import CreateEvent from './components/Event/CreateEvent';
 import UserEvents from './components/Event/UserEvents';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
+import SearchFilter from './SearchFIlter';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -134,6 +135,9 @@ const App = () => {
           </Route>
           <Route path="/search/results">
             <SearchResults />
+          </Route>
+          <Route path="/search/filter">
+            <SearchFilter />
           </Route>
           <Route path="/UserHobbies">
             <UserHobbies auth={auth} />

@@ -1,81 +1,105 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import axios from "axios";
+import DeleteAccountPopUp from "./components/User/DeleteAccountPopUp";
 
-const UserProfile = (auth) => {
-  const [profiles, setProfiles] = useState([]);
-  const [users, setUsers] = useState([]);
+const UserProfile = ({ logout, auth, params }) => {
+  const deleteAccount = () => {
+    axios.delete(`/api/users/${auth.id}`);
+  };
 
-  const [photo, setPhoto] = useState([]);
-
-  console.log(profiles);
-  const userId = auth.auth.id;
+  const [profile, setProfile] = useState([]);
 
   useEffect(() => {
-    axios.get("/api/profiles").then((response) => setProfiles(response.data));
+    axios
+      .get("/api/profiles")
+      .then((response) =>
+        setProfile(response.data.find(({ userId }) => userId === auth.id))
+      );
   }, []);
-  useEffect(() => {
-    axios.get("/api/users").then((response) => setUsers(response.data));
-  }, []);
+
   return (
-    <div>
-      <h3>All About Me</h3>
-
-      <div className="form-group d-flex flex-wrap align-content-around">
-        <div className="">
-          {users.map((user) => {
-            return (
-              <div key={user.id} className="">
-                <p className="">{user.first_name}</p>
-              </div>
-            );
-          })}
+    <div className="container">
+      <h3 className="userName">
+        All About {auth.username}{" "}
+        <button
+          type="button"
+          className="btn btn-primary btn-sm"
+          data-toggle="modal"
+          data-target="#staticBackdrop"
+        >
+          Delete my account
+        </button>
+      </h3>
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Account Ownership</h5>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
+              Name: {auth.firstname} {auth.lastname}
+            </li>
+            <li className="list-group-item">Username: {auth.username}</li>
+            <li className="list-group-item">email: {auth.email}</li>
+            <li className="list-group-item">Phone: {auth.phone}</li>
+          </ul>
+          <Link to="/useraccount/edit" className="card-link">
+            Edit
+          </Link>
         </div>
+      </div>
+      {/* //============CHANGE PASSWORD===============// */}
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">
+            Would you like to reset your password?{" "}
+            <Link to="/useraccount/password" className="btn btn-primary btn-sm">
+              Change password
+            </Link>
+          </h5>
+        </div>
+      </div>
 
-        {profiles.map((profile) => {
-          return (
-            <div
-              key={profile.id}
-              value={profile.profile_name}
-              className="hobby_img p-2 mb-4"
-            >
-              <img
-                className="hobby_img"
-                // src={`http://www.terribailey.com/images/${hobby.hobby_image}`}
-                alt={profile.profile_name}
-                // onClick={(ev) =>
-                //   setUserHobbies({
-                //     ...userHobbies,
-                //     [hobby.id]: hobby.hobby_name,
-                //   })
-                // }
-              />
-              <p className="hobby-text mb-1">{profile.profile_name}</p>
-              {/* id: "8c12f648-7521-4395-8212-54805bd095c6" */}
-              {/* userId: "997ddd71-4757-4e42-8a9b-52f2d2feb4b8" */}
-              Gender: {profile.gender}
-              <br />
+      <DeleteAccountPopUp
+        auth={auth}
+        deleteAccount={deleteAccount}
+        logout={logout}
+      />
+
+      {/* //============MORE INFO===============// */}
+      <div className="card">
+        <div className="card-body">
+          <h5 className="card-title">Personal Information</h5>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">Gender: {profile.gender}</li>
+            <li className="list-group-item">
               Political Affiliation: {profile.politicalaffiliation}
-              <br />
-              Religious Affiliation:{profile.religiousaffiliation}
-              <br />
-              Education: {profile.education}
-              <br />
-              Pets: {profile.pets}
-              <br />
-              Birthdate: {profile.birthdate}
-              <br />
-              Zipcode: {profile.zipcode}
-              <br />
+            </li>
+            <li className="list-group-item">
+              Religious Affiliation: {profile.religiousaffiliation}
+            </li>
+            <li className="list-group-item">Education: {profile.education}</li>
+            <li className="list-group-item">Pets: {profile.pets}</li>
+            <li className="list-group-item">Birthdate: {profile.birthdate}</li>
+            <li className="list-group-item">Zipcode: {profile.zipcode}</li>
+            <li className="list-group-item">
               Employment Status: {profile.employmentstatus}
-              <br />
-              About: {profile.about}
-              <br />
-              {profile.communicationpreference}
-              <br />
-              {/* careerid: "7196afea-99c0-46b5-8bcf-f33e526a5467" */}
-            </div>
-          );
-        })}
+            </li>
+            <li className="list-group-item">About: {profile.about}</li>
+            <li className="list-group-item">
+              I prefer to be contacted by: {profile.communicationpreference}
+            </li>
+            {/* careerid: "7196afea-99c0-46b5-8bcf-f33e526a5467" */}
+          </ul>
+
+          <Link
+            className="card-link"
+            to="/userprofile/edit"
+            label="UserProfileEdit"
+          >
+            Edit
+          </Link>
+        </div>{" "}
       </div>
     </div>
   );

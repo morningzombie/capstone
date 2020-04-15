@@ -40,15 +40,6 @@ const Nav = ({ params, logout, auth, login }) => {
             <Link className="nav-link" to="/#">
               Home <span className="sr-only">(current)</span>
             </Link>
-            <Link className="nav-link" to="/meetups">
-              Meetups
-            </Link>
-            <Link className="nav-link" to="/friends">
-              Meet Friends
-            </Link>
-            <Link className="nav-link" to="/my/meetups">
-              My Meetups
-            </Link>
           </li>
 
           <li className="nav-item dropdown">
@@ -62,27 +53,43 @@ const Nav = ({ params, logout, auth, login }) => {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              User Info
+              My Hangouts
             </Link>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              {/* current change starts here (what CM had before) */}
-              {/* <Link to="/userprofile" className="dropdown-item">
-                User Profile
-              </Link>
-              <br />
-              <Link to="/userhobbies" className="dropdown-item">
-                User Hobbies
-              </Link>
-              <Link to="/useraccount" className="dropdown-item">
-                User Account
-              </Link>
-              <a className="dropdown-item" href="#">
-                User Events
-              </a>
-              <div className="dropdown-divider"></div>
-              <a className="dropdown-item">Upload a Photo</a> */}
-              {/* current change ends here */}
-              {/* incoming below */}
+              <div className="nav-item">
+                <Link className="nav-link" to="/meetups">
+                  Meetups
+                </Link>
+              </div>
+              <div className="nav-item">
+                <Link className="nav-link" to="/friends">
+                  Meet Friends
+                </Link>
+              </div>
+              <div className="nav-item">
+                <Link className="nav-link" to="/my/meetups">
+                  My Meetups
+                </Link>
+              </div>
+            </div>
+          </li>
+
+          {/* 2nd dropdown */}
+
+          <li className="nav-item dropdown">
+            <Link
+              to="/userinfo"
+              className="nav-link dropdown-toggle"
+              // href="#"
+              id="navbarDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              My User Settings
+            </Link>
+            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <div className="nav-item">
                 <Link className="nav-link" to="/useraccount">
                   Account Settings
@@ -99,7 +106,7 @@ const Nav = ({ params, logout, auth, login }) => {
               </div>
               <div className="nav-item">
                 <Link className="nav-link" to="/UserInfo" label="UserInfo">
-                  Set User Profile
+                  Setup My Profile
                 </Link>
               </div>
 
@@ -109,7 +116,7 @@ const Nav = ({ params, logout, auth, login }) => {
                   to="/UserHobbies"
                   label="UserHobbies"
                 >
-                  Set User Hobbies
+                  Setup My Hobbies
                 </Link>
               </div>
 
@@ -145,7 +152,7 @@ const Nav = ({ params, logout, auth, login }) => {
 
               <div className="nav-item">
                 <Link className="nav-link" to="/file/upload" label="FileUpload">
-                  Upload User Photo
+                  Upload My Photo
                 </Link>
               </div>
               <div className="nav-item">
@@ -158,13 +165,13 @@ const Nav = ({ params, logout, auth, login }) => {
                 </Link>
               </div>
 
-              <div className="dropdown-divider"></div>
+              {/* <div className="dropdown-divider"></div> */}
 
-              <div className="nav-item">
+              {/* <div className="nav-item">
                 <Link className="nav-link" to="/UserEvents" label="UserEvents">
                   User Schedule
                 </Link>
-              </div>
+              </div> */}
               {/* incoming ends here */}
             </div>
           </li>

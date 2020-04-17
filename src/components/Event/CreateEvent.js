@@ -91,7 +91,7 @@ const CreateEvent = ({ auth, setAuth, setEvents, events, headers }) => {
             onChange={onChange}
           ></textarea>
         </div>
-        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+        <div className="custom-control custom-checkbox my-1 mr-sm-2">
           <input
             type="checkbox"
             className="custom-control-input"

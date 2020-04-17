@@ -1,6 +1,5 @@
 import React from 'react';
 import qs from 'qs';
-
 import {
   BrowserRouter as Router,
   Switch,

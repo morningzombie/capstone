@@ -6,7 +6,7 @@ import FavButton from './FavButton';
 import DeclineButton from './DeclineButton';
 import AcceptButton from './AcceptButton';
 
-const EventDetail = ({
+const UserEventDetail = ({
   events,
   auth,
   eventId,
@@ -186,6 +186,14 @@ const EventDetail = ({
               >
                 Close Detail
               </button>
+              <button
+                onClick={() => {
+                  console.log('delete event');
+                }}
+                className="btn btn-secondary"
+              >
+                Delete Event
+              </button>
             </div>
           </div>
         </div>
@@ -196,4 +204,4 @@ const EventDetail = ({
   );
 };
 
-export default EventDetail;
+export default UserEventDetail;

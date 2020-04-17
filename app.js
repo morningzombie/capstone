@@ -243,7 +243,7 @@ app.put("/api/user/password/:id", (req, res, next) => {
 
 Object.keys(models).forEach((key) => {
   //console.log(models);
-  app.get(`/api/${key}`, isLoggedIn, isAdmin, (req, res, next) => {
+  app.get(`/api/${key}`, isLoggedIn, (req, res, next) => {
     models[key]
       .read({ user: req.user })
       .then((items) => res.send(items))
@@ -257,7 +257,7 @@ Object.keys(models).forEach((key) => {
       .catch(next);
   });
   app.put(`/api/${key}/:id`, (req, res, next) => {
-    // console.log(req.body, 'user put');
+    //console.log(req.body, 'user put');
     models[key]
       .update(req.body, req.params.id)
       .then((items) => res.send(items))

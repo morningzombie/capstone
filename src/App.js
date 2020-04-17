@@ -16,11 +16,13 @@ import SearchCriteria from "./SearchCriteria";
 import RenderEvents from "./components/Event/RenderEvents";
 import RenderUsers from "./components/User/RenderUsers";
 import CreateEvent from "./components/Event/CreateEvent";
+import RenderUserEvents from "./components/Event/RenderUserEvents";
 import UserEvents from "./components/Event/UserEvents";
 import UserProfile from "./UserProfile";
 import SearchResults from "./SearchResults";
+import EventDetail from "./components/Event/EventDetatil";
 import UserProfileEdit from "./UserProfileEdit";
-import SearchFilter from "./SearchFilter";
+import SearchFilter from "./SearchFIlter";
 
 const headers = () => {
   const token = window.localStorage.getItem("token");
@@ -39,6 +41,7 @@ const App = () => {
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
   const [userProfiles, setUserProfiles] = useState([]);
+  const [userEvents, setUserEvents] = useState([]);
 
   const login = async (credentials) => {
     const token = (await axios.post("/api/auth", credentials)).data.token;
@@ -65,6 +68,14 @@ const App = () => {
       axios
         .get("/api/events", headers())
         .then((response) => setEvents(response.data));
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
+      axios
+        .get("/api/user_events", headers())
+        .then((response) => setUserEvents(response.data));
     }
   }, [auth]);
 
@@ -170,10 +181,25 @@ const App = () => {
             <ChangeUserPassword auth={auth} setAuth={setAuth} />
           </Route>
           <Route path="/meetups">
-            <RenderEvents events={events} />
+            <RenderEvents
+              events={events}
+              users={users}
+              auth={auth}
+              userEvents={userEvents}
+              setUserEvents={setUserEvents}
+            />
+          </Route>
+          <Route path="/event/details">
+            <EventDetail events={events} />
           </Route>
           <Route path="/my/meetups">
-            <UserEvents events={events} auth={auth} />
+            <RenderUserEvents
+              events={events}
+              users={users}
+              auth={auth}
+              userEvents={userEvents}
+              setUserEvents={setUserEvents}
+            />
           </Route>
           <Route path="/create/event">
             <CreateEvent

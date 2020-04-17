@@ -1,4 +1,4 @@
 - npm i
-- create database hobnobbers
+- create database wannahang
 - npm run start:dev
 - login with seeded users

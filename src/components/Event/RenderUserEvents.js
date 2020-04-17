@@ -26,16 +26,21 @@ const UserEvents = ({ events, auth }) => {
                   {event.location}
                 </h6>
                 {/* <p className="card-text">{event.description}</p> */}
-                {event.isPublic ? (
-                  'is Public'
-                ) : (
-                  <a href="#" className="card-link">
-                    Invite a friend
-                  </a>
-                )}
-                <a href="#" className="card-link">
+                {event.isPublic ? <p>is Public</p> : <p>private</p>}
+                <button
+                  className="card-link"
+                  onClick={() => {
+                    {
+                      going ? setIsGoing(going) : null;
+                    }
+                    {
+                      notGoing ? setIsNotGoing(notGoing) : null;
+                    }
+                    setEventId(event.id);
+                  }}
+                >
                   View details
-                </a>
+                </button>
               </div>
             </div>
           );

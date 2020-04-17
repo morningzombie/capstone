@@ -20,6 +20,8 @@ import RenderUserEvents from './components/Event/RenderUserEvents';
 import UserProfile from './UserProfile';
 import SearchResults from './SearchResults';
 import EventDetail from './components/Event/EventDetatil';
+import UserProfileEdit from './UserProfileEdit';
+import SearchFilter from './SearchFIlter';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -133,8 +135,11 @@ const App = () => {
           <Route path="/FileUpload">
             <FileUpload />
           </Route>
-          <Route path="/UserProfile">
-            <UserProfile auth={auth} login={login} />
+          <Route path="/userprofile" exact>
+            <UserProfile logout={logout} auth={auth} setAuth={setAuth} />
+          </Route>
+          <Route path="/userprofile/edit" exact>
+            <UserProfileEdit auth={auth} setAuth={setAuth} />
           </Route>
           <Route path="/UserInfo">
             <UserInfo auth={auth} login={login} />
@@ -144,6 +149,9 @@ const App = () => {
           </Route>
           <Route path="/search/results">
             <SearchResults />
+          </Route>
+          <Route path="/search/filter">
+            <SearchFilter />
           </Route>
           <Route path="/UserHobbies">
             <UserHobbies auth={auth} />

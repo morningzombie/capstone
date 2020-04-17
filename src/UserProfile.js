@@ -96,6 +96,7 @@ const UserProfile = ({ logout, auth, params }) => {
             className="card-link"
             to="/userprofile/edit"
             label="UserProfileEdit"
+            profile={profile}
           >
             Edit
           </Link>

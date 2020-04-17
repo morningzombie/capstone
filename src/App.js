@@ -20,7 +20,7 @@ import UserEvents from "./components/Event/UserEvents";
 import UserProfile from "./UserProfile";
 import SearchResults from "./SearchResults";
 import UserProfileEdit from "./UserProfileEdit";
-import SearchFilter from "./SearchFIlter";
+import SearchFilter from "./SearchFilter";
 
 const headers = () => {
   const token = window.localStorage.getItem("token");
@@ -38,6 +38,7 @@ const App = () => {
   const [userCareer, setUserCareer] = useState("");
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
+  const [userProfiles, setUserProfiles] = useState([]);
 
   const login = async (credentials) => {
     const token = (await axios.post("/api/auth", credentials)).data.token;
@@ -74,6 +75,14 @@ const App = () => {
         .then((response) => setUsers(response.data));
     }
   }, [auth]);
+
+  // useEffect(() => {
+  //   if (auth.id) {
+  //     axios.get("/api/getUserProfiles", headers()).then((response) => {
+  //       setUserProfiles(response.data);
+  //     });
+  //   }
+  // }, [auth]);
 
   useEffect(() => {
     if (auth.id) {
@@ -129,7 +138,12 @@ const App = () => {
             <UserProfile logout={logout} auth={auth} setAuth={setAuth} />
           </Route>
           <Route path="/userprofile/edit" exact>
-            <UserProfileEdit auth={auth} setAuth={setAuth} />
+            <UserProfileEdit
+              auth={auth}
+              setAuth={setAuth}
+              // userProfile={userProfile}
+              // setUserProfile={setUserProfile}
+            />
           </Route>
           <Route path="/UserInfo">
             <UserInfo auth={auth} login={login} />

@@ -118,7 +118,6 @@ const UserProfile = ({ logout, auth, params }) => {
             value={editedUserProfile.politicalaffiliation}
             className="form-control"
             type="text"
-            placeholder="Polical"
             onChange={onChange}
           />
 

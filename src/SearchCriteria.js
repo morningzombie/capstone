@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import axios from 'axios';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import React, { useState, useEffect, useReducer } from "react";
+import axios from "axios";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const SearchCriteria = () => {
   const [criteria, setCriteria] = useState([
     {
-      carreerId: '',
-      employmentStatus: '',
-      pets: '',
-      ageRange: '',
-      gender: '',
-      politicalAffiliation: '',
-      religiousAffiliation: '',
-      zipCode: '',
+      carreerId: "",
+      employmentStatus: "",
+      pets: "",
+      ageRange: "",
+      gender: "",
+      politicalAffiliation: "",
+      religiousAffiliation: "",
+      zipCode: "",
     },
   ]);
 
@@ -21,14 +21,14 @@ const SearchCriteria = () => {
   const [criteriaInput, setCriteriaInput] = useReducer(
     (criteria, setCriteriaInput) => ({ ...criteria, ...setCriteriaInput }),
     {
-      carreerId: '',
-      employmentStatus: '',
-      pets: '',
-      ageRange: '',
-      gender: '',
-      politicalAffiliation: '',
-      religiousAffiliation: '',
-      zipCode: '',
+      carreerId: "",
+      employmentStatus: "",
+      pets: "",
+      ageRange: "",
+      gender: "",
+      politicalAffiliation: "",
+      religiousAffiliation: "",
+      zipCode: "",
     }
   );
 
@@ -36,7 +36,7 @@ const SearchCriteria = () => {
     const { name, value } = evt.target;
     setCriteriaInput({ [name]: value });
   };
-  const [zipCode, setZipCode] = useState('');
+  const [zipCode, setZipCode] = useState("");
   const [careers, setCareers] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
@@ -44,32 +44,32 @@ const SearchCriteria = () => {
   const [politicalAffiliation, setPoliticalAffiliation] = useState([]);
   const [pets, setPets] = useState([]);
   const [hobbies, setHobbies] = useState([]);
-  const [ageRange, setAgeRange] = useState('');
+  const [ageRange, setAgeRange] = useState("");
 
   useEffect(() => {
-    axios.get('/api/religions').then((response) => setReligions(response.data));
+    axios.get("/api/religions").then((response) => setReligions(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/genders').then((response) => setGenders(response.data));
+    axios.get("/api/genders").then((response) => setGenders(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get('/api/employment_status')
+      .get("/api/employment_status")
       .then((response) => setEmploymentStatus(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get('/api/political_parties')
+      .get("/api/political_parties")
       .then((response) => setPoliticalAffiliation(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/pets').then((response) => setPets(response.data));
+    axios.get("/api/pets").then((response) => setPets(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/hobbies').then((response) => setHobbies(response.data));
+    axios.get("/api/hobbies").then((response) => setHobbies(response.data));
   }, []);
   useEffect(() => {
-    axios.get('/api/careers').then((response) => setCareers(response.data));
+    axios.get("/api/careers").then((response) => setCareers(response.data));
   }, []);
 
   // const searchPerfectMatch = () => {
@@ -79,9 +79,10 @@ const SearchCriteria = () => {
   // };
   const searchZipCode = (zipcode) => {
     axios
-      .post('/api/search/zipcode', zipcode)
+      .post("/api/search/zipcode", zipcode)
       .then((response) => setResults([response.data, ...results]));
   };
+
   const onSubmit = (ev) => {
     ev.preventDefault();
     searchZipCode(zipCode);
@@ -170,7 +171,7 @@ const SearchCriteria = () => {
           </div>
 
           <div className="col">
-            {' '}
+            {" "}
             <label htmlFor="gender">Their gender?</label>
             <select
               className="form-control"
@@ -188,7 +189,7 @@ const SearchCriteria = () => {
 
         <div className="row mt-3">
           <div className="col">
-            {' '}
+            {" "}
             <label htmlFor="politicalAffiliation">
               What is their political affiliation?
             </label>

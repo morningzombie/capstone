@@ -27,6 +27,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_search_criteria;
   DROP TABLE IF EXISTS user_events;
   DROP TABLE IF EXISTS events;
+  DROP TABLE IF EXISTS user_photos;
+  DROP TABLE IF EXISTS photos;
   DROP TABLE IF EXISTS user_groups CASCADE;
   DROP TABLE IF EXISTS user_profiles CASCADE;
   DROP TABLE IF EXISTS user_hobbies CASCADE;
@@ -41,6 +43,7 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
   DROP TABLE IF EXISTS education CASCADE;
+
 
 
   CREATE TABLE users(
@@ -532,7 +535,7 @@ const readCareers = async () => {
   return (await client.query("SELECT * from careers")).rows;
 };
 const readZipCodes = async () => {
-  return (await client.query('SELECT zipCode from user_profiles')).rows;
+  return (await client.query("SELECT zipCode from user_profiles")).rows;
 };
 const readReligions = async () => {
   return (await client.query("SELECT * from religions")).rows;

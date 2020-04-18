@@ -167,6 +167,7 @@ const App = () => {
           </Route>
           <Route path="/meetups">
             <RenderEvents
+              setEvents={setEvents}
               events={events}
               users={users}
               auth={auth}
@@ -179,6 +180,7 @@ const App = () => {
           </Route>
           <Route path="/my/meetups">
             <RenderUserEvents
+              setEvents={setEvents}
               events={events}
               users={users}
               auth={auth}

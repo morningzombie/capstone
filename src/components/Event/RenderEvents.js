@@ -4,7 +4,14 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import EventDetail from './EventDetatil';
 
-const RenderEvents = ({ events, users, auth, userEvents, setUserEvents }) => {
+const RenderEvents = ({
+  setEvents,
+  events,
+  users,
+  auth,
+  userEvents,
+  setUserEvents,
+}) => {
   const [eventId, setEventId] = useState('');
   const [savedAsFav, setSavedAsFav] = useState();
   const [isGoing, setIsGoing] = useState();
@@ -13,15 +20,41 @@ const RenderEvents = ({ events, users, auth, userEvents, setUserEvents }) => {
   const myUserEvents = userEvents.filter(
     (userEvent) => userEvent.joinedUserId === auth.id
   );
-
+  //console.log(events, 'first inside render Events');
   const favoriteEvents = myUserEvents.filter((ue) => ue.isFavorite);
   const goingEvents = myUserEvents.filter((ue) => ue.status === 'accepted');
   const notGoingEvents = myUserEvents.filter((ue) => ue.status === 'declined');
   const publicEvents = events
-    .filter((e) => e.isPublic)
-    .filter((eve) => eve.userId !== auth.id);
+    .filter((eve) => eve.userId !== auth.id)
+    .filter((e) => e.isPublic);
 
-  console.log(myUserEvents, 'userEvents');
+  //EXPERIMETN
+  const acceptedEvents = events.filter((e) => {
+    if (e.isAccepted) {
+      return e;
+    }
+  });
+
+  //console.log('hello');
+  const displayEvents = events.filter((event) => {
+    if (event.isAccepted) {
+      for (let i = 0; i < goingEvents.length; i++) {
+        if (goingEvents[i].eventId === event.id) {
+          return event;
+        }
+      }
+    }
+    if (event.userId !== auth.id && event.isPublic && !event.isAccepted) {
+      return event;
+    }
+  });
+
+  // console.log(
+  //   goingEvents,
+  //   'my goingEvents render events',
+  //   displayEvents,
+  //   'display events'
+  // );
 
   return (
     <div>
@@ -29,6 +62,7 @@ const RenderEvents = ({ events, users, auth, userEvents, setUserEvents }) => {
         <div>
           <EventDetail
             eventId={eventId}
+            setEvents={setEvents}
             events={events}
             users={users}
             setEventId={setEventId}
@@ -46,8 +80,8 @@ const RenderEvents = ({ events, users, auth, userEvents, setUserEvents }) => {
         </div>
       ) : (
         <div>
-          <h1>Meetups ({publicEvents.length})</h1>
-          {publicEvents.map((event) => {
+          <h1>Meetups ({displayEvents.length})</h1>
+          {displayEvents.map((event) => {
             const foundFavEvent = favoriteEvents.find(
               (e) => e.eventId === event.id
             );

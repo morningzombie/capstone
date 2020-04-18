@@ -11,6 +11,7 @@ app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 app.use(express.static("public"));
 
+app.use(express.static("public"));
 app.use(express.json());
 
 app.use((req, res, next) => {

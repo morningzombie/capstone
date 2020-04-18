@@ -10,4 +10,5 @@ module.exports = {
   employment_status: require('./employment_status'),
   pets: require('./pets'),
   hobbies: require('./hobbies'),
+  searches: require('./searches'),
 };

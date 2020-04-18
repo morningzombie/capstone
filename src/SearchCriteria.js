@@ -9,7 +9,7 @@ const SearchCriteria = ({ auth }) => {
       gender: '',
       politicalAffiliation: '',
       religiousAffiliation: '',
-      carreerId: '',
+      careerId: '',
       education: '',
       pets: '',
       zipCode: '',
@@ -28,7 +28,7 @@ const SearchCriteria = ({ auth }) => {
       gender: '',
       politicalAffiliation: '',
       religiousAffiliation: '',
-      carreerId: '',
+      careerId: '',
       education: '',
       pets: '',
       zipCode: '',
@@ -172,7 +172,11 @@ const SearchCriteria = ({ auth }) => {
               onChange={handleChange}
             >
               {careers.map((career) => {
-                return <option key={career.id}>{career.career_name}</option>;
+                return (
+                  <option value={career.id} key={career.id}>
+                    {career.career_name}
+                  </option>
+                );
               })}
             </select>
           </div>

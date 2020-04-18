@@ -17,12 +17,12 @@ import RenderEvents from "./components/Event/RenderEvents";
 import RenderUsers from "./components/User/RenderUsers";
 import CreateEvent from "./components/Event/CreateEvent";
 import RenderUserEvents from "./components/Event/RenderUserEvents";
-import UserEvents from "./components/Event/UserEvents";
+//import UserEvents from "./components/Event/UserEvents";
 import UserProfile from "./UserProfile";
 import SearchResults from "./SearchResults";
 import EventDetail from "./components/Event/EventDetatil";
 import UserProfileEdit from "./UserProfileEdit";
-import SearchFilter from "./SearchFIlter";
+import SearchFilter from "./SearchFilter";
 
 const headers = () => {
   const token = window.localStorage.getItem("token");

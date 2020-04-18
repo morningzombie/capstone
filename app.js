@@ -108,6 +108,13 @@ app.post('/api/createProfile', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/api/users/zipCode', (req, res, next) => {
+  models.profiles
+    .findUsersWithZipCode(req.body)
+    .then((usernames) => res.send(usernames))
+    .catch(next);
+});
+
 app.post('/api/search/perfect_match', (req, res, next) => {
   models.searches
     .searchPerfectMatch(req.body)

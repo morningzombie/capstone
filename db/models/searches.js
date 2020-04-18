@@ -7,6 +7,14 @@ const searchZipCode = async ({ criteria }) => {
   const response = await client.query(SQL, [criteria.zipCode]);
   return response.rows;
 };
+
+// const findUsersWithZipCode = async (userid) => {
+//   const SQL = `SELECT users.username FROM user_profiles
+//   JOIN users ON user_profiles."userId" = users.id
+//   WHERE "userId" = ($1)`;
+//   const response = await client.query(SQL, [userid]);
+//   return response.rows;
+// };
 // const searchZipCode = async (zip) => {
 //   console.log('ZIPSRCH', zip);
 //   const SQL = `SELECT users.username FROM user_profiles
@@ -123,4 +131,5 @@ module.exports = {
   searchReligiousAffiliation,
   searchAgeRange,
   createUserSearchCriteria,
+  // findUsersWithZipCode,
 };

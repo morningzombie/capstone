@@ -40,7 +40,7 @@ const App = () => {
   const [userCareer, setUserCareer] = useState('');
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
-  const [userProfiles, setUserProfiles] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
 
   const login = async (credentials) => {
@@ -107,6 +107,14 @@ const App = () => {
     if (auth.id) {
       axios.get('/api/getCareers', headers()).then((response) => {
         setUserCareer(response.data);
+      });
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
+      axios.get('/api/getProfiles', headers()).then((response) => {
+        setUserProfile(response.data);
       });
     }
   }, [auth]);

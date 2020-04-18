@@ -549,34 +549,13 @@ const readEducation = async () => {
 const readProfiles = async () => {
   return (await client.query('SELECT * from user_profiles')).rows;
 };
-// const createUserInfo = async ([
-//   user,
-//   userGender,
-//   userPoliticalAffiliation,
-//   userReligiousAffiliation,
-//   userPets,
-//   userBirthdate,
-//   userEmploymentStatus,
-//   userAbout,
-//   userZipcode,
-//   userCommunicationPreference,
-// ]) => {
-//   const SQL = `INSERT INTO user_profiles (user, gender, politicalAffiliation, religiousAffiliation, pets, birthdate, employmentStatus, userAbout, zipcode, communicationPreference) values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10 ) returning *`;
-//   return (
-//     await client.query(SQL, [
-//       user,
-//       gender,
-//       politicalAffiliation,
-//       religiousAffiliation,
-//       pets,
-//       birthdate,
-//       employmentStatus,
-//       userAbout,
-//       zipcode,
-//       communicationPreference,
-//     ])
-//   ).rows[0];
-// };
+const findUsersWithZipCode = async (userid) => {
+  const SQL = `SELECT users.username FROM user_profiles
+  JOIN users ON user_profiles."userId" = users.id
+  WHERE "userId" = ($1)`;
+  const response = await client.query(SQL, [userid]);
+  return response.rows;
+};
 module.exports = {
   sync,
   models,
@@ -589,7 +568,7 @@ module.exports = {
   readEmploymentStatus,
   readPoliticalParties,
   readPets,
-  // createUserInfo,
+  findUsersWithZipCode,
   readZipCodes,
   // createUserHobbies,
   readEducation,

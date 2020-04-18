@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const SearchFilter = ({ results, criteria }) => {
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
   return (
     <div>
       <form>

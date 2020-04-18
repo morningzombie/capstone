@@ -1,12 +1,15 @@
 const express = require("express");
-const app = express();
 const path = require("path");
 const db = require("./db");
 const models = db.models;
 const fileUpload = require("express-fileupload");
+const app = express();
 
 app.use("/dist", express.static(path.join(__dirname, "dist")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
+//app.use("/public/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use(express.static("public"));
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -82,6 +85,12 @@ app.get("/api/auth", isLoggedIn, (req, res, next) => {
 
 //============PHOTO UPLOAD=================//
 app.use(fileUpload());
+
+app.get("/api/public/upload", (req, res, next) => {
+  db.findUserId(req.user.id)
+    .then((userid) => res.send(userid))
+    .catch(next);
+});
 
 //Upload endpoint
 app.post("/upload", (req, res) => {
@@ -199,13 +208,13 @@ app.get("/api/users", (req, res, next) => {
     })
     .catch(next);
 });
-app.post("/api/user_hobbies", (req, res, next) => {
-  db.createUserHobbies(req.body)
-    .then((hobbies) => {
-      res.send(hobbies);
-    })
-    .catch(next);
-});
+// app.post('/api/user_hobbies', (req, res, next) => {
+//   db.createUserHobbies(req.body)
+//     .then((hobbies) => {
+//       res.send(hobbies);
+//     })
+//     .catch(next);
+// });
 app.post("/api/createUserHobbies", (req, res, next) => {
   models.hobbies
     .createUserHobbies(req.body)

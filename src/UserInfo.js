@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import UserHobbies from "./UserHobbies";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const UserInfo = ({ login, auth }) => {
   const [userid, setUserid] = useState("");
@@ -59,7 +61,7 @@ const UserInfo = ({ login, auth }) => {
   };
 
   const onSubmit = (ev) => {
-    ev.preventDefault();
+    // ev.preventDefault();
     {
       const userId = auth.id;
       createUserInfo({
@@ -77,7 +79,6 @@ const UserInfo = ({ login, auth }) => {
       });
     }
   };
-
   // user_profile.userId,
   //     user_profile.gender,
   //     user_profile.orientation,
@@ -125,7 +126,6 @@ const UserInfo = ({ login, auth }) => {
             </select>
           </div>
         </div>
-
         <div className="row  mt-3">
           <div className="col">
             <label htmlFor="career">What is your occupation?</label>
@@ -165,7 +165,6 @@ const UserInfo = ({ login, auth }) => {
             </select>
           </div>
         </div>
-
         <div className="form-group mt-3">
           <label htmlFor="pets">Do you have pets?</label>
           <select
@@ -184,7 +183,6 @@ const UserInfo = ({ login, auth }) => {
             })}
           </select>
         </div>
-
         <div className="row">
           <div className="col">
             <label htmlFor="birthdate">When is your birthday?</label>
@@ -216,7 +214,6 @@ const UserInfo = ({ login, auth }) => {
             </select>
           </div>
         </div>
-
         <div className="row mt-3">
           <div className="col">
             {" "}
@@ -265,7 +262,6 @@ const UserInfo = ({ login, auth }) => {
             </select>
           </div>
         </div>
-
         <div className="form-group mt-3">
           <label htmlFor="about">Tell us more!</label>
           <textarea
@@ -276,7 +272,22 @@ const UserInfo = ({ login, auth }) => {
             onChange={(ev) => setAbout(ev.target.value)}
           />
         </div>
-        <button>Submit</button>
+
+        <Link to="/userhobbies">
+          <button type="button">Submit</button>
+        </Link>
+
+        {/* <button
+          to="/userhobbies"
+          type="button"
+          className="btn btn-primary"
+          onClick={onSubmit}
+          // onClick={() => {
+          //   onSubmit();
+          // }}
+        >
+          Submit
+        </button> */}
       </form>
     </div>
   );

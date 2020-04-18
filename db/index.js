@@ -24,6 +24,7 @@ const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   CREATE EXTENSION IF NOT EXISTS citext;
+  DROP TABLE IF EXISTS user_search_criteria;
   DROP TABLE IF EXISTS user_events;
   DROP TABLE IF EXISTS events;
   DROP TABLE IF EXISTS user_groups CASCADE;
@@ -147,10 +148,23 @@ const sync = async () => {
     education VARCHAR(100),
     pets VARCHAR(100),
     birthdate DATE,
-    zipCode INT,
+    zipCode VARCHAR(10),
     employmentStatus VARCHAR(100),
     about VARCHAR(250),
     communicationPreference VARCHAR(5)
+  );
+
+  CREATE TABLE user_search_criteria(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "userId" UUID REFERENCES users(id),
+    gender VARCHAR(100),
+    politicalAffiliation VARCHAR(100),
+    religiousAffiliation VARCHAR(100),
+    careerId UUID REFERENCES careers(id),
+    education VARCHAR(100),
+    pets VARCHAR(100),
+    zipCode VARCHAR(10),
+    employmentStatus VARCHAR(100)
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
@@ -517,6 +531,9 @@ const sync = async () => {
 const readCareers = async () => {
   return (await client.query("SELECT * from careers")).rows;
 };
+const readZipCodes = async () => {
+  return (await client.query('SELECT zipCode from user_profiles')).rows;
+};
 const readReligions = async () => {
   return (await client.query("SELECT * from religions")).rows;
 };
@@ -582,7 +599,7 @@ module.exports = {
   readPoliticalParties,
   readPets,
   // createUserInfo,
-  // getUserIdFromEmail,
+  readZipCodes,
   // createUserHobbies,
   readEducation,
   readProfiles,

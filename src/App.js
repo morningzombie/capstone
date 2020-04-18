@@ -17,7 +17,7 @@ import RenderEvents from "./components/Event/RenderEvents";
 import RenderUsers from "./components/User/RenderUsers";
 import CreateEvent from "./components/Event/CreateEvent";
 import RenderUserEvents from "./components/Event/RenderUserEvents";
-//import UserEvents from "./components/Event/UserEvents";
+// import UserEvents from './components/Event/UserEvents';
 import UserProfile from "./UserProfile";
 import SearchResults from "./SearchResults";
 import EventDetail from "./components/Event/EventDetatil";
@@ -160,13 +160,13 @@ const App = () => {
             <UserInfo auth={auth} login={login} />
           </Route>
           <Route path="/search/criteria">
-            <SearchCriteria />
+            <SearchCriteria auth={auth} />
           </Route>
           <Route path="/search/results">
-            <SearchResults />
+            <SearchResults auth={auth} />
           </Route>
           <Route path="/search/filter">
-            <SearchFilter />
+            <SearchFilter auth={auth} />
           </Route>
           <Route path="/UserHobbies">
             <UserHobbies auth={auth} />

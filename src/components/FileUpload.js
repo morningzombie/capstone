@@ -1,17 +1,17 @@
-import React, { Fragment, useState } from "react";
-import Message from "./Message";
-import Progress from "./Progress";
-import axios from "axios";
-import qs from "qs";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import React, { Fragment, useState } from 'react';
+import Message from './Message';
+import Progress from './Progress';
+import axios from 'axios';
+import qs from 'qs';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 // let uploads = require.context("./uploads", true);
 // import Jazzi from "../../public/uploads/Jazzi.jpg";
 
 const FileUpload = ({ auth, params }) => {
-  const [file, setFile] = useState("");
-  const [filename, setFilename] = useState("Choose File");
+  const [file, setFile] = useState('');
+  const [filename, setFilename] = useState('Choose File');
   const [uploadedFile, setUploadedFile] = useState({});
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const onChange = (e) => {
@@ -21,13 +21,13 @@ const FileUpload = ({ auth, params }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     try {
-      const res = await axios.post("/upload", formData, {
+      const res = await axios.post('/upload', formData, {
         // const res = await axios.post("http://localhost:3090/upload", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
         onUploadProgress: (progressEvent) => {
           setUploadPercentage(
@@ -43,25 +43,25 @@ const FileUpload = ({ auth, params }) => {
       const { fileName, filePath } = res.data;
 
       setUploadedFile({ fileName, filePath });
-      console.log("filePath", filePath);
-      setMessage("File Uploaded");
+      console.log('filePath', filePath);
+      setMessage('File Uploaded');
     } catch (err) {
       if (err.response.status === 500) {
-        console.log("PROBLEM WITH SERVER");
-        setMessage("There was a problem with the server");
+        console.log('PROBLEM WITH SERVER');
+        setMessage('There was a problem with the server');
       } else {
-        console.log("PROBLEM HERE", err.response.data.msg);
+        console.log('PROBLEM HERE', err.response.data.msg);
 
         setMessage(err.response.data.msg);
       }
     }
   };
-  console.log({ uploadedFile });
+  console.log('file', { uploadedFile });
 
   // let myimg = uploads(`../../public/uploads/Jazzi.JPG`);
   // let myimg = `/uploads/${file.name}`;
   // console.log(myimg);
-  console.log("HERE", uploadedFile.filePath);
+  console.log('HERE', uploadedFile.filePath);
 
   return (
     <Fragment>
@@ -98,7 +98,7 @@ const FileUpload = ({ auth, params }) => {
             <div className="col-md-6 m-auto">
               <h3 className="text-center">{uploadedFile.fileName}</h3>
               <img
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 src={uploadedFile.filePath}
                 alt=""
               />

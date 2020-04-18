@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useReducer } from "react";
-import axios from "axios";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import React, { useState, useEffect, useReducer } from 'react';
+import axios from 'axios';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
-const SearchCriteria = () => {
+const SearchCriteria = ({ auth }) => {
   const [criteria, setCriteria] = useState([
     {
-      carreerId: "",
-      employmentStatus: "",
-      pets: "",
-      ageRange: "",
-      gender: "",
-      politicalAffiliation: "",
-      religiousAffiliation: "",
-      zipCode: "",
+      // userId: '',
+      gender: '',
+      politicalAffiliation: '',
+      religiousAffiliation: '',
+      careerId: '',
+      education: '',
+      pets: '',
+      zipCode: '',
+      employmentStatus: '',
+      // hobby: '',
+      // ageRange: '',
     },
   ]);
 
@@ -21,86 +24,167 @@ const SearchCriteria = () => {
   const [criteriaInput, setCriteriaInput] = useReducer(
     (criteria, setCriteriaInput) => ({ ...criteria, ...setCriteriaInput }),
     {
-      carreerId: "",
-      employmentStatus: "",
-      pets: "",
-      ageRange: "",
-      gender: "",
-      politicalAffiliation: "",
-      religiousAffiliation: "",
-      zipCode: "",
+      // userId: '',
+      gender: '',
+      politicalAffiliation: '',
+      religiousAffiliation: '',
+      careerId: '',
+      education: '',
+      pets: '',
+      zipCode: '',
+      employmentStatus: '',
+      // hobby: '',
+      // ageRange: '',
     }
   );
+  // useEffect(() => {
+  //   axios
+  //     .get('/api/search_criteria')
+  //     .then((response) =>
+  //       setCriteria(response.data.find(({ userId }) => userId === auth.id))
+  //     );
+  // }, []);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setCriteriaInput({ [name]: value });
   };
-  const [zipCode, setZipCode] = useState("");
+  const [zipCode, setZipCode] = useState('');
+  const [zipCodes, setZipCodes] = useState([]);
   const [careers, setCareers] = useState([]);
+  const [education, setEducation] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
   const [employmentStatus, setEmploymentStatus] = useState([]);
   const [politicalAffiliation, setPoliticalAffiliation] = useState([]);
   const [pets, setPets] = useState([]);
   const [hobbies, setHobbies] = useState([]);
-  const [ageRange, setAgeRange] = useState("");
+  const [ageRange, setAgeRange] = useState('');
+  const [hobby, setHobby] = useState('');
 
   useEffect(() => {
-    axios.get("/api/religions").then((response) => setReligions(response.data));
+    axios.get('/api/religions').then((response) => setReligions(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/genders").then((response) => setGenders(response.data));
+    axios.get('/api/education').then((response) => setEducation(response.data));
+  }, []);
+  useEffect(() => {
+    axios.get('/api/genders').then((response) => setGenders(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get("/api/employment_status")
+      .get('/api/employment_status')
       .then((response) => setEmploymentStatus(response.data));
   }, []);
   useEffect(() => {
     axios
-      .get("/api/political_parties")
+      .get('/api/political_parties')
       .then((response) => setPoliticalAffiliation(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/pets").then((response) => setPets(response.data));
+    axios.get('/api/pets').then((response) => setPets(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/hobbies").then((response) => setHobbies(response.data));
+    axios.get('/api/hobbies').then((response) => setHobbies(response.data));
   }, []);
   useEffect(() => {
-    axios.get("/api/careers").then((response) => setCareers(response.data));
+    axios.get('/api/careers').then((response) => setCareers(response.data));
   }, []);
+  useEffect(() => {
+    axios.get('/api/zipCodes').then((response) => setZipCodes(response.data));
+  }, []);
+
+  const searchCriteria = async (input) => {
+    // ev.preventDefault();
+    // await axios
+    //   .post('/api/search/user_search_criteria', criteriaInput)
+    //   .then((response) => setCriteria([response.data, ...criteria]));
+    await axios
+      .post('/api/search/user_search_criteria', input)
+      .then((response) => {
+        console.log('criteria', response);
+      });
+    // login({ email, password }).catch((ex) =>
+    //   setError(ex.response.data.message)
+    // );
+  };
+
+  // const createUserInfo = (user) => {
+  //   axios.post("/api/createProfile", user).then((response) => {
+  //     console.log("USERINFO", response);
+  //     // login({ email, password }).catch((ex) =>
+  //     //   setError(ex.response.data.message)
+  //     // );
+  //   });
+  // };
+
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    // const userId = auth.id;
+    searchCriteria(criteriaInput);
+  };
 
   // const searchPerfectMatch = () => {
   //   axios
   //     .post('/api/search/perfect_match', criteriaInput)
   //     .then((response) => setResults([response.data, ...results]));
   // };
-  const searchZipCode = (zipcode) => {
-    axios
-      .post("/api/search/zipcode", zipcode)
+  // const searchZipCode = (zipcode) => {
+  //   axios
+  //     .post("/api/search/zipcode", zipcode)
+  //     .then((response) => setResults([response.data, ...results]));
+  // };
+  const usernamesWithZipcode = async (ev) => {
+    ev.preventDefault();
+    await axios
+      .post('/api/search/zipCode', { zipCode })
       .then((response) => setResults([response.data, ...results]));
   };
+  // const usernamesWithZipcode = async (ev) => {
+  //   ev.preventDefault();
+  //   console.log('zipCodeSC', zipCode);
+  //   await axios
+  //     .post('/api/search/zipCode', zipCode)
+  //     .then((response) => setResults([response.data, ...results]));
+  // };
 
-  const onSubmit = (ev) => {
-    ev.preventDefault();
-    searchZipCode(zipCode);
-  };
+  // const onSubmit = (ev) => {
+  //   ev.preventDefault();
+  //   searchZipCode(zipCode);
+  // };
   return (
-    <div className="container" onSubmit={onSubmit}>
+    <div className="container">
       <h3>Tell Us Who You Want to Hang With</h3>
-      <form>
+      <form onSubmit={(e) => onSubmit(e)}>
         <div>
           <label htmlFor="career">Where do they live?</label>
           <input
             placeholder=" -- enter zip code --"
             type="text"
+            name="zipCode"
             pattern="(\d{5}([\-]\d{4})?)"
-            id="zipCode"
-            onChange={(ev) => setZipCode(ev.target.value)}
+            // value={zipCode}
+            // onChange={(ev) => setZipCode(ev.target.value)}
+            value={criteriaInput.zipCode}
+            onChange={handleChange}
           />
         </div>
+
+        <div>
+          <label htmlFor="career">What is their education?</label>
+          <select
+            name="education"
+            className="form-control"
+            type="text"
+            value={criteriaInput.education}
+            onChange={handleChange}
+          >
+            {education.map((edu) => {
+              return <option key={edu.id}>{edu.education_name}</option>;
+            })}
+          </select>
+        </div>
+
         <div className="row">
           <div className="col">
             <label htmlFor="career">What is their occupation?</label>
@@ -112,7 +196,11 @@ const SearchCriteria = () => {
               onChange={handleChange}
             >
               {careers.map((career) => {
-                return <option key={career.id}>{career.career_name}</option>;
+                return (
+                  <option value={career.id} key={career.id}>
+                    {career.career_name}
+                  </option>
+                );
               })}
             </select>
           </div>
@@ -155,8 +243,8 @@ const SearchCriteria = () => {
               type="text"
               id="ageRange"
               name="ageRange"
-              value={criteriaInput.ageRange}
-              onChange={handleChange}
+              value={ageRange}
+              onChange={(ev) => setAgeRange(ev.target.value)}
             >
               <option value="teens">18 to 21</option>
               <option value="twenties">22 to 29</option>
@@ -171,7 +259,7 @@ const SearchCriteria = () => {
           </div>
 
           <div className="col">
-            {" "}
+            {' '}
             <label htmlFor="gender">Their gender?</label>
             <select
               className="form-control"
@@ -189,7 +277,7 @@ const SearchCriteria = () => {
 
         <div className="row mt-3">
           <div className="col">
-            {" "}
+            {' '}
             <label htmlFor="politicalAffiliation">
               What is their political affiliation?
             </label>
@@ -213,6 +301,7 @@ const SearchCriteria = () => {
             <select
               className="form-control"
               id="religiousAffiliation"
+              name="religiousAffiliation"
               value={criteriaInput.religiousAffiliation}
               onChange={handleChange}
             >
@@ -228,25 +317,18 @@ const SearchCriteria = () => {
             <label htmlFor="hobby">What is their hobby?</label>
             <select
               className="form-control"
+              name="hobby"
               id="hobby"
-              value={criteriaInput.hobby}
-              onChange={handleChange}
+              value={hobby}
+              onChange={(ev) => setHobby(ev.target.value)}
             >
-              {hobbies.map((hobby) => {
-                return <option key={hobby.id}>{hobby.hobby_name}</option>;
+              {hobbies.map((hobbie) => {
+                return <option key={hobbie.id}>{hobbie.hobby_name}</option>;
               })}
             </select>
           </div>
         </div>
         <div className="nav-item">
-          {/* <Link
-            className="nav-link"
-            to="/search/results"
-            label="SearchResults"
-            onClick={searchZipCode}
-          >
-            Next
-          </Link> */}
           <button type="submit">Submit</button>
         </div>
       </form>

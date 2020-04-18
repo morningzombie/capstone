@@ -18,7 +18,7 @@ const CreateNewUser = ({ login }) => {
 
   const createUser = (user) => {
     axios.post('/api/users', user).then((response) => {
-      console.log(response.data);
+      console.log('resp', response.data);
       login({ email, password }).catch((ex) =>
         setError(ex.response.data.message)
       );

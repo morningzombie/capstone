@@ -14,8 +14,8 @@ const SearchCriteria = ({ auth }) => {
       pets: '',
       zipCode: '',
       employmentStatus: '',
-      hobby: '',
-      ageRange: '',
+      // hobby: '',
+      // ageRange: '',
     },
   ]);
 
@@ -33,8 +33,8 @@ const SearchCriteria = ({ auth }) => {
       pets: '',
       zipCode: '',
       employmentStatus: '',
-      hobby: '',
-      ageRange: '',
+      // hobby: '',
+      // ageRange: '',
     }
   );
   // useEffect(() => {
@@ -60,6 +60,7 @@ const SearchCriteria = ({ auth }) => {
   const [pets, setPets] = useState([]);
   const [hobbies, setHobbies] = useState([]);
   const [ageRange, setAgeRange] = useState('');
+  const [hobby, setHobby] = useState('');
 
   useEffect(() => {
     axios.get('/api/religions').then((response) => setReligions(response.data));
@@ -93,11 +94,34 @@ const SearchCriteria = ({ auth }) => {
     axios.get('/api/zipCodes').then((response) => setZipCodes(response.data));
   }, []);
 
-  const searchCriteria = async (ev) => {
-    ev.preventDefault();
+  const searchCriteria = async (input) => {
+    // ev.preventDefault();
+    // await axios
+    //   .post('/api/search/user_search_criteria', criteriaInput)
+    //   .then((response) => setCriteria([response.data, ...criteria]));
     await axios
-      .post('/api/search/user_search_criteria', criteriaInput)
-      .then((response) => setCriteria([response.data, ...criteria]));
+      .post('/api/search/user_search_criteria', input)
+      .then((response) => {
+        console.log('criteria', response);
+      });
+    // login({ email, password }).catch((ex) =>
+    //   setError(ex.response.data.message)
+    // );
+  };
+
+  // const createUserInfo = (user) => {
+  //   axios.post("/api/createProfile", user).then((response) => {
+  //     console.log("USERINFO", response);
+  //     // login({ email, password }).catch((ex) =>
+  //     //   setError(ex.response.data.message)
+  //     // );
+  //   });
+  // };
+
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    // const userId = auth.id;
+    searchCriteria(criteriaInput);
   };
 
   // const searchPerfectMatch = () => {
@@ -131,7 +155,7 @@ const SearchCriteria = ({ auth }) => {
   return (
     <div className="container">
       <h3>Tell Us Who You Want to Hang With</h3>
-      <form onSubmit={(e) => searchCriteria(e)}>
+      <form onSubmit={(e) => onSubmit(e)}>
         <div>
           <label htmlFor="career">Where do they live?</label>
           <input
@@ -219,8 +243,8 @@ const SearchCriteria = ({ auth }) => {
               type="text"
               id="ageRange"
               name="ageRange"
-              value={criteriaInput.ageRange}
-              onChange={handleChange}
+              value={ageRange}
+              onChange={(ev) => setAgeRange(ev.target.value)}
             >
               <option value="teens">18 to 21</option>
               <option value="twenties">22 to 29</option>
@@ -295,11 +319,11 @@ const SearchCriteria = ({ auth }) => {
               className="form-control"
               name="hobby"
               id="hobby"
-              value={criteriaInput.hobby}
-              onChange={handleChange}
+              value={hobby}
+              onChange={(ev) => setHobby(ev.target.value)}
             >
-              {hobbies.map((hobby) => {
-                return <option key={hobby.id}>{hobby.hobby_name}</option>;
+              {hobbies.map((hobbie) => {
+                return <option key={hobbie.id}>{hobbie.hobby_name}</option>;
               })}
             </select>
           </div>

@@ -119,7 +119,11 @@ app.post('/api/search/user_search_criteria', (req, res, next) => {
   models.searches
     .createUserSearchCriteria(req.body)
     .then((searchCriteria) => res.send(searchCriteria))
-    .catch(next);
+    .catch((error) => {
+      console.log('resp', error.response);
+      console.log('resp', error.response);
+      console.log('resp', error.response);
+    });
 });
 
 app.post('/api/search/zipcode', (req, res, next) => {

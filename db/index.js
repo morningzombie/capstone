@@ -24,8 +24,11 @@ const sync = async () => {
   let SQL = `
   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
   CREATE EXTENSION IF NOT EXISTS citext;
+  DROP TABLE IF EXISTS user_search_criteria;
   DROP TABLE IF EXISTS user_events;
   DROP TABLE IF EXISTS events;
+  DROP TABLE IF EXISTS user_photos;
+  DROP TABLE IF EXISTS photos;
   DROP TABLE IF EXISTS user_groups CASCADE;
   DROP TABLE IF EXISTS user_profiles CASCADE;
   DROP TABLE IF EXISTS user_hobbies CASCADE;
@@ -40,6 +43,7 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
   DROP TABLE IF EXISTS education CASCADE;
+
 
 
   CREATE TABLE users(
@@ -99,6 +103,7 @@ const sync = async () => {
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     pet_name VARCHAR(100) NOT NULL
   );
+
   CREATE TABLE hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     hobby_name VARCHAR(20) NOT NULL,
@@ -118,7 +123,15 @@ const sync = async () => {
     hobby_id UUID REFERENCES hobbies(id),
     user_id UUID REFERENCES users(id)
   );
-
+  CREATE TABLE photos(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    photo_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE user_photos(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    photo_id UUID REFERENCES photos(id),
+    user_id UUID REFERENCES users(id)
+  );
   CREATE TABLE user_ratings(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
@@ -139,10 +152,23 @@ const sync = async () => {
     education VARCHAR(100),
     pets VARCHAR(100),
     birthdate DATE,
-    zipCode INT,
+    zipCode VARCHAR(10),
     employmentStatus VARCHAR(100),
     about VARCHAR(250),
     communicationPreference VARCHAR(5)
+  );
+
+  CREATE TABLE user_search_criteria(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "userId" UUID REFERENCES users(id),
+    gender VARCHAR(100),
+    politicalAffiliation VARCHAR(100),
+    religiousAffiliation VARCHAR(100),
+    careerId UUID REFERENCES careers(id),
+    education VARCHAR(100),
+    pets VARCHAR(100),
+    zipCode VARCHAR(10),
+    employmentStatus VARCHAR(100)
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
@@ -519,6 +545,9 @@ const sync = async () => {
 const readCareers = async () => {
   return (await client.query('SELECT * from careers')).rows;
 };
+const readZipCodes = async () => {
+  return (await client.query('SELECT zipCode from user_profiles')).rows;
+};
 const readReligions = async () => {
   return (await client.query('SELECT * from religions')).rows;
 };
@@ -584,7 +613,7 @@ module.exports = {
   readPoliticalParties,
   readPets,
   // createUserInfo,
-  // getUserIdFromEmail,
+  readZipCodes,
   // createUserHobbies,
   readEducation,
   readProfiles,

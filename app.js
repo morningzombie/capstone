@@ -1,26 +1,21 @@
 const express = require('express');
-const app = express();
 const path = require('path');
 const db = require('./db');
 const models = db.models;
 const fileUpload = require('express-fileupload');
+const app = express();
 
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+//app.use("/public/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.use(express.static('public'));
+
+app.use(express.static('public'));
 app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(
-    'method',
-    req.method,
-    ' URL: ',
-    req.url,
-    ' body: ',
-    req.body,
-    'user',
-    req.user
-  );
+  console.log('method', req.method, ' URL: ', req.url, ' body: ', req.body);
   next();
 });
 
@@ -82,6 +77,12 @@ app.get('/api/auth', isLoggedIn, (req, res, next) => {
 //============PHOTO UPLOAD=================//
 app.use(fileUpload());
 
+app.get('/api/public/upload', (req, res, next) => {
+  db.findUserId(req.user.id)
+    .then((userid) => res.send(userid))
+    .catch(next);
+});
+
 //Upload endpoint
 app.post('/upload', (req, res) => {
   if (req.files === null) {
@@ -114,12 +115,33 @@ app.post('/api/search/perfect_match', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/api/search/user_search_criteria', (req, res, next) => {
+  models.searches
+    .createUserSearchCriteria(req.body)
+    .then((searchCriteria) => res.send(searchCriteria))
+    .catch((error) => {
+      console.log('resp', error.response);
+      console.log('resp', error.response);
+      console.log('resp', error.response);
+    });
+});
+
 app.post('/api/search/zipcode', (req, res, next) => {
   models.searches
     .searchZipCode(req.body)
     .then((usernames) => res.send(usernames))
     .catch(next);
 });
+
+// app.post('/api/search/zipCode', (req, res, next) => {
+//   models.searches
+//     .searchZipCode(req.body)
+//     .then((response) => {
+//       console.log('postapp', response);
+//       res.send(response);
+//     })
+//     .catch(next);
+// });
 
 app.get('/api/findUserId', (req, res, next) => {
   db.findUserId(req.user.id)
@@ -141,6 +163,11 @@ app.get('/api/findCareerId', (req, res, next) => {
 app.get('/api/careers', (req, res, next) => {
   db.readCareers()
     .then((careers) => res.send(careers))
+    .catch(next);
+});
+app.get('/api/zipCodes', (req, res, next) => {
+  db.readZipCodes()
+    .then((zipCodes) => res.send(zipCodes))
     .catch(next);
 });
 app.get('/api/genders', (req, res, next) => {
@@ -198,13 +225,13 @@ app.get('/api/users', (req, res, next) => {
     })
     .catch(next);
 });
-app.post('/api/user_hobbies', (req, res, next) => {
-  db.createUserHobbies(req.body)
-    .then((hobbies) => {
-      res.send(hobbies);
-    })
-    .catch(next);
-});
+// app.post('/api/user_hobbies', (req, res, next) => {
+//   db.createUserHobbies(req.body)
+//     .then((hobbies) => {
+//       res.send(hobbies);
+//     })
+//     .catch(next);
+// });
 app.post('/api/createUserHobbies', (req, res, next) => {
   models.hobbies
     .createUserHobbies(req.body)
@@ -277,7 +304,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err.status);
+  console.log('error', err.status);
   res.status(err.status || 500).send({ message: err.message });
 });
 

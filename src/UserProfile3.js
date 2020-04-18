@@ -4,7 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import DeleteAccountPopUp from './components/User/DeleteAccountPopUp';
 
-const UserProfileEdit = ({ logout, auth, params }) => {
+const UserProfile = ({ logout, auth, params }) => {
   const deleteAccount = () => {
     axios.delete(`/api/users/${auth.id}`);
   };
@@ -16,13 +16,10 @@ const UserProfileEdit = ({ logout, auth, params }) => {
         setProfile(response.data.find(({ userId }) => userId === auth.id))
       );
   }, []);
-
   const [error, setError] = useState('');
   const [profile, setProfile] = useState([]);
-  console.log('GP', profile.gender);
-  console.log('ID', auth.id);
-  console.log('ID2', profile.userId);
 
+  console.log('profile', profile);
   const [editedUserProfile, setEditedUserProfile] = useState({
     gender: profile.gender,
     politicalAffiliation: profile.politicalAffiliation,
@@ -31,11 +28,11 @@ const UserProfileEdit = ({ logout, auth, params }) => {
     pets: profile.pets,
     birthdate: profile.birthdate,
     zipcode: profile.zipcode,
-    employmentstatus: profile.employmentStatus,
+    employmentstatus: profile.employmentstatus,
     about: profile.about,
-    communicationpreference: profile.communicationPreference,
+    communicationpreference: profile.communicationpreference,
   });
-  console.log('gender', editedUserProfile.gender);
+
   const onChange = (ev) => {
     const change = {};
     change[ev.target.name] = ev.target.value;
@@ -101,6 +98,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
         deleteAccount={deleteAccount}
         logout={logout}
       />
+
       {/* //============MORE INFO===============// */}
       <div className="card">
         <div className="card-body">
@@ -111,103 +109,97 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             value={editedUserProfile.gender}
             className="form-control"
             type="text"
-            placeholder={profile.gender}
             onChange={onChange}
           />
 
           <label>Political Affiliation:</label>
           <input
             name="politicalaffiliation"
-            value={profile.politicalAffiliation}
+            value={editedUserProfile.politicalaffiliation}
             className="form-control"
             type="text"
-            placeholder={profile.politicalaffiliation}
             onChange={onChange}
           />
 
           <label>Religious Affiliation:</label>
           <input
             name="religiousaffiliation"
-            value={profile.religiousAffiliation}
+            value={editedUserProfile.religiousaffiliation}
             className="form-control"
             type="text"
-            placeholder={profile.religiousaffiliation}
             onChange={onChange}
           />
 
           <label>Education:</label>
           <input
             name="education"
-            value={profile.Education}
+            value={editedUserProfile.education}
             className="form-control"
             type="text"
-            placeholder={profile.education}
             onChange={onChange}
           />
 
           <label>Pets:</label>
           <input
             name="pets"
-            value={profile.Pets}
+            value={editedUserProfile.pets}
             className="form-control"
             type="text"
-            placeholder={profile.pets}
             onChange={onChange}
           />
           <label>Birthdate:</label>
           <input
             name="birthdate"
-            value={profile.birthDate}
+            value={editedUserProfile.birthdate}
             className="form-control"
             type="text"
-            placeholder={profile.birthdate}
             onChange={onChange}
           />
           <label>Zipcode: </label>
           <input
             name="zipcode"
-            value={profile.zipCode}
+            value={editedUserProfile.zipcode}
             className="form-control"
             type="text"
-            placeholder={profile.zipcode}
             onChange={onChange}
           />
           <label>Employment Status:</label>
           <input
             name="employmentstatus"
-            value={profile.employmentStatus}
+            value={editedUserProfile.employmentstatus}
             className="form-control"
             type="text"
-            placeholder={profile.employmentstatus}
             onChange={onChange}
           />
           <label>About:</label>
           <input
             name="about"
-            value={profile.About}
+            value={editedUserProfile.about}
             className="form-control"
             type="text"
-            placeholder={profile.about}
             onChange={onChange}
           />
 
           <label>I prefer to be contacted by: </label>
           <input
             name="communicationpreference"
-            value={profile.communicationPreference}
+            value={editedUserProfile.communicationpreference}
             className="form-control"
             type="text"
-            placeholder={profile.communicationpreference}
             onChange={onChange}
           />
           {/* careerid: "7196afea-99c0-46b5-8bcf-f33e526a5467" */}
 
-          <Link className="btn" to="/userinfo" label="UserProfileEdit">
-            Submit
+          <Link
+            className="card-link"
+            to="/userprofile/edit"
+            label="UserProfileEdit"
+          >
+            Edit
           </Link>
         </div>{' '}
       </div>
     </div>
   );
 };
-export default UserProfileEdit;
+export default UserProfile;

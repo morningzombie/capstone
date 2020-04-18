@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import qs from "qs";
-import axios from "axios";
-import Login from "./Login";
-import FileUpload from "./components/FileUpload";
-import Nav from "./Nav";
-import CreateNewUser from "./components/User/CreateNewUser";
-import Header from "./components/header/Header";
-import UserInfo from "./UserInfo";
-import UserHobbies from "./UserHobbies";
-import UserAccount from "./components/User/UserAccount";
-import EditUserAccount from "./components/User/EditUserAccount";
-import ChangeUserPassword from "./components/User/ChangeUserPassword";
-import SearchCriteria from "./SearchCriteria";
-import RenderEvents from "./components/Event/RenderEvents";
-import RenderUsers from "./components/User/RenderUsers";
-import CreateEvent from "./components/Event/CreateEvent";
-import RenderUserEvents from "./components/Event/RenderUserEvents";
-import UserEvents from "./components/Event/UserEvents";
-import UserProfile from "./UserProfile";
-import SearchResults from "./SearchResults";
-import EventDetail from "./components/Event/EventDetatil";
-import UserProfileEdit from "./UserProfileEdit";
-import SearchFilter from "./SearchFIlter";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import qs from 'qs';
+import axios from 'axios';
+import Login from './Login';
+import FileUpload from './components/FileUpload';
+import Nav from './Nav';
+import CreateNewUser from './components/User/CreateNewUser';
+import Header from './components/header/Header';
+import UserInfo from './UserInfo';
+import UserHobbies from './UserHobbies';
+import UserAccount from './components/User/UserAccount';
+import EditUserAccount from './components/User/EditUserAccount';
+import ChangeUserPassword from './components/User/ChangeUserPassword';
+import SearchCriteria from './SearchCriteria';
+import RenderEvents from './components/Event/RenderEvents';
+import RenderUsers from './components/User/RenderUsers';
+import CreateEvent from './components/Event/CreateEvent';
+import RenderUserEvents from './components/Event/RenderUserEvents';
+// import UserEvents from './components/Event/UserEvents';
+import UserProfile from './UserProfile';
+import SearchResults from './SearchResults';
+import EventDetail from './components/Event/EventDetatil';
+import UserProfileEdit from './UserProfileEdit';
+import SearchFilter from './SearchFilter';
 
 const headers = () => {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem('token');
   return {
     headers: {
       authorization: token,
@@ -37,25 +37,25 @@ const App = () => {
   const [params, setParams] = useState(qs.parse(window.location.hash.slice(1)));
   const [auth, setAuth] = useState({});
   const [hobbies, setHobbies] = useState([]);
-  const [userCareer, setUserCareer] = useState("");
+  const [userCareer, setUserCareer] = useState('');
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
   const [userProfiles, setUserProfiles] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
 
   const login = async (credentials) => {
-    const token = (await axios.post("/api/auth", credentials)).data.token;
-    window.localStorage.setItem("token", token);
+    const token = (await axios.post('/api/auth', credentials)).data.token;
+    window.localStorage.setItem('token', token);
     exchangeTokenForAuth();
   };
 
   const exchangeTokenForAuth = async () => {
-    const response = await axios.get("/api/auth", headers());
+    const response = await axios.get('/api/auth', headers());
     setAuth(response.data);
   };
 
   const logout = () => {
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem('token');
     setAuth({});
   };
 
@@ -66,7 +66,7 @@ const App = () => {
   useEffect(() => {
     if (auth.id) {
       axios
-        .get("/api/events", headers())
+        .get('/api/events', headers())
         .then((response) => setEvents(response.data));
     }
   }, [auth]);
@@ -74,7 +74,7 @@ const App = () => {
   useEffect(() => {
     if (auth.id) {
       axios
-        .get("/api/user_events", headers())
+        .get('/api/user_events', headers())
         .then((response) => setUserEvents(response.data));
     }
   }, [auth]);
@@ -82,7 +82,7 @@ const App = () => {
   useEffect(() => {
     if (auth.id) {
       axios
-        .get("/api/users", headers())
+        .get('/api/users', headers())
         .then((response) => setUsers(response.data));
     }
   }, [auth]);
@@ -97,7 +97,7 @@ const App = () => {
 
   useEffect(() => {
     if (auth.id) {
-      axios.get("/api/getHobbies", headers()).then((response) => {
+      axios.get('/api/getHobbies', headers()).then((response) => {
         setHobbies(response.data);
       });
     }
@@ -105,14 +105,14 @@ const App = () => {
 
   useEffect(() => {
     if (auth.id) {
-      axios.get("/api/getCareers", headers()).then((response) => {
+      axios.get('/api/getCareers', headers()).then((response) => {
         setUserCareer(response.data);
       });
     }
   }, [auth]);
 
   useEffect(() => {
-    window.addEventListener("hashchange", () => {
+    window.addEventListener('hashchange', () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);

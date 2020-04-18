@@ -1,11 +1,20 @@
 const client = require('../client');
 
-const searchZipCode = async (zipCode) => {
-  const SQL = `SELECT users.username FROM user_profiles 
+const searchZipCode = async ({ criteria }) => {
+  const SQL = `SELECT users.username FROM user_profiles
   JOIN users ON user_profiles."userId" = users.id
-  WHERE zipCode = ($1) returning *`;
-  return (await client.query(SQL, [zipCode])).rows[0];
+  WHERE zipCode = ($1)`;
+  const response = await client.query(SQL, [criteria.zipCode]);
+  return response.rows;
 };
+// const searchZipCode = async (zip) => {
+//   console.log('ZIPSRCH', zip);
+//   const SQL = `SELECT users.username FROM user_profiles
+//   JOIN users ON user_profiles."userId" = users.id
+//   WHERE zipCode = ($1)`;
+//   const response = await client.query(SQL, [zip]);
+//   return response.rows;
+// };
 const searchPerfectMatch = async (criteria) => {
   const SQL = `SELECT users.username FROM user_profiles 
   JOIN users ON user_profiles."userId" = users.id

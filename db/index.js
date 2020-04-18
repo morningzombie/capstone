@@ -138,7 +138,7 @@ const sync = async () => {
     education VARCHAR(100),
     pets VARCHAR(100),
     birthdate DATE,
-    zipCode INT,
+    zipCode VARCHAR(10),
     employmentStatus VARCHAR(100),
     about VARCHAR(250),
     communicationPreference VARCHAR(5)
@@ -508,6 +508,9 @@ const sync = async () => {
 const readCareers = async () => {
   return (await client.query('SELECT * from careers')).rows;
 };
+const readZipCodes = async () => {
+  return (await client.query('SELECT zipCode from user_profiles')).rows;
+};
 const readReligions = async () => {
   return (await client.query('SELECT * from religions')).rows;
 };
@@ -573,7 +576,7 @@ module.exports = {
   readPoliticalParties,
   readPets,
   // createUserInfo,
-  // getUserIdFromEmail,
+  readZipCodes,
   // createUserHobbies,
   readEducation,
   readProfiles,

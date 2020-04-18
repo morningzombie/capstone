@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import axios from "axios";
-import DeleteAccountPopUp from "./components/User/DeleteAccountPopUp";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import axios from 'axios';
+import DeleteAccountPopUp from './components/User/DeleteAccountPopUp';
 
 const UserProfileEdit = ({ logout, auth, params }) => {
   const deleteAccount = () => {
@@ -11,17 +11,17 @@ const UserProfileEdit = ({ logout, auth, params }) => {
 
   useEffect(() => {
     axios
-      .get("/api/profiles")
+      .get('/api/profiles')
       .then((response) =>
         setProfile(response.data.find(({ userId }) => userId === auth.id))
       );
   }, []);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [profile, setProfile] = useState([]);
-  console.log("GP", profile.gender);
-  console.log("ID", auth.id);
-  console.log("ID2", profile.userId);
+  console.log('GP', profile.gender);
+  console.log('ID', auth.id);
+  console.log('ID2', profile.userId);
 
   const [editedUserProfile, setEditedUserProfile] = useState({
     gender: profile.gender,
@@ -35,7 +35,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
     about: profile.about,
     communicationpreference: profile.communicationPreference,
   });
-  console.log(editedUserProfile.gender);
+  console.log('gender', editedUserProfile.gender);
   const onChange = (ev) => {
     const change = {};
     change[ev.target.name] = ev.target.value;
@@ -46,7 +46,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
     axios
       .put(`/api/user_profiles/${auth.id}`, profile)
       .then((response) => {
-        console.log(response.data, "response data");
+        console.log(response.data, 'response data');
         setAuth(response.data);
       })
       .catch((ex) => setError(ex.response.data.message));
@@ -58,7 +58,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
   return (
     <div className="container">
       <h3 className="userName">
-        All About {auth.username}{" "}
+        All About {auth.username}{' '}
         <button
           type="button"
           className="btn btn-primary btn-sm"
@@ -88,7 +88,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">
-            Would you like to reset your password?{" "}
+            Would you like to reset your password?{' '}
             <Link to="/useraccount/password" className="btn btn-primary btn-sm">
               Change password
             </Link>
@@ -205,7 +205,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
           <Link className="btn" to="/userinfo" label="UserProfileEdit">
             Submit
           </Link>
-        </div>{" "}
+        </div>{' '}
       </div>
     </div>
   );

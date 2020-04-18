@@ -108,12 +108,19 @@ app.post('/api/createProfile', (req, res, next) => {
     .catch(next);
 });
 
-// app.post("/api/search/perfect_match", (req, res, next) => {
-//   models.searches
-//     .searchPerfectMatch(req.body)
-//     .then((usernames) => res.send(usernames))
-//     .catch(next);
-// });
+app.post('/api/search/perfect_match', (req, res, next) => {
+  models.searches
+    .searchPerfectMatch(req.body)
+    .then((usernames) => res.send(usernames))
+    .catch(next);
+});
+
+app.post('/api/search/user_search_criteria', (req, res, next) => {
+  models.searches
+    .createUserSearchCriteria(req.body)
+    .then((searchCriteria) => res.send(searchCriteria))
+    .catch(next);
+});
 
 app.post('/api/search/zipcode', (req, res, next) => {
   models.searches

@@ -84,6 +84,33 @@ const searchAgeRange = async (birthdate, ageMin, ageMax) => {
   WHERE date_part('year',age(user_profiles.birthdate)) BETWEEN ($1) AND ($2) returning *`;
   return (await client.query(SQL, [ageMin, ageMax])).rows[0];
 };
+
+const createUserSearchCriteria = async (searchCriteria) => {
+  const SQL = `
+    INSERT INTO user_search_criteria 
+    (
+    gender,
+    politicalAffiliation,
+    religiousAffiliation,
+    careerId,
+    education,
+    pets,
+    zipCode,
+    employmentStatus) 
+    VALUES ($1, $2, $3,$4, $5, $6, $7, $8) returning *`;
+  return (
+    await client.query(SQL, [
+      searchCriteria.gender,
+      searchCriteria.politicalAffiliation,
+      searchCriteria.religiousAffiliation,
+      searchCriteria.careerId,
+      searchCriteria.education,
+      searchCriteria.pets,
+      searchCriteria.zipCode,
+      searchCriteria.employmentStatus,
+    ])
+  ).rows[0];
+};
 module.exports = {
   searchZipCode,
   searchPerfectMatch,
@@ -95,4 +122,5 @@ module.exports = {
   searchPoliticalAffiliation,
   searchReligiousAffiliation,
   searchAgeRange,
+  createUserSearchCriteria,
 };

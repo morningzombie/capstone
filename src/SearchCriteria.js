@@ -2,17 +2,20 @@ import React, { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
-const SearchCriteria = () => {
+const SearchCriteria = ({ auth }) => {
   const [criteria, setCriteria] = useState([
     {
-      carreerId: '',
-      employmentStatus: '',
-      pets: '',
-      ageRange: '',
+      // userId: '',
       gender: '',
       politicalAffiliation: '',
       religiousAffiliation: '',
+      carreerId: '',
+      education: '',
+      pets: '',
       zipCode: '',
+      employmentStatus: '',
+      hobby: '',
+      ageRange: '',
     },
   ]);
 
@@ -21,16 +24,26 @@ const SearchCriteria = () => {
   const [criteriaInput, setCriteriaInput] = useReducer(
     (criteria, setCriteriaInput) => ({ ...criteria, ...setCriteriaInput }),
     {
-      carreerId: '',
-      employmentStatus: '',
-      pets: '',
-      ageRange: '',
+      // userId: '',
       gender: '',
       politicalAffiliation: '',
       religiousAffiliation: '',
+      carreerId: '',
+      education: '',
+      pets: '',
       zipCode: '',
+      employmentStatus: '',
+      hobby: '',
+      ageRange: '',
     }
   );
+  // useEffect(() => {
+  //   axios
+  //     .get('/api/search_criteria')
+  //     .then((response) =>
+  //       setCriteria(response.data.find(({ userId }) => userId === auth.id))
+  //     );
+  // }, []);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -39,6 +52,7 @@ const SearchCriteria = () => {
   const [zipCode, setZipCode] = useState('');
   const [zipCodes, setZipCodes] = useState([]);
   const [careers, setCareers] = useState([]);
+  const [education, setEducation] = useState([]);
   const [religions, setReligions] = useState([]);
   const [genders, setGenders] = useState([]);
   const [employmentStatus, setEmploymentStatus] = useState([]);
@@ -49,6 +63,9 @@ const SearchCriteria = () => {
 
   useEffect(() => {
     axios.get('/api/religions').then((response) => setReligions(response.data));
+  }, []);
+  useEffect(() => {
+    axios.get('/api/education').then((response) => setEducation(response.data));
   }, []);
   useEffect(() => {
     axios.get('/api/genders').then((response) => setGenders(response.data));
@@ -75,6 +92,13 @@ const SearchCriteria = () => {
   useEffect(() => {
     axios.get('/api/zipCodes').then((response) => setZipCodes(response.data));
   }, []);
+
+  const searchCriteria = async (ev) => {
+    ev.preventDefault();
+    await axios
+      .post('/api/search/user_search_criteria', criteriaInput)
+      .then((response) => setCriteria([response.data, ...criteria]));
+  };
 
   // const searchPerfectMatch = () => {
   //   axios
@@ -107,17 +131,36 @@ const SearchCriteria = () => {
   return (
     <div className="container">
       <h3>Tell Us Who You Want to Hang With</h3>
-      <form onSubmit={(e) => usernamesWithZipcode(e)}>
+      <form onSubmit={(e) => searchCriteria(e)}>
         <div>
           <label htmlFor="career">Where do they live?</label>
           <input
             placeholder=" -- enter zip code --"
             type="text"
+            name="zipCode"
             pattern="(\d{5}([\-]\d{4})?)"
-            value={zipCode}
-            onChange={(ev) => setZipCode(ev.target.value)}
+            // value={zipCode}
+            // onChange={(ev) => setZipCode(ev.target.value)}
+            value={criteriaInput.zipCode}
+            onChange={handleChange}
           />
         </div>
+
+        <div>
+          <label htmlFor="career">What is their education?</label>
+          <select
+            name="education"
+            className="form-control"
+            type="text"
+            value={criteriaInput.education}
+            onChange={handleChange}
+          >
+            {education.map((edu) => {
+              return <option key={edu.id}>{edu.education_name}</option>;
+            })}
+          </select>
+        </div>
+
         <div className="row">
           <div className="col">
             <label htmlFor="career">What is their occupation?</label>
@@ -230,6 +273,7 @@ const SearchCriteria = () => {
             <select
               className="form-control"
               id="religiousAffiliation"
+              name="religiousAffiliation"
               value={criteriaInput.religiousAffiliation}
               onChange={handleChange}
             >
@@ -245,6 +289,7 @@ const SearchCriteria = () => {
             <label htmlFor="hobby">What is their hobby?</label>
             <select
               className="form-control"
+              name="hobby"
               id="hobby"
               value={criteriaInput.hobby}
               onChange={handleChange}

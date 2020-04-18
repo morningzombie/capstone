@@ -160,13 +160,13 @@ const App = () => {
             <UserInfo auth={auth} login={login} />
           </Route>
           <Route path="/search/criteria">
-            <SearchCriteria />
+            <SearchCriteria auth={auth} />
           </Route>
           <Route path="/search/results">
-            <SearchResults />
+            <SearchResults auth={auth} />
           </Route>
           <Route path="/search/filter">
-            <SearchFilter />
+            <SearchFilter auth={auth} />
           </Route>
           <Route path="/UserHobbies">
             <UserHobbies auth={auth} />

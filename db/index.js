@@ -27,6 +27,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_search_criteria;
   DROP TABLE IF EXISTS user_events;
   DROP TABLE IF EXISTS events;
+  DROP TABLE IF EXISTS user_photos;
+  DROP TABLE IF EXISTS photos;
   DROP TABLE IF EXISTS user_groups CASCADE;
   DROP TABLE IF EXISTS user_profiles CASCADE;
   DROP TABLE IF EXISTS user_hobbies CASCADE;
@@ -41,6 +43,7 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
   DROP TABLE IF EXISTS education CASCADE;
+
 
 
   CREATE TABLE users(
@@ -62,6 +65,7 @@ const sync = async () => {
     location VARCHAR(100) NOT NULL,
     description VARCHAR(100) NOT NULL,
     "isPublic" BOOLEAN default false,
+    "isAccepted" BOOLEAN default false,
     "userId" UUID REFERENCES users(id) NOT NULL
   );
   CREATE TABLE user_events(
@@ -99,6 +103,7 @@ const sync = async () => {
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     pet_name VARCHAR(100) NOT NULL
   );
+
   CREATE TABLE hobbies(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     hobby_name VARCHAR(20) NOT NULL,
@@ -118,7 +123,15 @@ const sync = async () => {
     hobby_id UUID REFERENCES hobbies(id),
     user_id UUID REFERENCES users(id)
   );
-
+  CREATE TABLE photos(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    photo_name VARCHAR(100) NOT NULL
+  );
+  CREATE TABLE user_photos(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    photo_id UUID REFERENCES photos(id),
+    user_id UUID REFERENCES users(id)
+  );
   CREATE TABLE user_ratings(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID REFERENCES users(id),
@@ -364,6 +377,7 @@ const sync = async () => {
       location: 'dog',
       description: 'some activity',
       isPublic: true,
+      isAccepted: true,
       userId: curly.id,
     },
     soccer: {
@@ -380,6 +394,7 @@ const sync = async () => {
       location: 'zoom',
       description: 'just want to tell you jokes',
       isPublic: true,
+      isAccepted: true,
       userId: moe.id,
     },
     nap: {
@@ -403,29 +418,37 @@ const sync = async () => {
 
   //seeding user_events
   const _user_events = {
-    beach: {
-      joinedUserId: curly.id,
-      eventId: beach.id,
-      status: 'accepted',
+    nap: {
+      joinedUserId: moe.id,
+      eventId: nap.id,
+      isFavorite: true,
     },
     soccer: {
-      eventId: beach.id,
+      joinedUserId: lucy.id,
+      eventId: soccer.id,
+      isFavorite: true,
+      status: null,
+    },
+    soccercurly: {
+      joinedUserId: curly.id,
+      eventId: soccer.id,
+      isFavorite: true,
       status: null,
     },
     joke: {
       joinedUserId: lucy.id,
       eventId: joke.id,
       isFavorite: true,
-      status: 'declined',
+      status: 'accepted',
     },
     dog: {
-      joinedUserId: lucy.id,
+      joinedUserId: moe.id,
       eventId: dog.id,
       isFavorite: true,
       status: 'accepted',
     },
   };
-  const [upark, ubeach, udog, usoccer, ujoke, unap] = await Promise.all(
+  const [unap, usoccer, usoccercurly, ujoke, udog] = await Promise.all(
     Object.values(_user_events).map((user_event) =>
       user_events.create(user_event)
     )

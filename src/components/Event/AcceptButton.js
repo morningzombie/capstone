@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function DeclineButton({
+export default function AcceptButton({
   savedAsFav,
   acceptInvite,
   auth,
@@ -13,7 +13,7 @@ export default function DeclineButton({
         <Link
           to="/meetups"
           onClick={() => {
-            console.log(savedAsFav, 'when there is fav');
+            //console.log(savedAsFav, 'when there is fav');
             acceptInvite({
               ...savedAsFav,
               status: 'accepted',
@@ -27,7 +27,7 @@ export default function DeclineButton({
         <Link
           to="/meetups"
           onClick={() => {
-            console.log(savedAsFav, 'when there is no fav');
+            //console.log(savedAsFav, 'when there is no fav');
             acceptInvite({
               joinedUserId: auth.id,
               eventId: eventDetail.id,

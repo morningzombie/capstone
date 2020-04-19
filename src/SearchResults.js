@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const SearchResults = ({ auth }) => {
+  const [users, setUsers] = useState([]);
   const [profile, setProfile] = useState([]);
   const [results, setResults] = useState([]);
 
@@ -17,24 +18,18 @@ const SearchResults = ({ auth }) => {
   const findUsersWithZipCode = async (userzip) => {
     await axios
       .get('/api/users/zipCode', userzip)
-      .then((response) => setResults([response.data, ...results]))
       .then((response) => setResults([response.data, ...results]));
   };
 
-  // useEffect(() => {
-  //   const usernames = findUsersWithZipCode(userZip)
-  //   return () => {
-  //     usernames.username
-  //   }
-  // }, []);
-
-  console.log(findUsersWithZipCode(userZip));
+  console.log('results', results);
 
   return (
     <div>
       <h3>Results</h3>
       <div>
-        <p>placeholder</p>
+        <form>
+          <div>{userZip}</div>
+        </form>
       </div>
       {/* <ul>
         {results.map((result) => (

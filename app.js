@@ -140,16 +140,6 @@ app.post('/api/search/zipcode', (req, res, next) => {
     .catch(next);
 });
 
-// app.post('/api/search/zipCode', (req, res, next) => {
-//   models.searches
-//     .searchZipCode(req.body)
-//     .then((response) => {
-//       console.log('postapp', response);
-//       res.send(response);
-//     })
-//     .catch(next);
-// });
-
 app.get('/api/findUserId', (req, res, next) => {
   db.findUserId(req.user.id)
     .then((userid) => res.send(userid))
@@ -232,13 +222,7 @@ app.get('/api/users', (req, res, next) => {
     })
     .catch(next);
 });
-// app.post('/api/user_hobbies', (req, res, next) => {
-//   db.createUserHobbies(req.body)
-//     .then((hobbies) => {
-//       res.send(hobbies);
-//     })
-//     .catch(next);
-// });
+
 app.post('/api/createUserHobbies', (req, res, next) => {
   models.hobbies
     .createUserHobbies(req.body)

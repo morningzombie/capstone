@@ -436,8 +436,6 @@ const sync = async () => {
     return acc;
   }, {});
 
-  //console.log(userEventMap, 'userEvents');
-
   Promise.all([
     careers.createCareer('Computers and Technology'),
     careers.createCareer('Health Care and Allied Health'),
@@ -570,8 +568,6 @@ module.exports = {
   readPets,
   findUsersWithZipCode,
   readZipCodes,
-  // createUserHobbies,
   readEducation,
   readProfiles,
-  // createUserInfo,
 };

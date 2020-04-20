@@ -5,7 +5,9 @@ import UserEventDetail from './UserEventDetail';
 
 const RenderUserEvents = ({
   events,
+  setEvents,
   auth,
+  headers,
   userEvents,
   users,
   setUserEvents,
@@ -14,16 +16,20 @@ const RenderUserEvents = ({
   const [userEventDetail, setUserEventDetail] = useState('');
   const [joinedUser, setJoinedUser] = useState('');
   const [invitedUser, setInvitedUser] = useState('');
+  const [invitedUserEvent, setInvitedUserEvent] = useState('');
   const myEvents = events.filter((e) => e.userId === auth.id);
-
-  //console.log(users, 'users');
+  // const userEventsForSelectedEvent = userEvents.filter(
+  //   (ue) => ue.eventId === eventDetail.id
+  // );
+  //console.log(userEventsForSelectedEvent, 'userEventsForSelectedEvent');
 
   useEffect(() => {
-    const invitedUserEvent = userEvents.find((userEvent) => {
+    const invitedUserEventDetail = userEvents.find((userEvent) => {
       return (
         userEvent.eventId === eventDetail.id && userEvent.status === 'invited'
       );
     });
+    setInvitedUserEvent(invitedUserEventDetail);
 
     const acceptedUserEvent = userEvents.find((userEvent) => {
       return (
@@ -37,20 +43,22 @@ const RenderUserEvents = ({
       );
       setJoinedUser(acceptedByUser);
     }
-    if (invitedUserEvent) {
+    if (invitedUserEventDetail) {
       const invitedUser = users.find(
-        (user) => user.id === invitedUserEvent.joinedUserId
+        (user) => user.id === invitedUserEventDetail.joinedUserId
       );
       setInvitedUser(invitedUser);
     }
 
     //console.log(acceptedByUser, 'use effect');
-  }, [eventDetail]);
+  }, [eventDetail, userEvents]);
   console.log(eventDetail, 'event Detail', invitedUser);
 
   if (eventDetail) {
     return (
       <UserEventDetail
+        events={events}
+        setEvents={setEvents}
         setEventDetail={setEventDetail}
         eventDetail={eventDetail}
         myEvents={myEvents}
@@ -60,6 +68,11 @@ const RenderUserEvents = ({
         users={users}
         userEvents={userEvents}
         setUserEvents={setUserEvents}
+        invitedUser={invitedUser}
+        setInvitedUser={setInvitedUser}
+        invitedUserEvent={invitedUserEvent}
+        headers={headers}
+        //userEventsForSelectedEvent={userEventsForSelectedEvent}
       />
     );
   } else {

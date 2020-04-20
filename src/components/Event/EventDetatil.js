@@ -106,7 +106,7 @@ const EventDetail = ({
         })
         .then((response) => {
           const returnedE = response.data;
-          console.log(returnedE, 'new ');
+          //console.log(returnedE, 'new ');
           const updated = events.map((_event) =>
             _event.id === returnedE.id ? returnedE : _event
           );
@@ -126,7 +126,7 @@ const EventDetail = ({
         })
         .then((response) => {
           const returnedE = response.data;
-          console.log(returnedE, 'new ');
+          //console.log(returnedE, 'new ');
           const updated = events.map((_event) =>
             _event.id === returnedE.id ? returnedE : _event
           );

@@ -43,25 +43,25 @@ const FileUpload = ({ auth, params }) => {
       const { fileName, filePath } = res.data;
 
       setUploadedFile({ fileName, filePath });
-      console.log('filePath', filePath);
+      // console.log('filePath', filePath);
       setMessage('File Uploaded');
     } catch (err) {
       if (err.response.status === 500) {
-        console.log('PROBLEM WITH SERVER');
+        // console.log('PROBLEM WITH SERVER');
         setMessage('There was a problem with the server');
       } else {
-        console.log('PROBLEM HERE', err.response.data.msg);
+        // console.log('PROBLEM HERE', err.response.data.msg);
 
         setMessage(err.response.data.msg);
       }
     }
   };
-  console.log('file', { uploadedFile });
+  //console.log('file', { uploadedFile });
 
   // let myimg = uploads(`../../public/uploads/Jazzi.JPG`);
   // let myimg = `/uploads/${file.name}`;
   // console.log(myimg);
-  console.log('HERE', uploadedFile.filePath);
+  // console.log('HERE', uploadedFile.filePath);
 
   return (
     <Fragment>

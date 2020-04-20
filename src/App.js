@@ -40,7 +40,7 @@ const App = () => {
   const [userCareer, setUserCareer] = useState('');
   const [events, setEvents] = useState([]);
   const [users, setUsers] = useState([]);
-  const [userProfiles, setUserProfiles] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
 
   const login = async (credentials) => {
@@ -163,7 +163,7 @@ const App = () => {
             <SearchCriteria auth={auth} />
           </Route>
           <Route path="/search/results">
-            <SearchResults auth={auth} />
+            <SearchResults auth={auth} users={users} />
           </Route>
           <Route path="/search/filter">
             <SearchFilter auth={auth} />

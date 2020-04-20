@@ -1,12 +1,65 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+let clicks = 0;
 const UserHobbies = (auth) => {
   const [hobbies, setHobbies] = useState([]);
   const [userHobbies, setUserHobbies] = useState({});
+  const [selected, setSelected] = useState([]);
 
-  console.log("UH", userHobbies);
+  // const selectMe = (ev) => {
+  const eachHobby = Object.keys(userHobbies);
+  // console.log("ARR", eachHobby);
+  // for (let i = 0; i < hobbies.length; i++) {
+  //   console.log(hobbies[i].id);
+  // }
+  // eachHobby.forEach((hobbyId) => {
+  //   // console.log("EACH ID", hobbyId);
+  //   for (let i = 0; i < hobbies.length; i++) {
+  //     //console.log(hobbies[i].id);
+  //     if (hobbies[i].id === hobbyId) {
+  //       console.log("Match", hobbies[i].id);
+  //     }
+  //   }
+  // });
 
+  const toggleImage = (hobby) => {
+    let img1 = `http://www.terribailey.com/images/${hobby.hobby_image}`;
+    let img2 = `http://www.terribailey.com/images/imagesShadow/${hobby.hobby_image}`;
+    let imgElement = document.getElementById(hobby.id);
+    //console.log("WHAT", imgElement);
+    imgElement.src = imgElement.src === img1 ? img2 : img1;
+    clicks = clicks + 1;
+    setSelected({
+      ...selected,
+      [hobby.id]: clicks,
+    });
+    console.log("DD", Object.values(selected));
+    let nums = Object.values(selected);
+
+    let selectedGroup = [];
+    for (let i = 0; i < selected.length; i++) {
+      if (selected[i].clicks % 2) {
+        selectedGroup.push(selected[i]);
+      }
+    }
+    console.log("SG", selectedGroup);
+
+    // if (Object.values(selected) % 2) {
+    //   console.log(Object.keys(selected));
+    // }
+    // if (imgElement.src === img1) {
+
+    // let x = selected.filter((numClicks) => numClicks % 2);
+    // console.log("x", x);
+    // }
+  };
+  const numClicks = Object.values(selected);
+  const eachHobbyid = Object.keys(selected);
+  console.log("Selected", selected);
+  // console.log("numClicks", numClicks);
+  // console.log("eachHobbyid", eachHobbyid);
+
+  selected.filter;
   // console.log("USER", auth.auth.id);
   // console.log("F", auth);
   const userId = auth.auth.id;
@@ -18,9 +71,6 @@ const UserHobbies = (auth) => {
   const createUserHobbies = (user) => {
     axios.post("/api/createUserHobbies", user).then((response) => {
       console.log("USERHobby", response);
-      // login({ email, password }).catch((ex) =>
-      //   setError(ex.response.data.message)
-      // );
     });
   };
 
@@ -30,9 +80,7 @@ const UserHobbies = (auth) => {
     console.log("ARR", eachHobby);
     eachHobby.forEach((hobbyId) => {
       console.log("EACH ID", hobbyId);
-      //   // if (confirmPassword !== password) {
-      //   //   return setPasswordError("Please confirm correct password");
-      //   // } else
+
       createUserHobbies({
         userId,
         hobbyId,
@@ -53,17 +101,21 @@ const UserHobbies = (auth) => {
                 value={hobby.hobby_name}
                 className="hobby_img p-2 mb-4"
               >
-                <img
-                  className="hobby_img"
-                  src={`http://www.terribailey.com/images/${hobby.hobby_image}`}
-                  alt={hobby.hobby_name}
-                  onClick={(ev) =>
-                    setUserHobbies({
-                      ...userHobbies,
-                      [hobby.id]: hobby.hobby_name,
-                    })
-                  }
-                />
+                <div>
+                  <img
+                    className="hobby_img"
+                    src={`http://www.terribailey.com/images/${hobby.hobby_image}`}
+                    id={hobby.id}
+                    alt={hobby.hobby_name}
+                    onClick={(ev) => {
+                      setUserHobbies({
+                        ...userHobbies,
+                        [hobby.id]: hobby.hobby_name,
+                      });
+                      toggleImage(hobby);
+                    }}
+                  />
+                </div>
                 <p className="hobby-text mb-1">{hobby.hobby_name}</p>
               </div>
             );

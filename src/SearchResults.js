@@ -4,9 +4,11 @@ import axios from 'axios';
 const SearchResults = ({ auth }) => {
   const [users, setUsers] = useState([]);
   const [profile, setProfile] = useState([]);
-  const [results, setResults] = useState([]);
+  const [profiles, setProfiles] = useState([]);
+  const [careers, setCareers] = useState([]);
 
   useEffect(() => {
+    // gets zip code of current user
     axios
       .get('/api/profiles')
       .then((response) =>
@@ -14,28 +16,74 @@ const SearchResults = ({ auth }) => {
       );
   }, []);
   const userZip = profile.zipcode;
+  useEffect(() => {
+    // find userids of profiles with same zip code
+    axios.get('/api/profiles').then((response) => setProfiles(response.data));
+  }, []);
 
-  const findUsersWithZipCode = async (userzip) => {
-    await axios
-      .get('/api/users/zipCode', userzip)
-      .then((response) => setResults([response.data, ...results]));
+  const userProfiles = profiles.filter(
+    (p) => p.zipcode === userZip && p.userId !== auth.id
+  );
+
+  useEffect(() => {
+    axios.get('/api/users').then((response) => setUsers(response.data));
+  }, []);
+
+  const getUsername = (id) => {
+    const user = users.find((u) => u.id === id);
+    return user.username;
   };
 
-  console.log('results', results);
+  useEffect(() => {
+    axios.get('/api/careers').then((response) => setCareers(response.data));
+  }, []);
+
+  const getCareerName = (cid) => {
+    const career = careers.find((c) => c.id === cid);
+    return career.career_name;
+  };
+
+  function findAge(birthday) {
+    var today = new Date();
+    var birthDate = new Date(birthday);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
 
   return (
     <div>
       <h3>Results</h3>
       <div>
         <form>
-          <div>{userZip}</div>
+          <h5>Users in your zip code</h5>
         </form>
       </div>
-      {/* <ul>
-        {results.map((result) => (
-          <li key={result.id}>{result.name}</li>
+      <div>
+        {userProfiles.map((userProfile) => (
+          <ul key={userProfile.id}>
+            User: {getUsername(userProfile.userId)}{' '}
+            <input
+              type="checkbox"
+              name={userProfile.id}
+              value={userProfile.userId}
+            />
+            <li>Gender: {userProfile.gender}</li>
+            <li>Politics: {userProfile.politicalaffiliation}</li>
+            <li>Religion: {userProfile.religiousaffiliation}</li>
+            <li>Education: {userProfile.education}</li>
+            <li>Career: {getCareerName(userProfile.careerid)}</li>
+            <li>Pets: {userProfile.pets}</li>
+            <li>Age: {findAge(userProfile.birthdate)}</li>
+            <li>Employment: {userProfile.employmentstatus}</li>
+            <li>About: {userProfile.about}</li>
+            <li>Photo: </li>
+          </ul>
         ))}
-      </ul> */}
+      </div>
     </div>
   );
 };

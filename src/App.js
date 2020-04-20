@@ -163,7 +163,7 @@ const App = () => {
             <SearchCriteria auth={auth} />
           </Route>
           <Route path="/search/results">
-            <SearchResults auth={auth} />
+            <SearchResults auth={auth} users={users} />
           </Route>
           <Route path="/search/filter">
             <SearchFilter auth={auth} />

@@ -335,12 +335,66 @@ const sync = async () => {
       role: 'USER',
     },
     curly: {
-      firstname: 'Larry',
+      firstname: 'Curly',
       lastname: 'Smith',
-      username: 'larry',
+      username: 'curly',
       phone: '904-321-4567',
+      email: 'curly@gmail.com',
+      password: 'CURLY',
+    },
+    larry: {
+      firstname: 'Larry',
+      lastname: 'Anabell',
+      username: 'larry',
+      phone: '904-320-4567',
       email: 'larry@gmail.com',
       password: 'LARRY',
+      role: 'USER',
+    },
+    joe: {
+      firstname: 'Joe',
+      lastname: 'Anabell',
+      username: 'joe',
+      phone: '904-322-4567',
+      email: 'joe@gmail.com',
+      password: 'JOE',
+      role: 'USER',
+    },
+    shemp: {
+      firstname: 'Shemp',
+      lastname: 'Smith',
+      username: 'shemp',
+      phone: '904-323-4567',
+      email: 'shemp@gmail.com',
+      password: 'SHEMP',
+      role: 'USER',
+    },
+    patti: {
+      firstname: 'Patti',
+      lastname: 'Anabell',
+      username: 'patti',
+      phone: '904-324-4567',
+      email: 'patti@gmail.com',
+      password: 'PATTI',
+      role: 'USER',
+    },
+    sally: {
+      firstname: 'Sally',
+      lastname: 'Anabell',
+      username: 'sally',
+      phone: '904-325-4567',
+      email: 'sally@gmail.com',
+      password: 'SALLY',
+      role: 'USER',
+    },
+    marcie: {
+      firstname: 'Marcie',
+      lastname: 'Smith',
+      username: 'marcie',
+      phone: '904-326-4567',
+      email: 'marcie@gmail.com',
+      password: 'MARCIE',
+      role: 'USER',
     },
   };
 
@@ -487,7 +541,23 @@ const sync = async () => {
   const lucyid = await users.findUserId('lucy').then((response) => response.id);
   const moeid = await users.findUserId('moe').then((response) => response.id);
   const curlyid = await users
-    .findUserId('larry')
+    .findUserId('curly')
+    .then((response) => response.id);
+  const larryid = await users
+    .findUserId('lucy')
+    .then((response) => response.id);
+  const shempid = await users
+    .findUserId('shemp')
+    .then((response) => response.id);
+  const joeid = await users.findUserId('joe').then((response) => response.id);
+  const pattiid = await users
+    .findUserId('patti')
+    .then((response) => response.id);
+  const sallyid = await users
+    .findUserId('sally')
+    .then((response) => response.id);
+  const marcieid = await users
+    .findUserId('marcie')
     .then((response) => response.id);
 
   Promise.all([
@@ -500,7 +570,7 @@ const sync = async () => {
       education: 'College educated',
       pets: 'Dogs',
       birthdate: '2/2/1996',
-      zipCode: 32207,
+      zipCode: '32207',
       employmentStatus: 'Full time',
       about: 'Extrovert',
       communicationPreference: 'Email',
@@ -514,7 +584,7 @@ const sync = async () => {
       education: 'Trade school',
       pets: 'Reptiles',
       birthdate: '5/5/1960',
-      zipCode: 32210,
+      zipCode: '32073',
       employmentStatus: 'Retired',
       about: 'Introvert',
       communicationPreference: 'Text',
@@ -528,9 +598,93 @@ const sync = async () => {
       education: 'High school',
       pets: 'Cats',
       birthdate: '10/10/1980',
-      zipCode: 32073,
+      zipCode: '32210',
       employmentStatus: 'Part time',
       about: 'Life of the party!',
+      communicationPreference: 'Email',
+    }),
+    profiles.createProfile({
+      userId: larryid,
+      gender: 'Female',
+      politicalAffiliation: 'Democrat',
+      religiousAffiliation: 'Christianity',
+      careerId: eduid,
+      education: 'College educated',
+      pets: 'Dogs',
+      birthdate: '2/2/1986',
+      zipCode: '32207',
+      employmentStatus: 'Full time',
+      about: 'Shy',
+      communicationPreference: 'Email',
+    }),
+    profiles.createProfile({
+      userId: joeid,
+      gender: 'Male',
+      politicalAffiliation: 'Independent',
+      religiousAffiliation: 'Athiest',
+      careerId: othid,
+      education: 'Trade school',
+      pets: 'Reptiles',
+      birthdate: '5/5/1970',
+      zipCode: '32073',
+      employmentStatus: 'Retired',
+      about: 'IDK',
+      communicationPreference: 'Text',
+    }),
+    profiles.createProfile({
+      userId: shempid,
+      gender: 'Male',
+      politicalAffiliation: 'Green Party',
+      religiousAffiliation: 'Protestant',
+      careerId: compid,
+      education: 'High school',
+      pets: 'Cats',
+      birthdate: '10/10/1990',
+      zipCode: '32210',
+      employmentStatus: 'Part time',
+      about: 'Substitute',
+      communicationPreference: 'Email',
+    }),
+    profiles.createProfile({
+      userId: pattiid,
+      gender: 'Female',
+      politicalAffiliation: 'Democrat',
+      religiousAffiliation: 'Christianity',
+      careerId: eduid,
+      education: 'College educated',
+      pets: 'Dogs',
+      birthdate: '2/2/1997',
+      zipCode: '32207',
+      employmentStatus: 'Full time',
+      about: 'Crush',
+      communicationPreference: 'Email',
+    }),
+    profiles.createProfile({
+      userId: sallyid,
+      gender: 'Female',
+      politicalAffiliation: 'Independent',
+      religiousAffiliation: 'Athiest',
+      careerId: othid,
+      education: 'Trade school',
+      pets: 'Reptiles',
+      birthdate: '5/5/1969',
+      zipCode: '32073',
+      employmentStatus: 'Retired',
+      about: 'Football',
+      communicationPreference: 'Text',
+    }),
+    profiles.createProfile({
+      userId: marcieid,
+      gender: 'Female',
+      politicalAffiliation: 'Green Party',
+      religiousAffiliation: 'Protestant',
+      careerId: compid,
+      education: 'High school',
+      pets: 'Cats',
+      birthdate: '10/10/1983',
+      zipCode: '32207',
+      employmentStatus: 'Part time',
+      about: 'Glasses',
       communicationPreference: 'Email',
     }),
   ]);
@@ -577,6 +731,13 @@ const findUsersWithZipCode = async (userid) => {
   const response = await client.query(SQL, [userid]);
   return response.rows;
 };
+const readUsernameProfiles = async () => {
+  return (
+    await client.query(`SELECT 
+  user_profiles."userId", user_profiles.gender, user_profiles.politicalaffiliation, user_profiles.religiousaffiliation, user_profiles.careerid, user_profiles.education, user_profiles.pets, user_profiles.birthdate, user_profiles.zipcode, user_profiles.employmentstatus, user_profiles.about, user_profiles.communicationpreference 
+  FROM user_profiles JOIN users ON user_profiles."userId" = users.id`)
+  ).rows;
+};
 module.exports = {
   sync,
   models,
@@ -593,4 +754,5 @@ module.exports = {
   readZipCodes,
   readEducation,
   readProfiles,
+  readUsernameProfiles,
 };

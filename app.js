@@ -207,6 +207,14 @@ app.get('/api/profiles', (req, res, next) => {
     })
     .catch(next);
 });
+app.get('/api/usernamepprofiles', (req, res, next) => {
+  db.readUsernameProfiles()
+    .then((usernamepprofiles) => {
+      res.send(usernamepprofiles);
+    })
+    .catch(next);
+});
+
 app.get('/api/education', (req, res, next) => {
   db.readEducation()
     .then((school) => {

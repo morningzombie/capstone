@@ -22,7 +22,7 @@ export default function InviteButton({
             id="exampleFormControlSelect1"
             onChange={(e) => setSelectedUserId(e.target.value)}
           >
-            <option>select a friend</option>
+            <option value={''}>select a friend</option>
             {users.map((user) => {
               //console.log(user);
               return (
@@ -35,8 +35,10 @@ export default function InviteButton({
         </div>
       </form>
 
-      <Link
-        to="/my/meetups"
+      <button
+        // to="/my/meetups"
+        className="btn btn-secondary"
+        disabled={!selectedUserId}
         onClick={() => {
           inviteUser({
             joinedUserId: selectedUserId,
@@ -44,10 +46,10 @@ export default function InviteButton({
             status: 'invited',
           });
         }}
-        className="card-link"
+        // className="card-link"
       >
         Invite
-      </Link>
+      </button>
     </div>
   );
 }

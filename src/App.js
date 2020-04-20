@@ -201,6 +201,7 @@ const App = () => {
               auth={auth}
               userEvents={userEvents}
               setUserEvents={setUserEvents}
+              headers={headers}
             />
           </Route>
           <Route path="/create/event">

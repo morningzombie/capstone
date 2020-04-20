@@ -732,13 +732,13 @@ const findUsersWithZipCode = async (userid) => {
 };
 const readUsernameProfiles = async () => {
   return (
-    await client.query(`SELECT 
-  user_profiles."userId", user_profiles.gender, user_profiles.politicalaffiliation, user_profiles.religiousaffiliation, user_profiles.careerid, user_profiles.education, user_profiles.pets, user_profiles.birthdate, user_profiles.zipcode, user_profiles.employmentstatus, user_profiles.about, user_profiles.communicationpreference 
+    await client.query(`SELECT
+  user_profiles."userId", user_profiles.gender, user_profiles.politicalaffiliation, user_profiles.religiousaffiliation, user_profiles.careerid, user_profiles.education, user_profiles.pets, user_profiles.birthdate, user_profiles.zipcode, user_profiles.employmentstatus, user_profiles.about, user_profiles.communicationpreference
   FROM user_profiles JOIN users ON user_profiles."userId" = users.id`)
   ).rows;
 };
 const readPhotos = async () => {
-  return (await client.query("SELECT * from user_photos")).rows;
+  return (await client.query('SELECT * from user_photos')).rows;
 };
 // const createUserInfo = async ([
 //   user,
@@ -784,10 +784,7 @@ module.exports = {
   readZipCodes,
   readEducation,
   readProfiles,
-<<<<<<< HEAD
   readUsernameProfiles,
-=======
   readPhotos,
   // createUserInfo,
->>>>>>> master
 };

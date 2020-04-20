@@ -93,7 +93,7 @@ app.post('/upload', (req, res) => {
 
   file.mv(`${__dirname}/public/uploads/${file.name}`, (err) => {
     if (err) {
-      console.error(err);
+      //console.error(err);
       return res.status(500).send(err);
     }
     res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
@@ -127,9 +127,9 @@ app.post('/api/search/user_search_criteria', (req, res, next) => {
     .createUserSearchCriteria(req.body)
     .then((searchCriteria) => res.send(searchCriteria))
     .catch((error) => {
-      console.log('resp', error.response);
-      console.log('resp', error.response);
-      console.log('resp', error.response);
+      // console.log('resp', error.response);
+      // console.log('resp', error.response);
+      // console.log('resp', error.response);
     });
 });
 
@@ -279,6 +279,18 @@ app.put('/api/user/password/:id', (req, res, next) => {
   db.changePassword(req.body)
     .then((response) => res.send(response))
     .catch(next);
+});
+
+//delete array of userEvents
+app.post('/api/userEvents/array/delete', (req, res, next) => {
+  const userEvents = req.body;
+  console.log(req.params.id, 'user event delete', req.body);
+  userEvents.map((userEvent) =>
+    models.user_events
+      .delete(userEvent.id)
+      .then(() => res.sendStatus(204))
+      .catch(next)
+  );
 });
 
 Object.keys(models).forEach((key) => {

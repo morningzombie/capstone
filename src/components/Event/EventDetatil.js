@@ -8,6 +8,7 @@ import AcceptButton from './AcceptButton';
 
 const EventDetail = ({
   events,
+  setEvents,
   auth,
   eventId,
   users,
@@ -29,17 +30,15 @@ const EventDetail = ({
   useEffect(() => {
     setEventDetail(events.find((e) => e.id === eventId));
   }, []);
-
-  // useEffect(() => {
-  //   console.log('hit in effect');
-  // }, [isGoing]);
+  //console.log(eventDetail, 'event detail inside ED');
 
   useEffect(() => {
     setEventCreator(users.find((u) => u.id === eventDetail.userId));
   }, [eventDetail.userId]);
 
   const acceptInvite = (acceptEvent) => {
-    //console.log('acceptInvite');
+    //might have to address all userEvents once the event is accepted
+    console.log(acceptEvent, 'acceptInvite');
     if (isNotGoing || savedAsFav) {
       axios
         .put(`/api/user_events/${acceptEvent.id}`, acceptEvent)
@@ -51,6 +50,19 @@ const EventDetail = ({
           setUserEvents(updated);
           setIsGoing(userEvent);
         });
+      axios
+        .put(`/api/events/${eventDetail.id}`, {
+          ...eventDetail,
+          isAccepted: true,
+        })
+        .then((response) => {
+          const returnedE = response.data;
+          console.log(returnedE, 'new ');
+          const updated = events.map((_event) =>
+            _event.id === returnedE.id ? returnedE : _event
+          );
+          setEvents(updated);
+        });
     } else {
       axios.post('/api/user_events', acceptEvent).then((response) => {
         //console.log(response.data, 'acceptInvite');
@@ -58,6 +70,19 @@ const EventDetail = ({
         setUserEvents([...myUserEvents, newUserEvent]);
         setIsGoing(newUserEvent);
       });
+      axios
+        .put(`/api/events/${eventDetail.id}`, {
+          ...eventDetail,
+          isAccepted: true,
+        })
+        .then((response) => {
+          const returnedE = response.data;
+          console.log(returnedE, 'new ');
+          const updated = events.map((_event) =>
+            _event.id === returnedE.id ? returnedE : _event
+          );
+          setEvents(updated);
+        });
     }
   };
 
@@ -74,6 +99,19 @@ const EventDetail = ({
           setUserEvents(updated);
           setIsGoing('');
         });
+      axios
+        .put(`/api/events/${eventDetail.id}`, {
+          ...eventDetail,
+          isAccepted: false,
+        })
+        .then((response) => {
+          const returnedE = response.data;
+          console.log(returnedE, 'new ');
+          const updated = events.map((_event) =>
+            _event.id === returnedE.id ? returnedE : _event
+          );
+          setEvents(updated);
+        });
     } else {
       axios.delete(`/api/user_events/${isGoing.id}`).then(() => {
         setIsGoing('');
@@ -81,6 +119,19 @@ const EventDetail = ({
           myUserEvents.filter((_userEvent) => _userEvent.id !== isGoing.id)
         );
       });
+      axios
+        .put(`/api/events/${eventDetail.id}`, {
+          ...eventDetail,
+          isAccepted: false,
+        })
+        .then((response) => {
+          const returnedE = response.data;
+          console.log(returnedE, 'new ');
+          const updated = events.map((_event) =>
+            _event.id === returnedE.id ? returnedE : _event
+          );
+          setEvents(updated);
+        });
     }
   };
 

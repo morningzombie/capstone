@@ -1,7 +1,7 @@
-const client = require("./client");
-const fs = require("fs");
+const client = require('./client');
+const fs = require('fs');
 
-const { authenticate, compare, findUserFromToken, hash } = require("./auth");
+const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
 const models = ({
   user_events,
@@ -16,9 +16,9 @@ const models = ({
   political_parties,
   events,
   searches,
-} = require("./models"));
+} = require('./models'));
 
-const { changePassword } = require("./userMethods");
+const { changePassword } = require('./userMethods');
 
 const sync = async () => {
   let SQL = `
@@ -64,6 +64,7 @@ const sync = async () => {
     location VARCHAR(100) NOT NULL,
     description VARCHAR(100) NOT NULL,
     "isPublic" BOOLEAN default false,
+    "isAccepted" BOOLEAN default false,
     "userId" UUID REFERENCES users(id) NOT NULL
   );
   CREATE TABLE user_events(
@@ -315,30 +316,30 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      firstname: "Lucy",
-      lastname: "Anabell",
-      username: "lucy",
-      phone: "904-321-4567",
-      email: "lucy@gmail.com",
-      password: "LUCY",
-      role: "ADMIN",
+      firstname: 'Lucy',
+      lastname: 'Anabell',
+      username: 'lucy',
+      phone: '904-321-4567',
+      email: 'lucy@gmail.com',
+      password: 'LUCY',
+      role: 'ADMIN',
     },
     moe: {
-      firstname: "Moe",
-      lastname: "Anabell",
-      username: "moe",
-      phone: "904-321-4567",
-      email: "moe@gmail.com",
-      password: "MOE",
-      role: "USER",
+      firstname: 'Moe',
+      lastname: 'Anabell',
+      username: 'moe',
+      phone: '904-321-4567',
+      email: 'moe@gmail.com',
+      password: 'MOE',
+      role: 'USER',
     },
     curly: {
-      firstname: "Larry",
-      lastname: "Smith",
-      username: "larry",
-      phone: "904-321-4567",
-      email: "larry@gmail.com",
-      password: "LARRY",
+      firstname: 'Larry',
+      lastname: 'Smith',
+      username: 'larry',
+      phone: '904-321-4567',
+      email: 'larry@gmail.com',
+      password: 'LARRY',
     },
   };
 
@@ -354,50 +355,52 @@ const sync = async () => {
   //seed events
   const _events = {
     park: {
-      name: "park",
-      date: "2/2/1996",
-      location: "park",
-      description: "some activity",
+      name: 'park',
+      date: '2/2/1996',
+      location: 'park',
+      description: 'some activity',
       isPublic: true,
       userId: lucy.id,
     },
     beach: {
-      name: "beach",
-      date: "2/2/1996",
-      location: "beach",
-      description: "some activity",
+      name: 'beach',
+      date: '2/2/1996',
+      location: 'beach',
+      description: 'some activity',
       isPublic: false,
       userId: lucy.id,
     },
     dog: {
-      name: "dog",
-      date: "2/2/1996 3:00 PM",
-      location: "dog",
-      description: "some activity",
+      name: 'dog',
+      date: '2/2/1996 3:00 PM',
+      location: 'dog',
+      description: 'some activity',
       isPublic: true,
+      isAccepted: true,
       userId: curly.id,
     },
     soccer: {
-      name: "soccer",
-      date: "2/2/1996 3:00 PM",
-      location: "jax beach",
-      description: "play soccer on the beach",
+      name: 'soccer',
+      date: '2/2/1996 3:00 PM',
+      location: 'jax beach',
+      description: 'play soccer on the beach',
       isPublic: true,
       userId: moe.id,
     },
     joke: {
-      name: "joke",
-      date: "2/2/1996 3:00 PM",
-      location: "zoom",
-      description: "just want to tell you jokes",
+      name: 'joke',
+      date: '2/2/1996 3:00 PM',
+      location: 'zoom',
+      description: 'just want to tell you jokes',
       isPublic: true,
+      isAccepted: true,
       userId: moe.id,
     },
     nap: {
-      name: "nap",
-      date: "2/2/1996 3:00 PM",
-      location: "my house",
-      description: "take a nap together",
+      name: 'nap',
+      date: '2/2/1996 3:00 PM',
+      location: 'my house',
+      description: 'take a nap together',
       isPublic: true,
       userId: curly.id,
     },
@@ -414,29 +417,37 @@ const sync = async () => {
 
   //seeding user_events
   const _user_events = {
-    beach: {
-      joinedUserId: curly.id,
-      eventId: beach.id,
-      status: "accepted",
+    nap: {
+      joinedUserId: moe.id,
+      eventId: nap.id,
+      isFavorite: true,
     },
     soccer: {
-      eventId: beach.id,
+      joinedUserId: lucy.id,
+      eventId: soccer.id,
+      isFavorite: true,
+      status: null,
+    },
+    soccercurly: {
+      joinedUserId: curly.id,
+      eventId: soccer.id,
+      isFavorite: true,
       status: null,
     },
     joke: {
       joinedUserId: lucy.id,
       eventId: joke.id,
       isFavorite: true,
-      status: "declined",
+      status: 'accepted',
     },
     dog: {
-      joinedUserId: lucy.id,
+      joinedUserId: moe.id,
       eventId: dog.id,
       isFavorite: true,
-      status: "accepted",
+      status: 'accepted',
     },
   };
-  const [upark, ubeach, udog, usoccer, ujoke, unap] = await Promise.all(
+  const [unap, usoccer, usoccercurly, ujoke, udog] = await Promise.all(
     Object.values(_user_events).map((user_event) =>
       user_events.create(user_event)
     )
@@ -450,78 +461,78 @@ const sync = async () => {
   //console.log(userEventMap, 'userEvents');
 
   Promise.all([
-    careers.createCareer("Computers and Technology"),
-    careers.createCareer("Health Care and Allied Health"),
-    careers.createCareer("Education and Social Services"),
-    careers.createCareer("Arts and Communications"),
-    careers.createCareer("Trades and Transportation"),
-    careers.createCareer("Management, Business, and Finance"),
-    careers.createCareer("Architecture and Civil Engineering"),
-    careers.createCareer("Science"),
-    careers.createCareer("Hospitality, Tourism, and the Service Industry"),
-    careers.createCareer("Law and Law Enforcement"),
-    careers.createCareer("Other"),
-    careers.createCareer("Does not matter"),
+    careers.createCareer('Computers and Technology'),
+    careers.createCareer('Health Care and Allied Health'),
+    careers.createCareer('Education and Social Services'),
+    careers.createCareer('Arts and Communications'),
+    careers.createCareer('Trades and Transportation'),
+    careers.createCareer('Management, Business, and Finance'),
+    careers.createCareer('Architecture and Civil Engineering'),
+    careers.createCareer('Science'),
+    careers.createCareer('Hospitality, Tourism, and the Service Industry'),
+    careers.createCareer('Law and Law Enforcement'),
+    careers.createCareer('Other'),
+    careers.createCareer('Does not matter'),
   ]);
 
   const compid = await careers
-    .findCareerId("Computers and Technology")
+    .findCareerId('Computers and Technology')
     .then((response) => response.id);
   const eduid = await careers
-    .findCareerId("Education and Social Services")
+    .findCareerId('Education and Social Services')
     .then((response) => response.id);
   const othid = await careers
-    .findCareerId("Other")
+    .findCareerId('Other')
     .then((response) => response.id);
 
-  const lucyid = await users.findUserId("lucy").then((response) => response.id);
-  const moeid = await users.findUserId("moe").then((response) => response.id);
+  const lucyid = await users.findUserId('lucy').then((response) => response.id);
+  const moeid = await users.findUserId('moe').then((response) => response.id);
   const curlyid = await users
-    .findUserId("larry")
+    .findUserId('larry')
     .then((response) => response.id);
 
   Promise.all([
     profiles.createProfile({
       userId: lucyid,
-      gender: "Female",
-      politicalAffiliation: "Democrat",
-      religiousAffiliation: "Christianity",
+      gender: 'Female',
+      politicalAffiliation: 'Democrat',
+      religiousAffiliation: 'Christianity',
       careerId: eduid,
-      education: "College educated",
-      pets: "Dogs",
-      birthdate: "2/2/1996",
+      education: 'College educated',
+      pets: 'Dogs',
+      birthdate: '2/2/1996',
       zipCode: 32207,
-      employmentStatus: "Full time",
-      about: "Extrovert",
-      communicationPreference: "Email",
+      employmentStatus: 'Full time',
+      about: 'Extrovert',
+      communicationPreference: 'Email',
     }),
     profiles.createProfile({
       userId: moeid,
-      gender: "Male",
-      politicalAffiliation: "Independent",
-      religiousAffiliation: "Athiest",
+      gender: 'Male',
+      politicalAffiliation: 'Independent',
+      religiousAffiliation: 'Athiest',
       careerId: othid,
-      education: "Trade school",
-      pets: "Reptiles",
-      birthdate: "5/5/1960",
+      education: 'Trade school',
+      pets: 'Reptiles',
+      birthdate: '5/5/1960',
       zipCode: 32210,
-      employmentStatus: "Retired",
-      about: "Introvert",
-      communicationPreference: "Text",
+      employmentStatus: 'Retired',
+      about: 'Introvert',
+      communicationPreference: 'Text',
     }),
     profiles.createProfile({
       userId: curlyid,
-      gender: "Male",
-      politicalAffiliation: "Green Party",
-      religiousAffiliation: "Protestant",
+      gender: 'Male',
+      politicalAffiliation: 'Green Party',
+      religiousAffiliation: 'Protestant',
       careerId: compid,
-      education: "High school",
-      pets: "Cats",
-      birthdate: "10/10/1980",
+      education: 'High school',
+      pets: 'Cats',
+      birthdate: '10/10/1980',
       zipCode: 32073,
-      employmentStatus: "Part time",
-      about: "Life of the party!",
-      communicationPreference: "Email",
+      employmentStatus: 'Part time',
+      about: 'Life of the party!',
+      communicationPreference: 'Email',
     }),
   ]);
 
@@ -531,34 +542,34 @@ const sync = async () => {
 };
 
 const readCareers = async () => {
-  return (await client.query("SELECT * from careers")).rows;
+  return (await client.query('SELECT * from careers')).rows;
 };
 const readZipCodes = async () => {
-  return (await client.query("SELECT zipCode from user_profiles")).rows;
+  return (await client.query('SELECT zipCode from user_profiles')).rows;
 };
 const readReligions = async () => {
-  return (await client.query("SELECT * from religions")).rows;
+  return (await client.query('SELECT * from religions')).rows;
 };
 const readGenders = async () => {
-  return (await client.query("SELECT * from genders")).rows;
+  return (await client.query('SELECT * from genders')).rows;
 };
 const readHobbies = async () => {
-  return (await client.query("SELECT * from hobbies")).rows;
+  return (await client.query('SELECT * from hobbies')).rows;
 };
 const readEmploymentStatus = async () => {
-  return (await client.query("SELECT * from employment_status")).rows;
+  return (await client.query('SELECT * from employment_status')).rows;
 };
 const readPoliticalParties = async () => {
-  return (await client.query("SELECT * from political_parties")).rows;
+  return (await client.query('SELECT * from political_parties')).rows;
 };
 const readPets = async () => {
-  return (await client.query("SELECT * from pets")).rows;
+  return (await client.query('SELECT * from pets')).rows;
 };
 const readEducation = async () => {
-  return (await client.query("SELECT * from education")).rows;
+  return (await client.query('SELECT * from education')).rows;
 };
 const readProfiles = async () => {
-  return (await client.query("SELECT * from user_profiles")).rows;
+  return (await client.query('SELECT * from user_profiles')).rows;
 };
 const readPhotos = async () => {
   return (await client.query("SELECT * from user_photos")).rows;

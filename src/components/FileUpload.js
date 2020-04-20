@@ -1,19 +1,29 @@
-import React, { Fragment, useState } from 'react';
-import Message from './Message';
-import Progress from './Progress';
-import axios from 'axios';
-import qs from 'qs';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-// let uploads = require.context("./uploads", true);
-// import Jazzi from "../../public/uploads/Jazzi.jpg";
+import React, { Fragment, useState } from "react";
+import Message from "./Message";
+import Progress from "./Progress";
+import axios from "axios";
+import qs from "qs";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const FileUpload = ({ auth, params }) => {
-  const [file, setFile] = useState('');
-  const [filename, setFilename] = useState('Choose File');
+  const [file, setFile] = useState("");
+  const [filename, setFilename] = useState("Choose File");
   const [uploadedFile, setUploadedFile] = useState({});
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
+  const [page, setPage] = useState("Skip This Step");
 
+  // console.log("AUTH", auth.id);
+  let userId = auth.id;
+  // console.log("USER", userId);
+
+  const createUserPhoto = (fileName, filePath, userId) => {
+    axios
+      .post("/api/createPhoto", fileName, filePath, userId)
+      .then((response) => {
+        console.log("Response", response);
+      });
+  };
   const onChange = (e) => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
@@ -21,13 +31,13 @@ const FileUpload = ({ auth, params }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
-      const res = await axios.post('/upload', formData, {
+      const res = await axios.post("/upload", formData, {
         // const res = await axios.post("http://localhost:3090/upload", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
         onUploadProgress: (progressEvent) => {
           setUploadPercentage(
@@ -43,25 +53,35 @@ const FileUpload = ({ auth, params }) => {
       const { fileName, filePath } = res.data;
 
       setUploadedFile({ fileName, filePath });
-      console.log('filePath', filePath);
-      setMessage('File Uploaded');
+      // console.log("filePath", filePath);
+      setMessage("File Uploaded");
+      setPage("Next Page");
+      createUserPhoto({
+        fileName,
+        filePath,
+        userId,
+      });
+      console.log("HERE", fileName, filePath, userId);
     } catch (err) {
       if (err.response.status === 500) {
-        console.log('PROBLEM WITH SERVER');
-        setMessage('There was a problem with the server');
+        console.log("PROBLEM WITH SERVER");
+        setMessage("There was a problem with the server");
       } else {
-        console.log('PROBLEM HERE', err.response.data.msg);
+        console.log("PROBLEM HERE", err.response.data.msg);
 
         setMessage(err.response.data.msg);
       }
     }
   };
-  console.log('file', { uploadedFile });
+  console.log("file", { uploadedFile });
+  console.log("Path", uploadedFile.filePath);
 
-  // let myimg = uploads(`../../public/uploads/Jazzi.JPG`);
-  // let myimg = `/uploads/${file.name}`;
-  // console.log(myimg);
-  console.log('HERE', uploadedFile.filePath);
+  // const nextPage;
+  //   if (filePath) {
+  //      nextPage= "Next"
+  //   } else {
+  //       nextPage= "Skip This Step"
+  //   }
 
   return (
     <Fragment>
@@ -98,24 +118,16 @@ const FileUpload = ({ auth, params }) => {
             <div className="col-md-6 m-auto">
               <h3 className="text-center">{uploadedFile.fileName}</h3>
               <img
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 src={uploadedFile.filePath}
                 alt=""
               />
             </div>
-            {/* <img
-              // src="http://localhost:3090/public/uploads/Jazzi.jpg"
-              src="../../uploads/Jazzi.jpg"
-              // src={Jazzi}
-              style={{ width: "100%" }}
-              // className="App-logo"
-              alt="logo"
-            /> */}
           </div>
         ) : null}
         <div className="nav-item">
           <Link className="nav-link" to="/userinfo">
-            Skip This Step
+            {page}
           </Link>
         </div>
       </div>

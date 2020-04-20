@@ -5,12 +5,13 @@ import axios from "axios";
 import DeleteAccountPopUp from "./components/User/DeleteAccountPopUp";
 
 const UserProfile = ({ logout, auth, params }) => {
-  const deleteAccount = () => {
-    axios.delete(`/api/users/${auth.id}`);
-  };
+  // const deleteAccount = () => {
+  //   axios.delete(`/api/users/${auth.id}`);
+  // };
 
   const [profile, setProfile] = useState([]);
-  const [photo, setPhoto] = useState([]);
+  // const [photo, setPhoto] = useState([]);
+
   useEffect(() => {
     axios
       .get("/api/profiles")
@@ -19,17 +20,14 @@ const UserProfile = ({ logout, auth, params }) => {
       );
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("/api/photos")
-      .then((response) =>
-        setPhoto(response.data.find(({ userId }) => userId === auth.id))
-      );
-  }, []);
-
-  console.log("photo", photo);
-  // console.log("profile", profile);
-
+  // useEffect(() => {
+  //   axios
+  //     .get("/api/photos")
+  //     .then((response) =>
+  //       setPhoto(response.data.find(({ userId }) => userId === auth.id))
+  //     );
+  // }, []);
+  // console.log(photo);
   return (
     <div className="container">
       <h3 className="userName">
@@ -46,9 +44,6 @@ const UserProfile = ({ logout, auth, params }) => {
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">Account Ownership</h5>
-
-          <img className="userPhoto" src="public/uploads/Jazzi.JPG" />
-          {/* <img style={{ width: "100%" }} src={photo.filePath} alt="" /> */}
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
               Name: {auth.firstname} {auth.lastname}

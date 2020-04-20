@@ -108,14 +108,21 @@ app.post("/api/createProfile", (req, res, next) => {
     .catch(next);
 });
 
-app.post('/api/users/zipCode', (req, res, next) => {
-  models.profiles
-    .findUsersWithZipCode(req.body)
-    .then((usernames) => res.send(usernames))
+app.get("/api/photos", (req, res, next) => {
+  db.readPhotos()
+    .then((photos) => res.send(photos))
     .catch(next);
 });
 
-app.post('/api/search/perfect_match', (req, res, next) => {
+app.post("/api/createPhoto", (req, res, next) => {
+  console.log(req.body, "REQ");
+  models.photos
+    .createPhoto(req.body)
+    .then((photo) => res.send(photo))
+    .catch(next);
+});
+
+app.post("/api/search/perfect_match", (req, res, next) => {
   models.searches
     .searchPerfectMatch(req.body)
     .then((usernames) => res.send(usernames))
@@ -140,9 +147,6 @@ app.post("/api/search/zipcode", (req, res, next) => {
     .catch(next);
 });
 
-<<<<<<< HEAD
-app.get('/api/findUserId', (req, res, next) => {
-=======
 // app.post('/api/search/zipCode', (req, res, next) => {
 //   models.searches
 //     .searchZipCode(req.body)
@@ -152,22 +156,8 @@ app.get('/api/findUserId', (req, res, next) => {
 //     })
 //     .catch(next);
 // });
-app.post("/api/createPhoto", (req, res, next) => {
-  console.log(req.body, "REQ");
-  models.photos
-    .createPhoto(req.body)
-    .then((photo) => res.send(photo))
-    .catch(next);
-});
-
-app.get("/api/photos", (req, res, next) => {
-  db.readPhotos()
-    .then((photos) => res.send(photos))
-    .catch(next);
-});
 
 app.get("/api/findUserId", (req, res, next) => {
->>>>>>> master
   db.findUserId(req.user.id)
     .then((userid) => res.send(userid))
     .catch(next);
@@ -234,19 +224,8 @@ app.get("/api/profiles", (req, res, next) => {
     })
     .catch(next);
 });
-<<<<<<< HEAD
-app.get('/api/usernamepprofiles', (req, res, next) => {
-  db.readUsernameProfiles()
-    .then((usernamepprofiles) => {
-      res.send(usernamepprofiles);
-    })
-    .catch(next);
-});
 
-app.get('/api/education', (req, res, next) => {
-=======
 app.get("/api/education", (req, res, next) => {
->>>>>>> master
   db.readEducation()
     .then((school) => {
       res.send(school);
@@ -261,10 +240,6 @@ app.get("/api/users", (req, res, next) => {
     })
     .catch(next);
 });
-<<<<<<< HEAD
-
-app.post('/api/createUserHobbies', (req, res, next) => {
-=======
 // app.post('/api/user_hobbies', (req, res, next) => {
 //   db.createUserHobbies(req.body)
 //     .then((hobbies) => {
@@ -273,7 +248,6 @@ app.post('/api/createUserHobbies', (req, res, next) => {
 //     .catch(next);
 // });
 app.post("/api/createUserHobbies", (req, res, next) => {
->>>>>>> master
   models.hobbies
     .createUserHobbies(req.body)
     .then((hobbies) => res.send(hobbies))

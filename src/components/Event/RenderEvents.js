@@ -28,13 +28,6 @@ const RenderEvents = ({
     .filter((eve) => eve.userId !== auth.id)
     .filter((e) => e.isPublic);
 
-  //EXPERIMETN
-  const acceptedEvents = events.filter((e) => {
-    if (e.isAccepted) {
-      return e;
-    }
-  });
-
   //console.log('hello');
   const displayEvents = events.filter((event) => {
     if (event.isAccepted) {

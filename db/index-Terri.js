@@ -560,9 +560,6 @@ const readEducation = async () => {
 const readProfiles = async () => {
   return (await client.query("SELECT * from user_profiles")).rows;
 };
-const readPhotos = async () => {
-  return (await client.query("SELECT * from user_photos")).rows;
-};
 // const createUserInfo = async ([
 //   user,
 //   userGender,
@@ -608,6 +605,5 @@ module.exports = {
   // createUserHobbies,
   readEducation,
   readProfiles,
-  readPhotos,
   // createUserInfo,
 };

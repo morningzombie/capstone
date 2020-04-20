@@ -93,7 +93,7 @@ app.post("/upload", (req, res) => {
 
   file.mv(`${__dirname}/public/uploads/${file.name}`, (err) => {
     if (err) {
-      console.error(err);
+      //console.error(err);
       return res.status(500).send(err);
     }
     res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
@@ -105,6 +105,13 @@ app.post("/api/createProfile", (req, res, next) => {
   models.profiles
     .createProfile(req.body)
     .then((profile) => res.send(profile))
+    .catch(next);
+});
+
+app.post("/api/users/zipCode", (req, res, next) => {
+  models.profiles
+    .findUsersWithZipCode(req.body)
+    .then((usernames) => res.send(usernames))
     .catch(next);
 });
 
@@ -120,9 +127,9 @@ app.post("/api/search/user_search_criteria", (req, res, next) => {
     .createUserSearchCriteria(req.body)
     .then((searchCriteria) => res.send(searchCriteria))
     .catch((error) => {
-      console.log("resp", error.response);
-      console.log("resp", error.response);
-      console.log("resp", error.response);
+      // console.log('resp', error.response);
+      // console.log('resp', error.response);
+      // console.log('resp', error.response);
     });
 });
 
@@ -223,6 +230,14 @@ app.get("/api/profiles", (req, res, next) => {
     })
     .catch(next);
 });
+app.get("/api/usernamepprofiles", (req, res, next) => {
+  db.readUsernameProfiles()
+    .then((usernamepprofiles) => {
+      res.send(usernamepprofiles);
+    })
+    .catch(next);
+});
+
 app.get("/api/education", (req, res, next) => {
   db.readEducation()
     .then((school) => {
@@ -238,13 +253,7 @@ app.get("/api/users", (req, res, next) => {
     })
     .catch(next);
 });
-// app.post('/api/user_hobbies', (req, res, next) => {
-//   db.createUserHobbies(req.body)
-//     .then((hobbies) => {
-//       res.send(hobbies);
-//     })
-//     .catch(next);
-// });
+
 app.post("/api/createUserHobbies", (req, res, next) => {
   models.hobbies
     .createUserHobbies(req.body)
@@ -270,6 +279,18 @@ app.put("/api/user/password/:id", (req, res, next) => {
   db.changePassword(req.body)
     .then((response) => res.send(response))
     .catch(next);
+});
+
+//delete array of userEvents
+app.post("/api/userEvents/array/delete", (req, res, next) => {
+  const userEvents = req.body;
+  console.log(req.params.id, "user event delete", req.body);
+  userEvents.map((userEvent) =>
+    models.user_events
+      .delete(userEvent.id)
+      .then(() => res.sendStatus(204))
+      .catch(next)
+  );
 });
 
 Object.keys(models).forEach((key) => {

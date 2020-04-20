@@ -219,7 +219,9 @@ app.get("/api/profiles", (req, res, next) => {
     .catch(next);
 });
 app.get("/api/photos", (req, res, next) => {
-  db.readPhotos().then((photo) => res.send(photo));
+  db.readPhotos()
+    .then((photos) => res.send(photos))
+    .catch(next);
 });
 
 app.get("/api/education", (req, res, next) => {

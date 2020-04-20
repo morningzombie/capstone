@@ -7,14 +7,7 @@ const searchZipCode = async ({ criteria }) => {
   const response = await client.query(SQL, [criteria.zipCode]);
   return response.rows;
 };
-// const searchZipCode = async (zip) => {
-//   console.log('ZIPSRCH', zip);
-//   const SQL = `SELECT users.username FROM user_profiles
-//   JOIN users ON user_profiles."userId" = users.id
-//   WHERE zipCode = ($1)`;
-//   const response = await client.query(SQL, [zip]);
-//   return response.rows;
-// };
+
 const searchPerfectMatch = async (criteria) => {
   const SQL = `SELECT users.username FROM user_profiles 
   JOIN users ON user_profiles."userId" = users.id

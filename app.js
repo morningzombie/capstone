@@ -223,7 +223,6 @@ app.get("/api/photos", (req, res, next) => {
     .then((photos) => res.send(photos))
     .catch(next);
 });
-
 app.get("/api/education", (req, res, next) => {
   db.readEducation()
     .then((school) => {

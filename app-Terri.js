@@ -108,6 +108,12 @@ app.post("/api/createProfile", (req, res, next) => {
     .catch(next);
 });
 
+app.get("/api/photos", (req, res, next) => {
+  db.readPhotos()
+    .then((photos) => res.send(photos))
+    .catch(next);
+});
+
 app.post("/api/createPhoto", (req, res, next) => {
   console.log(req.body, "REQ");
   models.photos
@@ -216,11 +222,6 @@ app.get("/api/profiles", (req, res, next) => {
     .then((profiles) => {
       res.send(profiles);
     })
-    .catch(next);
-});
-app.get("/api/photos", (req, res, next) => {
-  db.readPhotos()
-    .then((photos) => res.send(photos))
     .catch(next);
 });
 

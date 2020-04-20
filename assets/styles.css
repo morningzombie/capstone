@@ -9,6 +9,9 @@ body {
   padding: 10px;
   margin: 10px auto;
 }
+.highlight {
+  box-shadow: #000 2px 2px;
+}
 .hobby-text {
   font-size: 0.8em;
   margin-bottom: 30px;
@@ -23,4 +26,12 @@ h3 {
 }
 .userName {
   text-transform: capitalize;
+}
+.yellow {
+  background: yellow;
+}
+.userPhoto {
+  width: 40%;
+  height: 40%;
+  border: #000 1px solid;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const CreateNewUser = ({ login }) => {
@@ -15,6 +15,9 @@ const CreateNewUser = ({ login }) => {
   const [gender, setGender] = useState('');
   const [error, setError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  const history = useHistory();
+  const goToUploadPhoto = () => history.push('/file/upload');
 
   const createUser = (user) => {
     axios.post('/api/users', user).then((response) => {
@@ -41,6 +44,7 @@ const CreateNewUser = ({ login }) => {
         // birthday,
         // gender,
       });
+      goToUploadPhoto();
     }
   };
   return (
@@ -157,9 +161,6 @@ const CreateNewUser = ({ login }) => {
         </div> */}
 
         <button className="btn btn-primary">Create Account</button>
-        {/* <Link to="/useraccount" className="btn btn-primary">
-          Create Account
-        </Link> */}
       </form>
     </div>
   );

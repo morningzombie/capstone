@@ -18,6 +18,8 @@ const UserProfile = ({ logout, auth, params }) => {
         setProfile(response.data.find(({ userId }) => userId === auth.id))
       );
   }, []);
+  // console.log("RES", response);
+  console.log("P", photo);
 
   useEffect(() => {
     axios
@@ -26,7 +28,19 @@ const UserProfile = ({ logout, auth, params }) => {
         setPhoto(response.data.find(({ userId }) => userId === auth.id))
       );
   }, []);
-
+  let myPhotoPath;
+  if (photo == undefined) {
+    myPhotoPath = "/uploads/avatar-1577909_1280.png";
+  } else {
+    myPhotoPath = photo.filepath;
+  }
+  // if (photo == null) {
+  //   setPhoto({
+  //     filename: "No Photo",
+  //     filepath: "/uploads/avatar-1577909_1280.png",
+  //     userId: auth.id,
+  //   });
+  // }
   console.log("photo", photo);
   // console.log("profile", profile);
 
@@ -47,19 +61,25 @@ const UserProfile = ({ logout, auth, params }) => {
         <div className="card-body">
           <h5 className="card-title">Account Ownership</h5>
 
-          <img className="userPhoto" src="public/uploads/Jazzi.JPG" />
-          {/* <img style={{ width: "100%" }} src={photo.filePath} alt="" /> */}
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              Name: {auth.firstname} {auth.lastname}
-            </li>
-            <li className="list-group-item">Username: {auth.username}</li>
-            <li className="list-group-item">email: {auth.email}</li>
-            <li className="list-group-item">Phone: {auth.phone}</li>
-          </ul>
-          <Link to="/useraccount/edit" className="card-link">
-            Edit
-          </Link>
+          <div className="col-md-12">
+            <div className="col-md-6">
+              {/* <img className="userPhoto" src="/avatar-1577909_1280.png" /> */}
+              <img className="userPhoto" src={myPhotoPath} />
+            </div>
+            <div className="col-md-6">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  Name: {auth.firstname} {auth.lastname}
+                </li>
+                <li className="list-group-item">Username: {auth.username}</li>
+                <li className="list-group-item">email: {auth.email}</li>
+                <li className="list-group-item">Phone: {auth.phone}</li>
+              </ul>
+              <Link to="/useraccount/edit" className="card-link">
+                Edit
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       {/* //============CHANGE PASSWORD===============// */}

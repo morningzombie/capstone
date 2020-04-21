@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UserHobbies from "./UserHobbies";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
 const UserInfo = ({ login, auth }) => {
@@ -50,20 +49,23 @@ const UserInfo = ({ login, auth }) => {
       .get("/api/education")
       .then((response) => setEducations(response.data));
   }, []);
-
-  const createUserInfo = (user) => {
-    axios.post("/api/createProfile", user).then((response) => {
+  const createUserInfo = (profile) => {
+    axios.post("/api/createProfile", profile).then((response) => {
       console.log("USERINFO", response);
+      console.log("USER", profile);
       // login({ email, password }).catch((ex) =>
-      //   setError(ex.response.data.message)
+      setError(ex.response.data.message);
       // );
     });
   };
 
+  const userId = auth.id;
+  // console.log("test1", auth.id);
+  //console.log("test2", userId);
+
   const onSubmit = (ev) => {
-    // ev.preventDefault();
+    ev.preventDefault();
     {
-      const userId = auth.id;
       createUserInfo({
         userId,
         gender,
@@ -91,9 +93,9 @@ const UserInfo = ({ login, auth }) => {
   //     user_profile.zipCode,
   //     user_profile.employmentStatus,
   return (
-    <div className="container" onSubmit={onSubmit}>
+    <div className="container">
       <h3>Tell Us All About You</h3>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="row">
           <div className="col">
             <label htmlFor="zipCode">Where do you live?</label>
@@ -272,10 +274,11 @@ const UserInfo = ({ login, auth }) => {
             onChange={(ev) => setAbout(ev.target.value)}
           />
         </div>
+        {/* <Link to="/userhobbies"> */}
 
-        <Link to="/userhobbies">
-          <button type="button">Submit</button>
-        </Link>
+        {/* <Link> */}
+        <button className="btn btn-primary">Submit</button>
+        {/* </Link> */}
 
         {/* <button
           to="/userhobbies"

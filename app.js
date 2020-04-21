@@ -157,6 +157,14 @@ app.post('/api/createPhoto', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/api/createFavorite', (req, res, next) => {
+  console.log('fave', req.body);
+  models.favorites
+    .createFavorite(req.body)
+    .then((favorite) => res.send(favorite))
+    .catch(next);
+});
+
 app.get('/api/photos', (req, res, next) => {
   db.readPhotos()
     .then((photos) => res.send(photos))

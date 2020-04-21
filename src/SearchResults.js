@@ -67,6 +67,12 @@ const SearchResults = ({ auth }) => {
     return src;
   };
 
+  const saveFavorite = async (faveInfo) => {
+    await axios
+      .post('/api/createFavorite', faveInfo)
+      .then((response) => console.log('criteria', response));
+  };
+
   console.log('photos', photos);
 
   return (

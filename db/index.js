@@ -17,6 +17,7 @@ const models = ({
   events,
   searches,
   photos,
+  favorites,
 } = require('./models'));
 
 const { changePassword } = require('./userMethods');
@@ -27,6 +28,7 @@ const sync = async () => {
   CREATE EXTENSION IF NOT EXISTS citext;
   DROP TABLE IF EXISTS user_search_criteria;
   DROP TABLE IF EXISTS user_events;
+  DROP TABLE IF EXISTS user_favorites;
   DROP TABLE IF EXISTS events;
   DROP TABLE IF EXISTS user_photos;
   DROP TABLE IF EXISTS user_groups CASCADE;
@@ -43,8 +45,6 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
   DROP TABLE IF EXISTS education CASCADE;
-
-
 
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -75,6 +75,7 @@ const sync = async () => {
     "isFavorite" BOOLEAN default false,
     status VARCHAR(10) DEFAULT 'open'
   );
+
   CREATE TABLE careers(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     career_name VARCHAR(100) NOT NULL
@@ -169,6 +170,12 @@ const sync = async () => {
     pets VARCHAR(100),
     zipCode VARCHAR(10),
     employmentStatus VARCHAR(100)
+  );
+
+  CREATE TABLE user_favorites(
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "userId" UUID REFERENCES users(id),
+    "favoriteId" UUID REFERENCES users(id)
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');

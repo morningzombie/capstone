@@ -6,6 +6,7 @@ const SearchResults = ({ auth }) => {
   const [profile, setProfile] = useState([]);
   const [profiles, setProfiles] = useState([]);
   const [careers, setCareers] = useState([]);
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     // gets zip code of current user
@@ -43,7 +44,7 @@ const SearchResults = ({ auth }) => {
     return career.career_name;
   };
 
-  function findAge(birthday) {
+  const findAge = (birthday) => {
     var today = new Date();
     var birthDate = new Date(birthday);
     var age = today.getFullYear() - birthDate.getFullYear();
@@ -52,17 +53,26 @@ const SearchResults = ({ auth }) => {
       age--;
     }
     return age;
-  }
+  };
+
+  useEffect(() => {
+    axios.get('/api/photos').then((response) => setPhotos(response.data));
+  }, []);
+
+  const getProfilePic = (friendId) => {
+    const profilePic = photos.find((photo) => photo.id === friendId);
+    const fileName = profilePic.fileName;
+    const filePath = profilePic.filePath;
+    const src = filePath + '/' + fileName;
+    return src;
+  };
 
   return (
     <div>
-      <h3>Results</h3>
-      <div>
-        <form>
-          <h5>Users in your zip code</h5>
-        </form>
-      </div>
-      <div>
+      <h3>
+        Users in your zip code {userZip} ({userProfiles.length - 1})
+      </h3>
+      {/* <div>
         {userProfiles.map((userProfile) => (
           <ul key={userProfile.id}>
             User: {getUsername(userProfile.userId)}{' '}
@@ -83,6 +93,37 @@ const SearchResults = ({ auth }) => {
             <li>Photo: </li>
           </ul>
         ))}
+      </div> */}
+      <div>
+        {userProfiles.map((userProfile) => {
+          return (
+            <div
+              className="card"
+              key={userProfile.id}
+              style={{ width: '18rem' }}
+            >
+              <div className="card-body">
+                <img
+                  className="userPhoto"
+                  src={getProfilePic(userProfile.userId)}
+                />
+                <h5 className="card-title">
+                  {getUsername(userProfile.userId)}
+                </h5>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  Age {findAge(userProfile.birthdate)}
+                </h6>
+                <p className="card-text">{userProfile.gender}</p>
+                <a href="#" className="card-link">
+                  Save as Favorite
+                </a>
+                <a href="#" className="card-link">
+                  View details
+                </a>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

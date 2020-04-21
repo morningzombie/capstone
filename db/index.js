@@ -740,6 +740,7 @@ const readUsernameProfiles = async () => {
 const readPhotos = async () => {
   return (await client.query('SELECT * from user_photos')).rows;
 };
+
 // const createUserInfo = async ([
 //   user,
 //   userGender,

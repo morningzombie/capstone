@@ -60,17 +60,19 @@ const SearchResults = ({ auth }) => {
   }, []);
 
   const getProfilePic = (friendId) => {
-    const profilePic = photos.find((photo) => photo.id === friendId);
-    const fileName = profilePic.fileName;
-    const filePath = profilePic.filePath;
-    const src = filePath + '/' + fileName;
+    const profilePic = photos.find((photo) => photo.userId === friendId);
+    const filename = profilePic.filename;
+    const filepath = profilePic.filepath;
+    const src = filepath + '/' + filename;
     return src;
   };
+
+  console.log('photos', photos);
 
   return (
     <div>
       <h3>
-        Users in your zip code {userZip} ({userProfiles.length - 1})
+        Users in your zip code {userZip} ({userProfiles.length})
       </h3>
       {/* <div>
         {userProfiles.map((userProfile) => (

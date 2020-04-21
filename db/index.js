@@ -16,6 +16,7 @@ const models = ({
   political_parties,
   events,
   searches,
+  photos,
 } = require('./models'));
 
 const { changePassword } = require('./userMethods');
@@ -558,6 +559,54 @@ const sync = async () => {
   const marcieid = await users
     .findUserId('marcie')
     .then((response) => response.id);
+
+  Promise.all([
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'chick.JPG',
+      userId: lucyid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'dude.PNG',
+      userId: moeid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'fakeuser.JPG',
+      userId: curlyid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'guy.JPG',
+      userId: larryid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'mr.JPG',
+      userId: shempid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'flat.PNG',
+      userId: joeid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'girluser.JPG',
+      userId: pattiid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'pat.JPG',
+      userId: sallyid,
+    }),
+    photos.createPhoto({
+      fileName: 'public/uploads/',
+      filePath: 'pony.PNG',
+      userId: marcieid,
+    }),
+  ]);
 
   Promise.all([
     profiles.createProfile({

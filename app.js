@@ -107,7 +107,13 @@ app.post("/api/createProfile", (req, res, next) => {
     .then((profile) => res.send(profile))
     .catch(next);
 });
-
+app.get("/api/profiles", (req, res, next) => {
+  db.readProfiles()
+    .then((profiles) => {
+      res.send(profiles);
+    })
+    .catch(next);
+});
 app.post("/api/users/zipCode", (req, res, next) => {
   models.profiles
     .findUsersWithZipCode(req.body)
@@ -223,13 +229,7 @@ app.get("/api/hobbies", (req, res, next) => {
     })
     .catch(next);
 });
-app.get("/api/profiles", (req, res, next) => {
-  db.readProfiles()
-    .then((profiles) => {
-      res.send(profiles);
-    })
-    .catch(next);
-});
+
 app.get("/api/usernamepprofiles", (req, res, next) => {
   db.readUsernameProfiles()
     .then((usernamepprofiles) => {

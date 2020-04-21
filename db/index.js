@@ -4,6 +4,7 @@ const fs = require('fs');
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
 const models = ({
+  invites,
   user_events,
   users,
   profiles,
@@ -410,7 +411,7 @@ const sync = async () => {
   const _events = {
     park: {
       name: 'park',
-      date: '2/2/1996',
+      date: '2/2/1991',
       location: 'park',
       description: 'some activity',
       isPublic: true,
@@ -418,7 +419,7 @@ const sync = async () => {
     },
     beach: {
       name: 'beach',
-      date: '2/2/1996',
+      date: '2/2/1992',
       location: 'beach',
       description: 'some activity',
       isPublic: false,
@@ -426,7 +427,7 @@ const sync = async () => {
     },
     dog: {
       name: 'dog',
-      date: '2/2/1996 3:00 PM',
+      date: '2/2/1993 3:00 PM',
       location: 'dog',
       description: 'some activity',
       isPublic: true,
@@ -435,7 +436,7 @@ const sync = async () => {
     },
     soccer: {
       name: 'soccer',
-      date: '2/2/1996 3:00 PM',
+      date: '2/2/1994 3:00 PM',
       location: 'jax beach',
       description: 'play soccer on the beach',
       isPublic: true,
@@ -443,7 +444,7 @@ const sync = async () => {
     },
     joke: {
       name: 'joke',
-      date: '2/2/1996 3:00 PM',
+      date: '2/2/1995 3:00 PM',
       location: 'zoom',
       description: 'just want to tell you jokes',
       isPublic: true,
@@ -499,6 +500,12 @@ const sync = async () => {
       eventId: dog.id,
       isFavorite: true,
       status: 'accepted',
+    },
+    beach: {
+      joinedUserId: moe.id,
+      eventId: beach.id,
+      isFavorite: false,
+      status: 'invited',
     },
   };
   const [unap, usoccer, usoccercurly, ujoke, udog] = await Promise.all(

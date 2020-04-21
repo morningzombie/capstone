@@ -284,7 +284,7 @@ app.put('/api/user/password/:id', (req, res, next) => {
 //delete array of userEvents
 app.post('/api/userEvents/array/delete', (req, res, next) => {
   const userEvents = req.body;
-  console.log(req.params.id, 'user event delete', req.body);
+  //console.log(req.params.id, 'user event delete', req.body);
   userEvents.map((userEvent) =>
     models.user_events
       .delete(userEvent.id)
@@ -293,9 +293,20 @@ app.post('/api/userEvents/array/delete', (req, res, next) => {
   );
 });
 
+app.get('/api/invites/:id', (req, res, next) => {
+  const userEvents = req.body;
+  console.log(req.params.id, 'invites', req.body);
+
+  models.invites
+    .read(req.params.id)
+    .then((items) => res.send(items))
+    .catch(next);
+});
+
 Object.keys(models).forEach((key) => {
   //console.log(models);
   app.get(`/api/${key}`, isLoggedIn, (req, res, next) => {
+    console.log(req.body, 'in get');
     models[key]
       .read({ user: req.user })
       .then((items) => res.send(items))

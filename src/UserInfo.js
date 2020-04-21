@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Link } from "react-router-dom";
+// import { useHistory, Link } from "react-router-dom";
+
+// const history = useHistory();
+// const goToUpload = () => history.push("/user/hobbies");
 
 const UserInfo = ({ login, auth }) => {
   const [userid, setUserid] = useState("");
@@ -49,6 +53,7 @@ const UserInfo = ({ login, auth }) => {
       .get("/api/education")
       .then((response) => setEducations(response.data));
   }, []);
+
   const createUserInfo = (profile) => {
     axios.post("/api/createProfile", profile).then((response) => {
       console.log("USERINFO", response);
@@ -60,8 +65,6 @@ const UserInfo = ({ login, auth }) => {
   };
 
   const userId = auth.id;
-  // console.log("test1", auth.id);
-  //console.log("test2", userId);
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -79,19 +82,10 @@ const UserInfo = ({ login, auth }) => {
         employmentStatus,
         about,
       });
+      // .then(() => goToUpload());
     }
   };
-  // user_profile.userId,
-  //     user_profile.gender,
-  //     user_profile.orientation,
-  //     user_profile.politicalAffiliation,
-  //     user_profile.religiousAffiliation,
-  //     user_profile.careerId,
-  //     user_profile.education,
-  //     user_profile.pets,
-  //     user_profile.birthdate,
-  //     user_profile.zipCode,
-  //     user_profile.employmentStatus,
+
   return (
     <div className="container">
       <h3>Tell Us All About You</h3>
@@ -275,22 +269,8 @@ const UserInfo = ({ login, auth }) => {
           />
         </div>
         {/* <Link to="/userhobbies"> */}
-
-        {/* <Link> */}
         <button className="btn btn-primary">Submit</button>
         {/* </Link> */}
-
-        {/* <button
-          to="/userhobbies"
-          type="button"
-          className="btn btn-primary"
-          onClick={onSubmit}
-          // onClick={() => {
-          //   onSubmit();
-          // }}
-        >
-          Submit
-        </button> */}
       </form>
     </div>
   );

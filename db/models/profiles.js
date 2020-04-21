@@ -54,11 +54,11 @@ const createProfile = async (user_profiles) => {
 //     birthdate,
 //     zipCode,
 //     employmentStatus,
-//     about,
-//     communicationPreference,
+//     about
 //   },
-//   id) => {
-//   const SQL = `UPDATE "user_profiles" set gender=$1, politicalAffiliation=$2, religiousAffiliation=$3, careerId=$4, education=$5, pets=$6, birthdate=$7, zipCode=$8,  employmentStatus=$9, about=$10, communicationPreference=$11 WHERE id = $12 returning *`;
+//   id
+// ) => {
+//   const SQL = `UPDATE "user_profiles" set gender=$1, politicalAffiliation=$2, religiousAffiliation=$3, careerId=$4, education=$5, pets=$6, birthdate=$7, zipCode=$8, employmentStatus=$9, about=$10 WHERE id = $11 returning *`;
 
 //   const updatedProfile = (
 //     await client.query(SQL, [
@@ -72,11 +72,32 @@ const createProfile = async (user_profiles) => {
 //       zipCode,
 //       employmentStatus,
 //       about,
-//       communicationPreference,
 //     ])
 //   ).rows[0];
 //   return updatedProfile;
 // };
+
+const updateProfile = async ({ user_profiles }, id) => {
+  const SQL = `UPDATE "user_profiles" set gender=$1, politicalAffiliation=$2, religiousAffiliation=$3, careerId=$4, education=$5, pets=$6, birthdate=$7, zipCode=$8, employmentStatus=$9, about=$10 WHERE id = $11 returning *`;
+
+  const updatedProfile = (
+    await client.query(SQL, [
+      user_profiles.id,
+      user_profiles.gender,
+      user_profiles.politicalAffiliation,
+      user_profiles.religiousAffiliation,
+      user_profiles.careerId,
+      user_profiles.education,
+      user_profiles.pets,
+      user_profiles.birthdate,
+      user_profiles.zipCode,
+      user_profiles.employmentStatus,
+      user_profiles.about,
+    ])
+  ).rows[0];
+  return updatedProfile;
+};
+
 const deleteProfile = async (id) => {
   return await client.query(
     `DELETE FROM "user_profiles" WHERE id=$1 returning *`,
@@ -86,6 +107,6 @@ const deleteProfile = async (id) => {
 module.exports = {
   readProfiles,
   createProfile,
-  // updateProfile,
+  updateProfile,
   deleteProfile,
 };

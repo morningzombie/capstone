@@ -2,7 +2,7 @@ const client = require('../client');
 
 const events = {
   read: async () => {
-    return (await client.query('SELECT * from events')).rows;
+    return (await client.query('SELECT * from events ORDER BY date')).rows;
   },
   create: async ({
     name,

@@ -222,6 +222,22 @@ app.get("/api/profiles", (req, res, next) => {
     })
     .catch(next);
 });
+
+app.put(`/api/profiles/:id`, (req, res, next) => {
+  models
+    .updateProfile()
+    .update(req.body, req.params.id)
+    .then((profile) => res.send(profile))
+    .catch(next);
+});
+app.delete(`/api/${key}/:id`, (req, res, next) => {
+  //console.log(req.params.id, 'user delet');
+  models[key]
+    .delete(req.params.id)
+    .then(() => res.sendStatus(204))
+    .catch(next);
+});
+
 app.get("/api/education", (req, res, next) => {
   db.readEducation()
     .then((school) => {

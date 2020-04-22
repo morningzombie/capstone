@@ -117,6 +117,7 @@ const SearchResults = ({ auth }) => {
                   className="btn btn-primary"
                   data-toggle="modal"
                   data-target="#exampleModalCenter"
+                  data-dismiss="modal"
                 >
                   Save as Favorite
                 </button>
@@ -229,6 +230,7 @@ const SearchResults = ({ auth }) => {
                           type="submit"
                           className="btn btn-primary"
                           onClick={() => onSubmit(userProfile.userId)}
+                          data-dismiss="modal"
                         >
                           Save as favorite?
                         </button>

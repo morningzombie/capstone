@@ -118,8 +118,8 @@ const sync = async () => {
 
   CREATE TABLE user_photos(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    fileName VARCHAR(100) NOT NULL,
-    filePath VARCHAR(100) NOT NULL,
+    fileName VARCHAR(100),
+    filePath VARCHAR(100),
     "userId" UUID REFERENCES users(id)
   );
 

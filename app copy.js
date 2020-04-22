@@ -11,7 +11,6 @@ app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 app.use(express.static("public"));
 
-app.use(express.static("public"));
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -108,20 +107,6 @@ app.post("/api/createProfile", (req, res, next) => {
     .catch(next);
 });
 
-app.get("/api/photos", (req, res, next) => {
-  db.readPhotos()
-    .then((photos) => res.send(photos))
-    .catch(next);
-});
-
-app.post("/api/createPhoto", (req, res, next) => {
-  console.log(req.body, "REQ");
-  models.photos
-    .createPhoto(req.body)
-    .then((photo) => res.send(photo))
-    .catch(next);
-});
-
 app.post("/api/search/perfect_match", (req, res, next) => {
   models.searches
     .searchPerfectMatch(req.body)
@@ -156,6 +141,19 @@ app.post("/api/search/zipcode", (req, res, next) => {
 //     })
 //     .catch(next);
 // });
+app.post("/api/createPhoto", (req, res, next) => {
+  console.log(req.body, "REQ");
+  models.photos
+    .createPhoto(req.body)
+    .then((photo) => res.send(photo))
+    .catch(next);
+});
+
+app.get("/api/photos", (req, res, next) => {
+  db.readPhotos()
+    .then((photos) => res.send(photos))
+    .catch(next);
+});
 
 app.get("/api/findUserId", (req, res, next) => {
   db.findUserId(req.user.id)
@@ -222,6 +220,21 @@ app.get("/api/profiles", (req, res, next) => {
     .then((profiles) => {
       res.send(profiles);
     })
+    .catch(next);
+});
+
+app.put(`/api/profiles/:id`, (req, res, next) => {
+  models
+    .updateProfile()
+    .update(req.body, req.params.id)
+    .then((profile) => res.send(profile))
+    .catch(next);
+});
+app.delete(`/api/${key}/:id`, (req, res, next) => {
+  //console.log(req.params.id, 'user delet');
+  models[key]
+    .delete(req.params.id)
+    .then(() => res.sendStatus(204))
     .catch(next);
 });
 
@@ -324,66 +337,3 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-
-
-
-app.post("/api/createProfile", (req, res, next) => {
-  models.profiles
-    .createProfile(req.body)
-    .then((profile) => res.send(profile))
-    .catch(next);
-});
-app.get("/api/profiles", (req, res, next) => {
-  db.readProfiles()
-    .then((profiles) => {
-      res.send(profiles);
-    })
-    .catch(next);
-});
-// app.put("/api/user_profiles", (req, res, next) => {
-//   models.profiles
-//     .updateProfile(req.body)
-//     .then((profile) => res.send(profile))
-//     .catch(next);
-// });
-// app.delete("/api/user_profiles/:id", (req, res, next) => {
-//   models.profiles
-//     .deleteProfile(req.body)
-//     .then(() => res.sendStatus(204))
-//     .catch(next);
-// });
-
-app.post("/api/search/perfect_match", (req, res, next) => {
-  models.searches
-    .searchPerfectMatch(req.body)
-    .then((usernames) => res.send(usernames))
-    .catch(next);
-});
-
-app.post("/api/search/user_search_criteria", (req, res, next) => {
-  models.searches
-    .createUserSearchCriteria(req.body)
-    .then((searchCriteria) => res.send(searchCriteria))
-    .catch((error) => {
-      console.log("resp", error.response);
-      console.log("resp", error.response);
-      console.log("resp", error.response);
-    });
-});
-
-app.post("/api/search/zipcode", (req, res, next) => {
-  models.searches
-    .searchZipCode(req.body)
-    .then((usernames) => res.send(usernames))
-    .catch(next);
-});
-
-// app.post('/api/search/zipCode', (req, res, next) => {
-//   models.searches
-//     .searchZipCode(req.body)
-//     .then((response) => {
-//       console.log('postapp', response);
-//       res.send(response);
-//     })
-//     .catch(next);
-// });

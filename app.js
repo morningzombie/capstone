@@ -102,12 +102,24 @@ app.post('/upload', (req, res) => {
 //============PHOTO UPLOAD END=================//
 
 app.post('/api/createProfile', (req, res, next) => {
+  console.log(req.body, 'REQ');
   models.profiles
     .createProfile(req.body)
     .then((profile) => res.send(profile))
     .catch(next);
 });
 
+app.get('/api/profiles', (req, res, next) => {
+  db.readProfiles()
+    .then((profiles) => {
+      res.send(profiles);
+    })
+    .catch(next);
+});
+app.put('/api/updateProfile/:id', (req, res, next) => {
+  console.log(req.body, 'user put');
+  models.profiles.then(() => res.send(204)).catch(next);
+});
 app.post('/api/users/zipCode', (req, res, next) => {
   models.profiles
     .findUsersWithZipCode(req.body)
@@ -231,13 +243,7 @@ app.get('/api/hobbies', (req, res, next) => {
     })
     .catch(next);
 });
-app.get('/api/profiles', (req, res, next) => {
-  db.readProfiles()
-    .then((profiles) => {
-      res.send(profiles);
-    })
-    .catch(next);
-});
+
 app.get('/api/usernamepprofiles', (req, res, next) => {
   db.readUsernameProfiles()
     .then((usernamepprofiles) => {

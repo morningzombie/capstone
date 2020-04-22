@@ -1,4 +1,5 @@
 module.exports = {
+  invites: require('./invites'),
   user_events: require('./user_events'),
   events: require('./events'),
   users: require('./users'),

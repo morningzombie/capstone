@@ -116,9 +116,18 @@ app.get("/api/profiles", (req, res, next) => {
     })
     .catch(next);
 });
+// app.put("/api/user_profiles/:id", (req, res, next) => {
+//   console.log(req.body, "user put");
+//   models.profiles.then((profile) => res.send(profile)).catch(next);
+// });
+
+//PUT
 app.put("/api/updateProfile/:id", (req, res, next) => {
   console.log(req.body, "user put");
-  models.profiles.then(() => res.send(204)).catch(next);
+  models.profiles
+    .updateProfile({ ...req.body, id: req.params.id })
+    .then((profile) => res.send(profile))
+    .catch(next);
 });
 app.post("/api/users/zipCode", (req, res, next) => {
   models.profiles
@@ -314,13 +323,13 @@ Object.keys(models).forEach((key) => {
       .then((items) => res.send(items))
       .catch(next);
   });
-  app.put(`/api/${key}/:id`, (req, res, next) => {
-    //console.log(req.body, 'user put');
-    models[key]
-      .update(req.body, req.params.id)
-      .then((items) => res.send(items))
-      .catch(next);
-  });
+  // app.put(`/api/${key}/:id`, (req, res, next) => {
+  //   //console.log(req.body, 'user put');
+  //   models[key]
+  //     .update(req.body, req.params.id)
+  //     .then((items) => res.send(items))
+  //     .catch(next);
+  // });
   app.delete(`/api/${key}/:id`, (req, res, next) => {
     //console.log(req.params.id, 'user delet');
     models[key]

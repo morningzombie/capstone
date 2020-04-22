@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
 import DeleteAccountPopUp from "./components/User/DeleteAccountPopUp";
 
 const UserProfileEdit = ({ logout, auth, params }) => {
-  // const deleteAccount = () => {
-  //   axios.delete(`/api/users/${auth.id}`);
-  // };
+  const deleteAccount = () => {
+    axios.delete(`/api/users/${auth.id}`);
+  };
 
   useEffect(() => {
     axios
@@ -70,23 +70,26 @@ const UserProfileEdit = ({ logout, auth, params }) => {
     change[ev.target.name] = ev.target.value;
     setEditedUserProfile({ ...editedUserProfile, ...change });
   };
-  console.log("editedUserProfile", editedUserProfile);
+  //console.log("editedUserProfile", editedUserProfile);
 
   const updateProfile = (profile) => {
-    axios.put("/api/updateProfile/:id", profile).then((response) => {
-      console.log("response data", response);
+    axios.put(`/api/profiles/${auth.id}`, profile).then((response) => {
+      console.log(response.data, "response data");
       // setAuth(response.data);
       // setError(ex.response.data.message);
     });
     // .catch((ex) => setError(ex.response.data.message));
   };
+  // updateUser(editedUser);
 
   const onSubmit = (ev) => {
+    //console.log("click");
+    // ev.preventDefault();
     updateProfile(editedUserProfile);
   };
   return (
     <div className="container">
-      {/* <h3 className="userName">
+      <h3 className="userName">
         All About {auth.username}{" "}
         <button
           type="button"
@@ -112,9 +115,9 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             Edit
           </Link>
         </div>
-      </div>{" "} */}
+      </div>{" "}
       {/* //============CHANGE PASSWORD===============// */}
-      {/* <div className="card">
+      <div className="card">
         <div className="card-body">
           <h5 className="card-title">
             Would you like to reset your password?{" "}
@@ -128,12 +131,20 @@ const UserProfileEdit = ({ logout, auth, params }) => {
         auth={auth}
         deleteAccount={deleteAccount}
         logout={logout}
-      /> */}
+      />
       {/* //============MORE INFO===============//  */}
       <div className="card">
         <div className="card-body">
-          {/* <form onSubmit={(e) => onSubmit(e)}> */}
           <h5 className="card-title">Personal Information</h5>
+          {/* <label>Gender:</label>
+          <input
+            name="gender"
+            value={editedUserProfile.gender}
+            className="form-control"
+            type="text"
+            placeholder={profile.gender}
+            onChange={onChange}
+          /> */}
 
           <div className="col">
             <label htmlFor="gender">Gender:</label>
@@ -144,10 +155,10 @@ const UserProfileEdit = ({ logout, auth, params }) => {
               onChange={onChange}
             >
               <option value={editedUserProfile.gender}>{profile.gender}</option>
-              {genders.map((gender) => {
+              {genders.map((g) => {
                 return (
-                  <option key={gender.id} value={gender.gender_name}>
-                    {gender.gender_name}
+                  <option key={g.id} value={g.gender_name}>
+                    {g.gender_name}
                   </option>
                 );
               })}
@@ -309,19 +320,22 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             onChange={onChange}
           />
           {/* careerid: "7196afea-99c0-46b5-8bcf-f33e526a5467" */}
-          <button type="submit" className="btn btn-primary" onClick={onSubmit}>
+          {/* <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(ev) => onSubmit}
+          >
             Submit
-          </button>
-          {/* </form> */}
+          </button> */}
 
-          {/* <Link
+          <Link
             className="btn"
             // to="/userinfo"
             // label="UserProfileEdit"
             onClick={onSubmit}
           >
             Submit
-          </Link> */}
+          </Link>
         </div>{" "}
       </div>
     </div>

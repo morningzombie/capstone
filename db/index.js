@@ -569,48 +569,48 @@ const sync = async () => {
 
   Promise.all([
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'chick.JPG',
+      filePath: 'public/uploads/',
+      fileName: 'chick.JPG',
       userId: lucyid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'dude.PNG',
+      filePath: 'public/uploads/',
+      fileName: 'dude.PNG',
       userId: moeid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'fakeuser.JPG',
+      filePath: 'public/uploads/',
+      fileName: 'fakeuser.JPG',
       userId: curlyid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'guy.JPG',
+      filePath: 'public/uploads/',
+      fileName: 'guy.JPG',
       userId: larryid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'mr.JPG',
+      filePath: 'public/uploads/',
+      fileName: 'mr.JPG',
       userId: shempid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'flat.PNG',
+      filePath: 'public/uploads/',
+      fileName: 'flat.PNG',
       userId: joeid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'girluser.JPG',
+      filePath: 'public/uploads/',
+      fileName: 'girluser.JPG',
       userId: pattiid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'pat.JPG',
+      filePath: 'public/uploads/',
+      fileName: 'pat.JPG',
       userId: sallyid,
     }),
     photos.createPhoto({
-      fileName: 'public/uploads/',
-      filePath: 'pony.PNG',
+      filePath: 'public/uploads/',
+      fileName: 'pony.PNG',
       userId: marcieid,
     }),
   ]);

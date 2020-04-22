@@ -7,6 +7,9 @@ const SearchResults = ({ auth }) => {
   const [profiles, setProfiles] = useState([]);
   const [careers, setCareers] = useState([]);
   const [photos, setPhotos] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+
+  const usersId = auth.id;
 
   useEffect(() => {
     // gets zip code of current user
@@ -67,13 +70,21 @@ const SearchResults = ({ auth }) => {
     return src;
   };
 
-  const saveFavorite = async (faveInfo) => {
+  const saveAsFavorite = async (fave) => {
     await axios
-      .post('/api/createFavorite', faveInfo)
-      .then((response) => console.log('criteria', response));
+      .post('/api/createFavorite', fave)
+      .then((response) => setFavorites([response.data, ...favorites]));
   };
 
-  console.log('photos', photos);
+  const onSubmit = (favorite) => {
+    const user1 = usersId;
+    const user2 = favorite;
+    const faveUser = {
+      userId: user1,
+      favoriteId: user2,
+    };
+    saveAsFavorite(faveUser);
+  };
 
   return (
     <div>
@@ -122,9 +133,62 @@ const SearchResults = ({ auth }) => {
                   Age {findAge(userProfile.birthdate)}
                 </h6>
                 <p className="card-text">{userProfile.gender}</p>
-                <a href="#" className="card-link">
+                <a
+                  href="#"
+                  className="card-link"
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                >
                   Save as Favorite
                 </a>
+                <div
+                  className="modal fade"
+                  id="exampleModalCenter"
+                  tabIndex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalCenterTitle"
+                  aria-hidden="true"
+                >
+                  <div
+                    className="modal-dialog modal-dialog-centered"
+                    role="document"
+                  >
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5
+                          className="modal-title"
+                          id="exampleModalCenterTitle"
+                        >
+                          Save this user as a favorite?
+                        </h5>
+                        <button
+                          type="button"
+                          className="close"
+                          data-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        {getUsername(userProfile.userId)}
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          data-dismiss="modal"
+                          onClick={onSubmit(userProfile.userId)}
+                        >
+                          Cancel
+                        </button>
+                        <button type="button" className="btn btn-primary">
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <a href="#" className="card-link">
                   View details
                 </a>

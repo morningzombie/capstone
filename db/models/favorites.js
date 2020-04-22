@@ -4,11 +4,11 @@ const readFavorites = async () => {
   return (await client.query('SELECT * from user_favorites')).rows;
 };
 
-const createFavorite = async (favorite) => {
+const createFavorite = async (user_favorite) => {
   const SQL = `INSERT INTO user_favorites("userId", "favoriteId")
         values($1, $2) returning *`;
   return (
-    await client.query(SQL, [user_favorites.userId, user_favorites.favoriteId])
+    await client.query(SQL, [user_favorite.userId, user_favorite.favoriteId])
   ).rows[0];
 };
 

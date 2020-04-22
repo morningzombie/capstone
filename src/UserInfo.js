@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import UserHobbies from "./UserHobbies";
 import { BrowserRouter as Router, Link } from "react-router-dom";
-// import { useHistory, Link } from "react-router-dom";
-
-// const history = useHistory();
-// const goToUpload = () => history.push("/user/hobbies");
 
 const UserInfo = ({ login, auth }) => {
   const [userid, setUserid] = useState("");
@@ -54,21 +51,19 @@ const UserInfo = ({ login, auth }) => {
       .then((response) => setEducations(response.data));
   }, []);
 
-  const createUserInfo = (profile) => {
-    axios.post("/api/createProfile", profile).then((response) => {
+  const createUserInfo = (user) => {
+    axios.post("/api/createProfile", user).then((response) => {
       console.log("USERINFO", response);
-      console.log("USER", profile);
       // login({ email, password }).catch((ex) =>
-      setError(ex.response.data.message);
+      //   setError(ex.response.data.message)
       // );
     });
   };
 
-  const userId = auth.id;
-
   const onSubmit = (ev) => {
-    ev.preventDefault();
+    // ev.preventDefault();
     {
+      const userId = auth.id;
       createUserInfo({
         userId,
         gender,
@@ -82,14 +77,23 @@ const UserInfo = ({ login, auth }) => {
         employmentStatus,
         about,
       });
-      // .then(() => goToUpload());
     }
   };
-
+  // user_profile.userId,
+  //     user_profile.gender,
+  //     user_profile.orientation,
+  //     user_profile.politicalAffiliation,
+  //     user_profile.religiousAffiliation,
+  //     user_profile.careerId,
+  //     user_profile.education,
+  //     user_profile.pets,
+  //     user_profile.birthdate,
+  //     user_profile.zipCode,
+  //     user_profile.employmentStatus,
   return (
-    <div className="container">
+    <div className="container" onSubmit={onSubmit}>
       <h3>Tell Us All About You</h3>
-      <form onSubmit={onSubmit}>
+      <form>
         <div className="row">
           <div className="col">
             <label htmlFor="zipCode">Where do you live?</label>
@@ -268,9 +272,22 @@ const UserInfo = ({ login, auth }) => {
             onChange={(ev) => setAbout(ev.target.value)}
           />
         </div>
-        {/* <Link to="/userhobbies"> */}
-        <button className="btn btn-primary">Submit</button>
-        {/* </Link> */}
+
+        <Link to="/userhobbies">
+          <button type="button">Submit</button>
+        </Link>
+
+        {/* <button
+          to="/userhobbies"
+          type="button"
+          className="btn btn-primary"
+          onClick={onSubmit}
+          // onClick={() => {
+          //   onSubmit();
+          // }}
+        >
+          Submit
+        </button> */}
       </form>
     </div>
   );

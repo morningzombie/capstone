@@ -102,24 +102,12 @@ app.post('/upload', (req, res) => {
 //============PHOTO UPLOAD END=================//
 
 app.post('/api/createProfile', (req, res, next) => {
-  console.log(req.body, 'REQ');
   models.profiles
     .createProfile(req.body)
     .then((profile) => res.send(profile))
     .catch(next);
 });
 
-app.get('/api/profiles', (req, res, next) => {
-  db.readProfiles()
-    .then((profiles) => {
-      res.send(profiles);
-    })
-    .catch(next);
-});
-app.put('/api/updateProfile/:id', (req, res, next) => {
-  console.log(req.body, 'user put');
-  models.profiles.then(() => res.send(204)).catch(next);
-});
 app.post('/api/users/zipCode', (req, res, next) => {
   models.profiles
     .findUsersWithZipCode(req.body)
@@ -166,14 +154,6 @@ app.post('/api/createPhoto', (req, res, next) => {
   models.photos
     .createPhoto(req.body)
     .then((photo) => res.send(photo))
-    .catch(next);
-});
-
-app.post('/api/createFavorite', (req, res, next) => {
-  console.log('fave', req.body);
-  models.favorites
-    .createFavorite(req.body)
-    .then((favorite) => res.send(favorite))
     .catch(next);
 });
 
@@ -243,7 +223,13 @@ app.get('/api/hobbies', (req, res, next) => {
     })
     .catch(next);
 });
-
+app.get('/api/profiles', (req, res, next) => {
+  db.readProfiles()
+    .then((profiles) => {
+      res.send(profiles);
+    })
+    .catch(next);
+});
 app.get('/api/usernamepprofiles', (req, res, next) => {
   db.readUsernameProfiles()
     .then((usernamepprofiles) => {
@@ -298,7 +284,7 @@ app.put('/api/user/password/:id', (req, res, next) => {
 //delete array of userEvents
 app.post('/api/userEvents/array/delete', (req, res, next) => {
   const userEvents = req.body;
-  console.log(req.params.id, 'user event delete', req.body);
+  //console.log(req.params.id, 'user event delete', req.body);
   userEvents.map((userEvent) =>
     models.user_events
       .delete(userEvent.id)
@@ -307,9 +293,20 @@ app.post('/api/userEvents/array/delete', (req, res, next) => {
   );
 });
 
+app.get('/api/invites/:id', (req, res, next) => {
+  const userEvents = req.body;
+  console.log(req.params.id, 'invites', req.body);
+
+  models.invites
+    .read(req.params.id)
+    .then((items) => res.send(items))
+    .catch(next);
+});
+
 Object.keys(models).forEach((key) => {
   //console.log(models);
   app.get(`/api/${key}`, isLoggedIn, (req, res, next) => {
+    console.log(req.body, 'in get');
     models[key]
       .read({ user: req.user })
       .then((items) => res.send(items))

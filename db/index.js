@@ -4,6 +4,7 @@ const fs = require('fs');
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
 const models = ({
+  invites,
   user_events,
   users,
   profiles,
@@ -16,8 +17,6 @@ const models = ({
   political_parties,
   events,
   searches,
-  photos,
-  favorites,
 } = require('./models'));
 
 const { changePassword } = require('./userMethods');
@@ -28,7 +27,6 @@ const sync = async () => {
   CREATE EXTENSION IF NOT EXISTS citext;
   DROP TABLE IF EXISTS user_search_criteria;
   DROP TABLE IF EXISTS user_events;
-  DROP TABLE IF EXISTS user_favorites;
   DROP TABLE IF EXISTS events;
   DROP TABLE IF EXISTS user_photos;
   DROP TABLE IF EXISTS user_groups CASCADE;
@@ -45,6 +43,8 @@ const sync = async () => {
   DROP TABLE IF EXISTS user_ratings CASCADE;
   DROP TABLE IF EXISTS users CASCADE;
   DROP TABLE IF EXISTS education CASCADE;
+
+
 
   CREATE TABLE users(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -75,7 +75,6 @@ const sync = async () => {
     "isFavorite" BOOLEAN default false,
     status VARCHAR(10) DEFAULT 'open'
   );
-
   CREATE TABLE careers(
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     career_name VARCHAR(100) NOT NULL
@@ -170,12 +169,6 @@ const sync = async () => {
     pets VARCHAR(100),
     zipCode VARCHAR(10),
     employmentStatus VARCHAR(100)
-  );
-
-  CREATE TABLE user_favorites(
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    "userId" UUID REFERENCES users(id),
-    "favoriteId" UUID REFERENCES users(id)
   );
 
   INSERT INTO hobbies (hobby_name, hobby_image) VALUES ('Arts & Crafts', 'art.png');
@@ -418,7 +411,7 @@ const sync = async () => {
   const _events = {
     park: {
       name: 'park',
-      date: '2/2/1996',
+      date: '2/2/1991',
       location: 'park',
       description: 'some activity',
       isPublic: true,
@@ -426,7 +419,7 @@ const sync = async () => {
     },
     beach: {
       name: 'beach',
-      date: '2/2/1996',
+      date: '2/2/1992',
       location: 'beach',
       description: 'some activity',
       isPublic: false,
@@ -434,7 +427,7 @@ const sync = async () => {
     },
     dog: {
       name: 'dog',
-      date: '2/2/1996 3:00 PM',
+      date: '2/2/1993 3:00 PM',
       location: 'dog',
       description: 'some activity',
       isPublic: true,
@@ -443,7 +436,7 @@ const sync = async () => {
     },
     soccer: {
       name: 'soccer',
-      date: '2/2/1996 3:00 PM',
+      date: '2/2/1994 3:00 PM',
       location: 'jax beach',
       description: 'play soccer on the beach',
       isPublic: true,
@@ -451,7 +444,7 @@ const sync = async () => {
     },
     joke: {
       name: 'joke',
-      date: '2/2/1996 3:00 PM',
+      date: '2/2/1995 3:00 PM',
       location: 'zoom',
       description: 'just want to tell you jokes',
       isPublic: true,
@@ -507,6 +500,12 @@ const sync = async () => {
       eventId: dog.id,
       isFavorite: true,
       status: 'accepted',
+    },
+    beach: {
+      joinedUserId: moe.id,
+      eventId: beach.id,
+      isFavorite: false,
+      status: 'invited',
     },
   };
   const [unap, usoccer, usoccercurly, ujoke, udog] = await Promise.all(
@@ -566,54 +565,6 @@ const sync = async () => {
   const marcieid = await users
     .findUserId('marcie')
     .then((response) => response.id);
-
-  Promise.all([
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'chick.JPG',
-      userId: lucyid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'dude.PNG',
-      userId: moeid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'fakeuser.JPG',
-      userId: curlyid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'guy.JPG',
-      userId: larryid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'mr.JPG',
-      userId: shempid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'flat.PNG',
-      userId: joeid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'girluser.JPG',
-      userId: pattiid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'pat.JPG',
-      userId: sallyid,
-    }),
-    photos.createPhoto({
-      filePath: 'public/uploads/',
-      fileName: 'pony.PNG',
-      userId: marcieid,
-    }),
-  ]);
 
   Promise.all([
     profiles.createProfile({
@@ -796,7 +747,6 @@ const readUsernameProfiles = async () => {
 const readPhotos = async () => {
   return (await client.query('SELECT * from user_photos')).rows;
 };
-
 // const createUserInfo = async ([
 //   user,
 //   userGender,

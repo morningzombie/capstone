@@ -6,11 +6,6 @@ const SearchResults = ({ auth }) => {
   const [profile, setProfile] = useState([]);
   const [profiles, setProfiles] = useState([]);
   const [careers, setCareers] = useState([]);
-  const [photos, setPhotos] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const [favorite, setFavorite] = useState([]);
-
-  const usersId = auth.id;
 
   useEffect(() => {
     // gets zip code of current user
@@ -48,7 +43,7 @@ const SearchResults = ({ auth }) => {
     return career.career_name;
   };
 
-  const findAge = (birthday) => {
+  function findAge(birthday) {
     var today = new Date();
     var birthDate = new Date(birthday);
     var age = today.getFullYear() - birthDate.getFullYear();
@@ -57,43 +52,17 @@ const SearchResults = ({ auth }) => {
       age--;
     }
     return age;
-  };
-
-  useEffect(() => {
-    axios.get('/api/photos').then((response) => setPhotos(response.data));
-  }, []);
-
-  const getProfilePic = (friendId) => {
-    const profilePic = photos.find((photo) => photo.userId === friendId);
-    const filename = profilePic.filename;
-    const filepath = profilePic.filepath;
-    const src = filepath + '/' + filename;
-    return src;
-  };
-
-  const saveAsFavorite = async (fave) => {
-    await axios
-      .post('/api/createFavorite', fave)
-      .then((response) => setFavorites([response.data, ...favorites]));
-  };
-
-  const onSubmit = (event, fav) => {
-    event.preventDefault();
-    // const user1 = usersId;
-    // const user2 = fav;
-    // const faveUser = {
-    //   userId: user1,
-    //   favoriteId: user2,
-    // };
-    // saveAsFavorite(faveUser);
-  };
+  }
 
   return (
     <div>
-      <h3>
-        Users in your zip code {userZip} ({userProfiles.length})
-      </h3>
-      {/* <div>
+      <h3>Results</h3>
+      <div>
+        <form>
+          <h5>Users in your zip code</h5>
+        </form>
+      </div>
+      <div>
         {userProfiles.map((userProfile) => (
           <ul key={userProfile.id}>
             User: {getUsername(userProfile.userId)}{' '}
@@ -114,162 +83,6 @@ const SearchResults = ({ auth }) => {
             <li>Photo: </li>
           </ul>
         ))}
-      </div> */}
-      <div>
-        {userProfiles.map((userProfile) => {
-          return (
-            <div
-              className="card"
-              key={userProfile.id}
-              style={{ width: '18rem' }}
-            >
-              <div className="card-body">
-                <img
-                  className="userPhoto"
-                  src={getProfilePic(userProfile.userId)}
-                />
-                <h5 className="card-title">
-                  {getUsername(userProfile.userId)}
-                </h5>
-                <h6 className="card-subtitle mb-2 text-muted">
-                  Age {findAge(userProfile.birthdate)}
-                </h6>
-                <p className="card-text">{userProfile.gender}</p>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter"
-                >
-                  Save as Favorite
-                </button>
-                {/* <a
-                  href="#"
-                  className="card-link"
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter"
-                >
-                  Save as Favorite
-                </a> */}
-                <div
-                  className="modal fade"
-                  id="exampleModalCenter"
-                  tabIndex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalCenterTitle"
-                  aria-hidden="true"
-                >
-                  <div
-                    className="modal-dialog modal-dialog-centered"
-                    role="document"
-                  >
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5
-                          className="modal-title"
-                          id="exampleModalCenterTitle"
-                        >
-                          Save this user as a favorite?
-                        </h5>
-                        <button
-                          type="button"
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div className="modal-body">
-                        {getUsername(userProfile.userId)}
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          data-dismiss="modal"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          // onClick={(e) => onSubmit(e, userProfile.userId)}
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <a href="#" className="card-link">
-                  View details
-                </a> */}
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter2"
-                >
-                  View details
-                </button>
-                <div
-                  className="modal fade"
-                  id="exampleModalCenter2"
-                  tabIndex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalCenterTitle"
-                  aria-hidden="true"
-                >
-                  <div
-                    className="modal-dialog modal-dialog-centered"
-                    role="document"
-                  >
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5
-                          className="modal-title"
-                          id="exampleModalCenterTitle"
-                        >
-                          Details of user {getUsername(userProfile.userId)}
-                        </h5>
-                        <button
-                          type="button"
-                          className="close"
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div className="modal-body">
-                        <li>Politics: {userProfile.politicalaffiliation}</li>
-                        <li>Religion: {userProfile.religiousaffiliation}</li>
-                        <li>Education: {userProfile.education}</li>
-                        <li>Career: {getCareerName(userProfile.careerid)}</li>
-                        <li>Pets: {userProfile.pets}</li>
-                        <li>Employment: {userProfile.employmentstatus}</li>
-                        <li>About: {userProfile.about}</li>
-                      </div>
-                      <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          data-dismiss="modal"
-                        >
-                          Close
-                        </button>
-                        <button type="button" className="btn btn-primary">
-                          Save as favorite?
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
       </div>
     </div>
   );

@@ -13,5 +13,4 @@ module.exports = {
   hobbies: require('./hobbies'),
   searches: require('./searches'),
   photos: require('./photos'),
-  favorites: require('./favorites'),
 };

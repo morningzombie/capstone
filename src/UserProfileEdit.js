@@ -42,9 +42,9 @@ const UserProfileEdit = ({ logout, auth, params }) => {
   }, []);
   const [error, setError] = useState("");
   const [profile, setProfile] = useState([]);
-  // console.log("GP", profile.gender);
-  // console.log("ID", auth.id);
-  // console.log("ID2", profile.userId);
+  console.log("GP", profile.gender);
+  console.log("ID", auth.id);
+  console.log("ID2", profile.userId);
   const [genders, setGenders] = useState([]);
   const [politicalParties, setPoliticalParties] = useState([]);
   const [religions, setReligions] = useState([]);
@@ -64,28 +64,25 @@ const UserProfileEdit = ({ logout, auth, params }) => {
     about: profile.about,
     communicationpreference: profile.communicationPreference,
   });
-
+  console.log("gender", editedUserProfile.gender);
   const onChange = (ev) => {
     const change = {};
     change[ev.target.name] = ev.target.value;
     setEditedUserProfile({ ...editedUserProfile, ...change });
   };
-  console.log("editedUserProfile", editedUserProfile);
 
   const updateProfile = (profile) => {
     axios
-      .put(`/api/profiles/${auth.id}`, profile)
+      .put(`/api/user_profiles/${auth.id}`, profile)
       .then((response) => {
         console.log(response.data, "response data");
-        //setAuth(response.data);
-        setError(ex.response.data.message);
+        setAuth(response.data);
       })
       .catch((ex) => setError(ex.response.data.message));
   };
   // updateUser(editedUser);
 
   const onSubmit = (ev) => {
-    console.log("click");
     // ev.preventDefault();
     updateProfile(editedUserProfile);
   };
@@ -150,14 +147,13 @@ const UserProfileEdit = ({ logout, auth, params }) => {
           /> */}
 
           <div className="col">
+            {" "}
             <label htmlFor="gender">Gender:</label>
-            <select
-              className="form-control"
-              name="gender"
-              id="gender"
-              onChange={onChange}
-            >
-              <option value={editedUserProfile.gender}>{profile.gender}</option>
+            <select className="form-control" id="gender" onChange={onChange}>
+              <option value={editedUserProfile.gender}>
+                {" "}
+                {profile.gender}{" "}
+              </option>
               {genders.map((g) => {
                 return (
                   <option key={g.id} value={g.gender_name}>
@@ -168,6 +164,16 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             </select>
           </div>
 
+          {/*
+          <label>Political Affiliation:</label>
+          <input
+            name="politicalaffiliation"
+            value={profile.politicalAffiliation}
+            className="form-control"
+            type="text"
+            placeholder={profile.politicalaffiliation}
+            onChange={onChange}
+          /> */}
           <div className="row mt-3">
             <div className="col">
               <label htmlFor="politicalAffiliation">
@@ -175,10 +181,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
               </label>
               <select
                 className="form-control"
-                name="politicalAffiliation"
                 id="politicalAffiliation"
-                placeholder="political"
-                // value={editedUserProfile.politicalAffiliation}
                 onChange={onChange}
               >
                 <option value={editedUserProfile.politicalAffiliation}>
@@ -194,14 +197,24 @@ const UserProfileEdit = ({ logout, auth, params }) => {
               </select>
             </div>
 
+            {/*
+          <label>Religious Affiliation:</label>
+          <input
+            name="religiousaffiliation"
+            value={profile.religiousAffiliation}
+            className="form-control"
+            type="text"
+            placeholder={profile.religiousaffiliation}
+            onChange={onChange}
+          /> */}
+
             <div className="col">
               <label htmlFor="religiousAffiliation">
                 Religious Affiliation:{" "}
               </label>
               <select
                 className="form-control"
-                name="religiousAffiliation"
-                id="religiousAffiliation"
+                id="religion"
                 onChange={onChange}
               >
                 <option value={editedUserProfile.religiousAffiliation}>
@@ -218,14 +231,19 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             </div>
           </div>
 
+          {/* <label>Education:</label>
+          <input
+            name="education"
+            value={profile.Education}
+            className="form-control"
+            type="text"
+            placeholder={profile.education}
+            onChange={onChange}
+          /> */}
+
           <div className="col">
             <label htmlFor="education">Education:</label>
-            <select
-              className="form-control"
-              name="education"
-              id="education"
-              onChange={onChange}
-            >
+            <select className="form-control" id="education" onChange={onChange}>
               <option value={editedUserProfile.education}>
                 {" "}
                 {profile.education}{" "}
@@ -240,14 +258,19 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             </select>
           </div>
 
+          {/* <label>Pets:</label>
+          <input
+            name="pets"
+            value={profile.Pets}
+            className="form-control"
+            type="text"
+            placeholder={profile.pets}
+            onChange={onChange}
+          /> */}
+
           <div className="form-group mt-3">
             <label htmlFor="pets">Pets:</label>
-            <select
-              className="form-control"
-              name="pets"
-              id="pets"
-              onChange={onChange}
-            >
+            <select className="form-control" id="pets" onChange={onChange}>
               <option value={editedUserProfile.pets}> {profile.pets}</option>
               {pet.map((p) => {
                 return (
@@ -277,12 +300,20 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             placeholder={profile.zipcode}
             onChange={onChange}
           />
+          {/* <label>Employment Status:</label>
+          <input
+            name="employmentstatus"
+            value={profile.employmentStatus}
+            className="form-control"
+            type="text"
+            placeholder={profile.employmentstatus}
+            onChange={onChange}
+          /> */}
 
           <div className="col">
             <label htmlFor="employmentStatus">Employment Status:</label>
             <select
               className="form-control"
-              name="employmentstatus"
               id="employmentStatus"
               onChange={onChange}
             >
@@ -299,12 +330,21 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             </select>
           </div>
 
+          {/* <label>About:</label>
+          <input
+            name="about"
+            value={profile.About}
+            className="form-control"
+            type="text"
+            placeholder={profile.about}
+            onChange={onChange}
+          /> */}
+
           <div className="form-group mt-3">
             <label htmlFor="about">About You:</label>
             <textarea
               className="form-control"
               type="text"
-              name="about"
               id="about"
               rows="5"
               value={profile.About}
@@ -313,7 +353,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             />
           </div>
 
-          {/* <label>I prefer to be contacted by: </label>
+          <label>I prefer to be contacted by: </label>
           <input
             name="communicationpreference"
             value={profile.communicationPreference}
@@ -321,20 +361,17 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             type="text"
             placeholder={profile.communicationpreference}
             onChange={onChange}
-          /> */}
+          />
           {/* careerid: "7196afea-99c0-46b5-8bcf-f33e526a5467" */}
-          <button type="submit" className="btn btn-primary" onSubmit={onSubmit}>
-            Submit
-          </button>
 
-          {/* <Link
+          <Link
             className="btn"
-            // to="/userinfo"
+            to="/userinfo"
             label="UserProfileEdit"
             onSubmit={onSubmit}
           >
             Submit
-          </Link> */}
+          </Link>
         </div>{" "}
       </div>
     </div>

@@ -81,42 +81,21 @@ const UserProfileEdit = ({ logout, auth, params }) => {
   console.log('editedUserProfile', editedUserProfile);
 
   const updateProfile = (profile) => {
-<<<<<<< HEAD
-    axios
-      .put(`/api/profiles/${auth.id}`, profile)
-      .then((response) => {
-        console.log(response.data, 'response data');
-        //setAuth(response.data);
-        setError(ex.response.data.message);
-      })
-      .catch((ex) => setError(ex.response.data.message));
-=======
     axios.put("/api/updateProfile/:id", profile).then((response) => {
       console.log("response data", response);
       // setAuth(response.data);
       // setError(ex.response.data.message);
     });
     // .catch((ex) => setError(ex.response.data.message));
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
   };
 
   const onSubmit = (ev) => {
-<<<<<<< HEAD
-    ev.preventDefault();
-    // console.log('CLICK');
-=======
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
     updateProfile(editedUserProfile);
   };
   return (
     <div className="container">
-<<<<<<< HEAD
-      <h3 className="userName">
-        All About {auth.username}{' '}
-=======
       {/* <h3 className="userName">
         All About {auth.username}{" "}
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
         <button
           type="button"
           className="btn btn-primary btn-sm"
@@ -161,12 +140,6 @@ const UserProfileEdit = ({ logout, auth, params }) => {
       {/* //============MORE INFO===============//  */}
       <div className="card">
         <div className="card-body">
-<<<<<<< HEAD
-          <form onSubmit={(e) => onSubmit(e)}>
-            <h5 className="card-title">Personal Information</h5>
-            <label>Gender:</label>
-            <input
-=======
           {/* <form onSubmit={(e) => onSubmit(e)}> */}
           <h5 className="card-title">Personal Information</h5>
 
@@ -174,16 +147,12 @@ const UserProfileEdit = ({ logout, auth, params }) => {
             <label htmlFor="gender">Gender:</label>
             <select
               className="form-control"
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
               name="gender"
               value={editedUserProfile.gender}
               className="form-control"
               type="text"
               placeholder={profile.gender}
               onChange={onChange}
-<<<<<<< HEAD
-            />{' '}
-=======
             >
               <option value={editedUserProfile.gender}>{profile.gender}</option>
               {genders.map((gender) => {
@@ -197,7 +166,6 @@ const UserProfileEdit = ({ logout, auth, params }) => {
           </div>
 
           <div className="row mt-3">
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
             <div className="col">
               <label htmlFor="gender">Gender:</label>
               <select
@@ -366,13 +334,6 @@ const UserProfileEdit = ({ logout, auth, params }) => {
               placeholder={profile.communicationpreference}
               onChange={onChange}
             />
-<<<<<<< HEAD
-            {/* careerid: "7196afea-99c0-46b5-8bcf-f33e526a5467" */}
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </form>
-=======
           </div>
 
           <label>I prefer to be contacted by: </label>
@@ -390,7 +351,6 @@ const UserProfileEdit = ({ logout, auth, params }) => {
           </button>
           {/* </form> */}
 
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
           {/* <Link
             className="btn"
             // to="/userinfo"

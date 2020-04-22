@@ -1,7 +1,7 @@
-const client = require("../client");
+const client = require('../client');
 
 const readProfiles = async () => {
-  return (await client.query("SELECT * from user_profiles")).rows;
+  return (await client.query('SELECT * from user_profiles')).rows;
 };
 const createProfile = async (user_profiles) => {
   const SQL = `INSERT INTO user_profiles("userId", gender, politicalAffiliation, religiousAffiliation, careerId, education, pets, birthdate, zipCode, employmentStatus, about, communicationPreference)
@@ -24,11 +24,11 @@ const createProfile = async (user_profiles) => {
   ).rows[0];
 };
 
-console.log("click");
-const updateProfile = async ({ user_profiles }, id) => {
+console.log('click');
+const updateProfile = async (user_profiles, id) => {
   const SQL =
     // "UPDATE user_profiles set gender=$1, politicalAffiliation=$2, religiousAffiliation=$3, careerId=$4, education=$5, pets=$6, birthdate=$7, zipCode=$8, employmentStatus=$9, about=$10 WHERE id = $11 returning *";
-    "UPDATE user_profiles set gender=$1, politicalAffiliation=$2, religiousAffiliation=$3, education=$4, pets=$5, birthdate=$6, zipCode=$7, employmentStatus=$8, about=$9, communicationPreference=$10 WHERE id = $11 returning *";
+    'UPDATE user_profiles set gender=$1, politicalAffiliation=$2, religiousAffiliation=$3, education=$4, pets=$5, birthdate=$6, zipCode=$7, employmentStatus=$8, about=$9, communicationPreference=$10 WHERE id = $11 returning *';
   const updatedProfile = (
     await client.query(SQL, [
       user_profiles.gender,
@@ -42,7 +42,7 @@ const updateProfile = async ({ user_profiles }, id) => {
       user_profiles.employmentStatus,
       user_profiles.about,
       user_profiles.communicationPreference,
-      user_profiles.id,
+      id,
     ])
   ).rows[0];
   return updatedProfile;

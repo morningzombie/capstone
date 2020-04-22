@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from "react-router-dom";
 import moment from 'moment';
 import axios from 'axios';
 import DeleteAccountPopUp from './components/User/DeleteAccountPopUp';
-=======
-import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-import moment from "moment";
-import axios from "axios";
-import DeleteAccountPopUp from "./components/User/DeleteAccountPopUp";
->>>>>>> c22edcfb1f97736f9ae3dbbf530e092b303c802d
 
 const UserProfileEdit = ({ logout, auth, params }) => {
   // const deleteAccount = () => {
@@ -73,6 +65,8 @@ const UserProfileEdit = ({ logout, auth, params }) => {
     communicationpreference: profile.communicationPreference,
   });
 
+  const profId = profile.id;
+
   const onChange = (ev) => {
     const change = {};
     change[ev.target.name] = ev.target.value;
@@ -80,9 +74,9 @@ const UserProfileEdit = ({ logout, auth, params }) => {
   };
   console.log('editedUserProfile', editedUserProfile);
 
-  const updateProfile = (profile) => {
-    axios.put("/api/updateProfile/:id", profile).then((response) => {
-      console.log("response data", response);
+  const updateProfile = (profile, profileId) => {
+    axios.put(`/api/updateProfile/:${profileId}`, profile).then((response) => {
+      console.log('response data', response);
       // setAuth(response.data);
       // setError(ex.response.data.message);
     });
@@ -90,7 +84,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
   };
 
   const onSubmit = (ev) => {
-    updateProfile(editedUserProfile);
+    updateProfile(editedUserProfile, profId);
   };
   return (
     <div className="container">
@@ -143,7 +137,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
           {/* <form onSubmit={(e) => onSubmit(e)}> */}
           <h5 className="card-title">Personal Information</h5>
 
-          <div className="col">
+          {/* <div className="col">
             <label htmlFor="gender">Gender:</label>
             <select
               className="form-control"
@@ -163,7 +157,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
                 );
               })}
             </select>
-          </div>
+          </div> */}
 
           <div className="row mt-3">
             <div className="col">
@@ -325,7 +319,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
                 onChange={onChange}
               />
             </div>
-            <label>I prefer to be contacted by: </label>
+            {/* <label>I prefer to be contacted by: </label>
             <input
               name="communicationpreference"
               value={profile.communicationPreference}
@@ -333,7 +327,7 @@ const UserProfileEdit = ({ logout, auth, params }) => {
               type="text"
               placeholder={profile.communicationpreference}
               onChange={onChange}
-            />
+            /> */}
           </div>
 
           <label>I prefer to be contacted by: </label>

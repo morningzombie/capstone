@@ -77,15 +77,14 @@ const SearchResults = ({ auth }) => {
       .then((response) => setFavorites([response.data, ...favorites]));
   };
 
-  const onSubmit = (event, fav) => {
-    event.preventDefault();
-    // const user1 = usersId;
-    // const user2 = fav;
-    // const faveUser = {
-    //   userId: user1,
-    //   favoriteId: user2,
-    // };
-    // saveAsFavorite(faveUser);
+  const onSubmit = (fav) => {
+    const user1 = usersId;
+    const user2 = fav;
+    const faveUser = {
+      userId: user1,
+      favoriteId: user2,
+    };
+    saveAsFavorite(faveUser);
   };
 
   return (
@@ -93,28 +92,6 @@ const SearchResults = ({ auth }) => {
       <h3>
         Users in your zip code {userZip} ({userProfiles.length})
       </h3>
-      {/* <div>
-        {userProfiles.map((userProfile) => (
-          <ul key={userProfile.id}>
-            User: {getUsername(userProfile.userId)}{' '}
-            <input
-              type="checkbox"
-              name={userProfile.id}
-              value={userProfile.userId}
-            />
-            <li>Gender: {userProfile.gender}</li>
-            <li>Politics: {userProfile.politicalaffiliation}</li>
-            <li>Religion: {userProfile.religiousaffiliation}</li>
-            <li>Education: {userProfile.education}</li>
-            <li>Career: {getCareerName(userProfile.careerid)}</li>
-            <li>Pets: {userProfile.pets}</li>
-            <li>Age: {findAge(userProfile.birthdate)}</li>
-            <li>Employment: {userProfile.employmentstatus}</li>
-            <li>About: {userProfile.about}</li>
-            <li>Photo: </li>
-          </ul>
-        ))}
-      </div> */}
       <div>
         {userProfiles.map((userProfile) => {
           return (
@@ -140,17 +117,10 @@ const SearchResults = ({ auth }) => {
                   className="btn btn-primary"
                   data-toggle="modal"
                   data-target="#exampleModalCenter"
+                  data-dismiss="modal"
                 >
                   Save as Favorite
                 </button>
-                {/* <a
-                  href="#"
-                  className="card-link"
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter"
-                >
-                  Save as Favorite
-                </a> */}
                 <div
                   className="modal fade"
                   id="exampleModalCenter"
@@ -192,9 +162,9 @@ const SearchResults = ({ auth }) => {
                           Cancel
                         </button>
                         <button
-                          type="button"
+                          type="submit"
                           className="btn btn-primary"
-                          // onClick={(e) => onSubmit(e, userProfile.userId)}
+                          onClick={() => onSubmit(userProfile.userId)}
                         >
                           Save
                         </button>
@@ -202,9 +172,6 @@ const SearchResults = ({ auth }) => {
                     </div>
                   </div>
                 </div>
-                {/* <a href="#" className="card-link">
-                  View details
-                </a> */}
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -259,7 +226,12 @@ const SearchResults = ({ auth }) => {
                         >
                           Close
                         </button>
-                        <button type="button" className="btn btn-primary">
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          onClick={() => onSubmit(userProfile.userId)}
+                          data-dismiss="modal"
+                        >
                           Save as favorite?
                         </button>
                       </div>
